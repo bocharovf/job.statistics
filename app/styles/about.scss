@@ -1,0 +1,41 @@
+@import "global_settings.scss";
+
+$section-height: 450px;
+$bg-color: rgb(162,215,216); //blue
+
+
+.about-section {
+  background-color: $bg-color;
+  color: $color-text-primary;
+  margin-top: $headerHeight; // respect header
+  height: $section-height;
+  padding: 20px 50px;  
+
+  //background-image: url(http://www.transparenttextures.com/patterns/diagmonds-light.png);
+}
+
+.howto-video {
+  float: right;
+  padding-right: 20px; 
+
+  @media screen and (max-width: $widthNoVideo) {
+    display: none;
+  }
+
+  iframe, video {
+    width: $videoWidth;
+    height: $videoHeight;
+  }
+}
+
+.devise {
+  float: left;
+  width: 50%;
+}
+
+.devise-title {
+  h1 {
+    font-family: 'Play', sans-serif;
+    color: white;
+  }
+}
