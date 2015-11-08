@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" lang="">
+<html class="no-js" lang="" ng-app="hhStat">
   <head>
     <meta charset="utf-8">
     <title>Статистика для IT специалистов</title>
@@ -21,6 +21,7 @@
 
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
+    <link rel="stylesheet" href="/bower_components/jqcloud2/dist/jqcloud.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -46,8 +47,8 @@
         
         <nav class="navigation">
             <ul>
-                <li> О проекте</li>
-                <li> Поиск</li>
+                <li> <a>О проекте</a></li>
+                <li> <a>Поиск</a></li>
             </ul>
         </nav>
 
@@ -72,21 +73,8 @@
     	<div class="howto-video">
     	  
             <video autoplay loop>
-              <source src="images/header960x320.mp4" type="video/mp4">
+              <source src="images/header.mp4" type="video/mp4">
             </video>
-
-          <!--
-          <iframe 
-            src="http://www.youtube.com/embed/JYlwNyPwJt0?autoplay=0&autohide=1&controls=2"
-            frameborder="0" allowfullscreen
-            >
-            </iframe>-->
-
-            <!--<iframe src="https://player.vimeo.com/video/142671617" 
-            frameborder="0" 
-            webkitallowfullscreen 
-            mozallowfullscreen
-            allowfullscreen></iframe>-->
 
     	</div>		
 	</section>
@@ -94,7 +82,7 @@
     <!-- Startup -->
     <section class="startup-section">
 
-        <h1>Что учить? Узнай за 10 секунд ...
+        <h1>Что учить? Узнай за 10 секунд ... 
             <button class="btn-xlg btn-primary" type="button">
                 <span>Старт</span>
             </button>
@@ -108,9 +96,9 @@
         <!-- Параметры поиска -->
 		<article class="search-filter">
             <div class="currency-row">
-                <span class="glyphicon glyphicon-euro action-link-lg" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-usd action-link-lg" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-ruble action-link-lg" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-euro action-currency-icon" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-usd action-currency-icon" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-ruble action-currency-icon" aria-hidden="true"></span>
             </div>
 
             <div class="country-list">
@@ -128,30 +116,50 @@
 		
         <!-- Строка поиска -->
 		<article class="search-box">
+            
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="Search for...">
+              <input type="text" class="form-control" placeholder="Язык, платформа, фреймворк ...">
               <span class="input-group-btn">
-                <button class="btn btn-default" type="button">
-                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                <button class="btn btn-primary" type="button">
+                    Найти
                 </button>
               </span>
-            </div><!-- /input-group -->
+            </div>
+
+            <div class="search-examples">
+                <span>Например сравните: </span>
+                <span class="action-link">c#, java, c++</span>
+            </div>
+
 		</article>		
 	
-		<article class="tag-cloud">
+		<article class="tag-cloud" ng-controller="TagCloudCtrl">
+
+            <jqcloud words="words" width="500" height="350" steps="7"></jqcloud>
+
 		</article>
 	
 	</section>
 
+
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
     <script src="/bower_components/jquery/dist/jquery.js"></script>
+    <script src="/bower_components/jqcloud2/dist/jqcloud.js"></script>
+    <script src="/bower_components/angular/angular.js"></script>
+    
+    <script src="/bower_components/angular-jqcloud/angular-jqcloud.js"></script>
     <!-- endbower -->
+    <!-- endbuild -->
+
+
+    <!-- build:js scripts/main.js -->
+    <script src="scripts/main.js"></script>    
     <!-- endbuild -->
 
     
     <!-- build:js(.) scripts/plugins.js -->
-    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/affix.js"></script>
+    <!--<script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/affix.js"></script>
     <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/alert.js"></script>
     <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/dropdown.js"></script>
     <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/tooltip.js"></script>
@@ -162,13 +170,10 @@
     <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/carousel.js"></script>
     <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/scrollspy.js"></script>
     <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/collapse.js"></script>
-    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/tab.js"></script>
+    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/tab.js"></script>-->
     <!-- endbuild -->
     
 
-    <!-- build:js scripts/main.js -->
-    <script src="scripts/main.js"></script>
-    <!-- endbuild -->
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <script>

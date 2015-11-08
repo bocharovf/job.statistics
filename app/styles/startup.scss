@@ -1,20 +1,25 @@
 @import "global_settings.scss";
 
-$section-height: 160px;
+$section-height: 120px;
 $bg-color: rgb(237,237,234); 
 $text-color: rgb(255,255,255); 
+
 
 .startup-section {
   background-color: $bg-color;
   color: $text-color;
   height: $section-height;
-  padding: 30px;  
-  background-image: url(http://www.transparenttextures.com/patterns/diagmonds.png);
+  padding: ($section-height - 60px) / 2 0px;//30px;  
+  
+  background-image: url($img-path + "startup-bg.png");
+  //background-image: url(http://www.transparenttextures.com/patterns/diagmonds.png);
 
   h1 {
     text-align: center;
     font-weight: bold;
+    margin: 0px;
   }
+
 }
 
 .btn-xlg {

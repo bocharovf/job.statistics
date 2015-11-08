@@ -3,7 +3,9 @@
   "private": true,
   "dependencies": {
     "bootstrap-sass": "~3.3.5",
-    "modernizr": "~2.8.3"
+    "modernizr": "~2.8.3",
+    "angular": "~1.4.7",
+    "angular-jqcloud": "~1.0.2"
   },
   "overrides": {
     "bootstrap-sass": {

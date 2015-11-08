@@ -1,181 +1,45 @@
+@import "global_settings.scss"; // set paths for bootstrap
 
 // bower:scss
 @import "bower_components/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
 // endbower
 
-@import "global_settings.scss";
+@import "header.scss";
 @import "about.scss";
 @import "startup.scss";
 @import "search.scss";
 
-// заголовок
-
-header {
-  position: fixed;
-  width: 100%;
-  top: 0px;
-  height: $headerHeight;
-  background-color: $color-header-bg;
-  color: $color-text-header;
-}
-
-.logo {
-  float: left;
-
-  img {
-    width: $headerHeight - 10px;
-    height: $headerHeight - 10px;  
-    padding: 5px;
-  }
-  
-}
-
-.navigation {
-  float: left;
-
-  ul {
-    display: inline-block;
-    list-style-type: none;
-    li {
-      padding: 15px 10px;
-      display: inline-block;
-      color: $color-text-header;
-      font-size: 35px;
-      font-family: 'Play', sans-serif;
-      cursor: pointer;
-    }
-  }
-  
-}
-
-.social {
-  float: right;
-  padding: 25px 10px 0 0;
-}
-
-
-
-/*
-.about-section {
-  background-color: $color-about-bg;
-  height: $aboutHeight;
-  color: $color-text-primary;
-  margin-top: $headerHeight;
-}
-
-.header-container {
-  float: left;
-  width: 40%;
-  height: 100%;
-  min-width: 255px;
-}
-
-.howto-video {
-  float: right;
-  padding-right: 20px; 
-
-  @media screen and (max-width: $widthNoVideo) {
-    display: none;
-  }
-
-  iframe, video {
-    width: $videoWidth;
-    height: $videoHeight;
-  }
-}
-
-.devise {
-  float: left;
-  width: 50%;
-}
-
-.devise-title {
-  h1 {
-    font-family: 'Play', sans-serif;
-    color: white;
-  }
-}
-
-
-// Основной контент
-
-.main-section {
-  width: 100%;
-  padding: 10px;
-}
-
-// меню фильтров
-
-.search-filter {
-  float: left;
-  width: 20%;
-  min-width: 120px;
-  padding: 5px;
-  background-color: $color-filter-bg; 
-  border-radius: 4px;
-}
-
-.currency-row {
-  margin: 0 auto;
-  max-width: 130px;
-}
-
-.country-list {
-  max-width: 130px;
-  margin: 10px auto;
-  ul {
-    padding: 0px;
-    list-style-type: none;
-    font-size: 15px;
-    text-align: center;
-    li {
-
-    }
-  }
-}
-
-.town-list {
-
-}
-
-// поиск
-
-.search-box {
-  float: left;
-  width: 400px;
-  min-width: 200px;
-  margin-left: 50px;
-}
-
-// облако тегов
-
-.tag-cloud {
-
-
-}
 
 // общее
-*/
+
 .action-link {
     cursor: pointer;
-    
-    margin: 2px 3px;
-    padding-bottom: 3px;
-    
-    &:before {
-      border-bottom: 1px black dashed;        
-    }
-
-    &:hover:before {
+    border-bottom: 1px black dashed; 
+  
+    &:hover {
         color: $color-text-accent;
         border-color: $color-text-accent;
-    }
-
+    }    
 }
 
-.action-link-lg {
-  @extend .action-link;
+.action-icon {
+  cursor: pointer;
+
+  &:before {
+    border-bottom: 1px black dashed; 
+  }
+
+  &:hover:before {
+      color: $color-text-accent;
+      border-color: $color-text-accent;
+  }
+}
+
+.action-currency-icon {
+  @extend .action-icon;
   font-size: 16px;
+  margin: 2px 3px;
+  padding-bottom: 3px;
 
   &:not(:last-child):after{
       content: " \B7 ";
