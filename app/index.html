@@ -37,7 +37,6 @@
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-
     <!-- Fixed header --> 
     <header>
 
@@ -47,12 +46,15 @@
         
         <nav class="navigation">
             <ul>
-                <li> <a>О проекте</a></li>
-                <li> <a>Поиск</a></li>
+                <li class="mobile-hidden"> <span class="nav-link">О проекте</span></li>
+                <li class="mobile-hidden"> <span class="nav-link">Поиск</span></li>
+
+                <li class="desktop-hidden"> <span class="glyphicon glyphicon-education"></span></li>
+                <li class="desktop-hidden"> <span class="glyphicon glyphicon-search"></span></li>             
             </ul>
         </nav>
 
-        <div class="social">
+        <div class="social mobile-hidden">
             <span class='st_facebook_large' displayText='Facebook'></span>
             <span class='st_twitter_large' displayText='Tweet'></span>
             <span class='st_linkedin_large' displayText='LinkedIn'></span>
@@ -60,8 +62,16 @@
             <span class='st_vkontakte_large' displayText='Vkontakte'></span>
         </div>
 
-    </header>
+        <div class="social desktop-hidden">
+            <span class='st_facebook' displayText=''></span>
+            <span class='st_twitter' displayText=''></span>
+            <span class='st_linkedin' displayText=''></span>
+            <span class='st_googleplus' displayText=''></span>
+            <span class='st_vkontakte' displayText=''></span>
+        </div>        
 
+    </header>
+    
     <!-- About --> 
 	<section class="about-section">
         		
@@ -81,38 +91,18 @@
     
     <!-- Startup -->
     <section class="startup-section">
-
+<!-- 
         <h1>Что учить? Узнай за 10 секунд ... 
             <button class="btn-xlg btn-primary" type="button">
                 <span>Старт</span>
             </button>
-        </h1>
+        </h1> -->
 
     </section>
 
     <!-- Search --> 
 	<section class="search-section">
 	   
-        <!-- Параметры поиска -->
-		<article class="search-filter">
-            <div class="currency-row">
-                <span class="glyphicon glyphicon-euro action-currency-icon" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-usd action-currency-icon" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-ruble action-currency-icon" aria-hidden="true"></span>
-            </div>
-
-            <div class="country-list">
-                <ul>
-                    <li class="selected-option">
-                        <span class='glyphicon glyphicon-remove glyphicon-10'></span>
-                        <span>Россия</span>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="town-list">
-            </div>            
-		</article>
 		
         <!-- Строка поиска -->
 		<article class="search-box">
@@ -132,10 +122,32 @@
             </div>
 
 		</article>		
-	
+
+
+        <!-- Параметры поиска -->
+        <article class="search-filter">
+            <div class="currency-row">
+                <span class="glyphicon glyphicon-euro action-currency-icon" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-usd action-currency-icon" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-ruble action-currency-icon" aria-hidden="true"></span>
+            </div>
+
+            <div class="country-list">
+                <ul>
+                    <li class="selected-option">
+                        <span class='glyphicon glyphicon-remove glyphicon-10'></span>
+                        <span>Россия</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="town-list">
+            </div>            
+        </article>
+        	
 		<article class="tag-cloud" ng-controller="TagCloudCtrl">
 
-            <jqcloud words="words" width="500" height="350" steps="7"></jqcloud>
+             <jqcloud words="words" steps="7"></jqcloud> 
 
 		</article>
 	
@@ -145,9 +157,8 @@
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
     <script src="/bower_components/jquery/dist/jquery.js"></script>
-    <script src="/bower_components/jqcloud2/dist/jqcloud.js"></script>
     <script src="/bower_components/angular/angular.js"></script>
-    
+    <script src="/bower_components/jqcloud2/dist/jqcloud.js"></script>
     <script src="/bower_components/angular-jqcloud/angular-jqcloud.js"></script>
     <!-- endbower -->
     <!-- endbuild -->

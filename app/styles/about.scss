@@ -1,18 +1,15 @@
 @import "global_settings.scss";
 
 $section-height: 450px;
-//$bg-color: rgb(162,215,216); //blue
 $bg-color: rgb(181,205,206); //blue
 
 
 .about-section {
   background-color: $bg-color;
   color: $color-text-primary;
-  margin-top: $headerHeight; // respect header
+  //margin-top: $headerHeight; // respect header
   height: $section-height;
   padding: 20px 50px;  
-
-  //background-image: url(http://www.transparenttextures.com/patterns/diagmonds-light.png);
 }
 
 .howto-video {

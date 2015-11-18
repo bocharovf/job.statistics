@@ -4,6 +4,7 @@
 
 @import "global_settings.scss";
 
+$widthMobile : 500px;
 $section-height: 600px;
 $bg-filter-color:  rgb(216,227,216);
 $bg-color:  rgb(237,237,234);
@@ -11,26 +12,32 @@ $bg-color:  rgb(237,237,234);
 .search-section {
   width: 100%;
   height: $section-height;
-  padding: 50px;
-  //background-color: $bg-color;
+  padding: 50px 5%;
   color: $color-text-primary;
   background-color: rgb(237,237,234); 
-  //background-image: url($img-path + "search-section-bg.png");
-  //background-image: url(http://www.transparenttextures.com/patterns/diagmonds-light.png);
 
+  @media screen and (max-width: $widthMobile) { 
+    padding: 20px 5%;
+  }
 }
 
 .search-filter {
   float: left;
   width: 20%;
-  min-width: 120px;
+  height: 350px;
+  min-width: 140px;
   padding: 10px 5px;
   border-radius: 4px;
-
   background-color: $bg-filter-color;
+  background-image:url(http://www.transparenttextures.com/patterns/beige-paper.png);
 
 
-//background-image: url(http://www.transparenttextures.com/patterns/diagonal-striped-brick.png);
+  @media screen and (max-width: $widthMobile) {
+      float: right;
+      clear: both;
+      width: 90%;
+      margin: 10px 5% 0 5%;
+  }
 }
 
 .currency-row {
@@ -59,22 +66,50 @@ $bg-color:  rgb(237,237,234);
 // поиск
 
 .search-box {
-  float: left;
-  width: 700px;
-  min-width: 400px;
-  margin-left: 50px;
-  padding: 0px 50px;
+  float: right;
+  width: 65%;
+  margin-left: 5%;
   border-radius: 4px;
-  //background-color: $bg-filter-color;
+  
+  @media screen and (max-width: $widthMobile) {
+      float: left;
+      clear: both;
+      width: 100%;
+      margin: 0;
+  }
 }
 
 .search-examples {
   margin-top: 3px;
+
+  @media screen and (max-width: $widthMobile) { 
+    text-align: center;
+  }
 }
 
 // облако тегов
 
 .tag-cloud {
+  float: right;
+  width: 65%;
+  margin-left: 5%;
 
+  div {
+    margin: auto 0px;
+    height: 150px;    
+    width: 100%;
 
+    @media screen and (max-width: $widthMobile) { 
+      width: 100%;
+      height: 150px;    
+    }      
+  }
+
+  @media screen and (max-width: $widthMobile) { 
+    margin: 0;
+    width: 100%;
+  }  
 }
+
+
+
