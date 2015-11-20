@@ -95,13 +95,14 @@ $bg-color:  rgb(237,237,234);
   margin-left: 5%;
 
   div {
-    margin: auto 0px;
-    height: 150px;    
-    width: 100%;
+    margin: 0px auto;
+    height: 250px;
+
+    width: 350px;
 
     @media screen and (max-width: $widthMobile) { 
       width: 100%;
-      height: 150px;    
+      height: 250px;    
     }      
   }
 
