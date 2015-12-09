@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" lang="" ng-app="hhStat">
+<html class="no-js" ng-app="hhStat" lang="" >
   <head>
     <meta charset="utf-8">
     <title>Что учить IT специалисту?</title>
@@ -68,8 +68,8 @@
                 <li class="mobile-hidden"> <span class="nav-link">О проекте</span></li>
                 <li class="mobile-hidden"> <span class="nav-link">Поиск</span></li>
 
-                <li class="desktop-hidden"> <span class="glyphicon glyphicon-education"></span></li>
-                <li class="desktop-hidden"> <span class="glyphicon glyphicon-search"></span></li>             
+                <li class="desktop-hidden"> <span class="glyphicon glyphicon-education nav-icon"></span></li>
+                <li class="desktop-hidden"> <span class="glyphicon glyphicon-search nav-icon"></span></li>             
             </ul>
         </nav>
 
@@ -120,16 +120,16 @@
     </section>
 
     <!-- Search --> 
-	<section class="search-section">
-	   
+	<section class="search-section" ng-controller="SearchCtrl">   
 		
         <!-- Строка поиска -->
 		<article class="search-box">
             
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="Язык, платформа, фреймворк ...">
+              <input type="text" class="form-control" placeholder="Язык, платформа, фреймворк ..." 
+                    ng-model="query">
               <span class="input-group-btn">
-                <button class="btn btn-primary" type="button">
+                <button class="btn btn-primary" type="button" ng-click="search(query)">
                     Найти
                 </button>
               </span>
@@ -137,14 +137,13 @@
 
             <div class="search-examples">
                 <span>Например сравните: </span>
-                <span class="action-link">c#, java, c++</span>
+                <span class="action-link" ng-click="search(suggestion)">{{suggestion}}</span>
             </div>
 
 		</article>		
 
-
         <!-- Параметры поиска -->
-        <article class="search-filter">
+        <article class="search-filter" ng-controller="FilterCtrl">
             <div class="currency-row">
                 <span class="glyphicon glyphicon-euro action-currency-icon" aria-hidden="true"></span>
                 <span class="glyphicon glyphicon-usd action-currency-icon" aria-hidden="true"></span>
@@ -152,10 +151,10 @@
             </div>
 
             <div class="country-list">
-                <ul>
+                <ul ng-repeat="country in countries">
                     <li class="selected-option">
                         <span class='glyphicon glyphicon-remove glyphicon-10'></span>
-                        <span>Россия</span>
+                        <span>{{country.name}}</span>
                     </li>
                 </ul>
             </div>
@@ -184,7 +183,9 @@
 
 
     <!-- build:js scripts/main.js -->
-    <script src="scripts/main.js"></script>    
+    <script src="scripts/TagCloudCtrl.js"></script>
+    <script src="scripts/SearchCtrl.js"></script>
+    <script src="scripts/FilterCtrl.js"></script>
     <!-- endbuild -->
 
     

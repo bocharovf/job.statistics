@@ -4,8 +4,8 @@
 
 @import "global_settings.scss";
 
-$widthMobile : 500px;
-$section-height: 600px;
+$widthMobile : 758px;
+$section-height: 700px;
 $bg-filter-color:  rgb(216,227,216);
 $bg-color:  rgb(237,237,234);
 
@@ -23,14 +23,13 @@ $bg-color:  rgb(237,237,234);
 
 .search-filter {
   float: left;
-  width: 20%;
+  width: 200px;
   height: 350px;
   min-width: 140px;
   padding: 10px 5px;
   border-radius: 4px;
   background-color: $bg-filter-color;
-  background-image:url(http://www.transparenttextures.com/patterns/beige-paper.png);
-
+  background-image: url($img-path + "filter-bg.png");
 
   @media screen and (max-width: $widthMobile) {
       float: right;
@@ -101,9 +100,13 @@ $bg-color:  rgb(237,237,234);
     width: 350px;
 
     @media screen and (max-width: $widthMobile) { 
-      width: 100%;
+      width: 350px;
       height: 250px;    
     }      
+
+    span {
+      cursor: pointer;
+    }
   }
 
   @media screen and (max-width: $widthMobile) { 

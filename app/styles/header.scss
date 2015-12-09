@@ -33,12 +33,12 @@ header {
   img {
     width: $headerHeight;
     height: $headerHeight;  
-    padding: 5px;
+    padding: 15px;
 
     @media screen and (max-width: $widthNavCollapsed) {
         width: $headerHeightCollapsed;
         height: $headerHeightCollapsed;  
-        padding: 5px;
+        padding: 10px;
     }    
   }
   
@@ -78,7 +78,7 @@ nav {
     left: 0;
     background-color: #FFF;
     visibility: hidden;
-
+    // underline menu item animation
     -webkit-transform: scaleX(0);
     transform: scaleX(0);
     -webkit-transition: all 0.3s ease-in-out 0s;
@@ -91,6 +91,14 @@ nav {
     transform: scaleX(1);
   }
 
+}
+
+.nav-icon {
+  cursor: pointer;    
+
+  &:hover {
+    color: #C5C6C7;  
+  }
 }
 
 .social {
@@ -127,10 +135,6 @@ nav {
 }
 
 @media screen and (max-width: $widthHideSocial) {
-  // .social {
-  //   display: none;
-  // }
-
   nav > ul {
     padding-left: 20px;
   }
