@@ -5,7 +5,9 @@
     "bootstrap-sass": "~3.3.5",
     "modernizr": "~2.8.3",
     "angular": "~1.4.7",
-    "angular-jqcloud": "~1.0.2"
+    "angular-jqcloud": "~1.0.2",
+    "highcharts": "~4.1.10",
+    "highcharts-ng": "~0.0.11"
   },
   "overrides": {
     "bootstrap-sass": {
@@ -13,6 +15,11 @@
         "assets/stylesheets/_bootstrap.scss",
         "assets/fonts/bootstrap/*",
         "assets/javascripts/bootstrap.js"
+      ]
+    },
+    "highcharts": {
+      "main": [
+        "lib/highcharts.js"
       ]
     }
   },

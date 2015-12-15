@@ -79,11 +79,17 @@ $bg-color:  rgb(237,237,234);
 }
 
 .search-examples {
-  margin-top: 3px;
+  margin: 3px 0 27px 0;
+  height: 20px;
 
   @media screen and (max-width: $widthMobile) { 
     text-align: center;
   }
+}
+
+.progress-indicator {
+  margin: 10px 0 0 0;
+
 }
 
 // облако тегов
@@ -96,13 +102,7 @@ $bg-color:  rgb(237,237,234);
   div {
     margin: 0px auto;
     height: 250px;
-
     width: 350px;
-
-    @media screen and (max-width: $widthMobile) { 
-      width: 350px;
-      height: 250px;    
-    }      
 
     span {
       cursor: pointer;
@@ -116,4 +116,34 @@ $bg-color:  rgb(237,237,234);
 }
 
 
+// результаты поиска
 
+.search-result {
+  float: right;
+  width: 65%;
+  margin-left: 5%;  
+
+  @media screen and (max-width: $widthMobile) { 
+    margin: 0;
+    width: 100%;
+  }  
+
+}
+
+.demo-chart-container {
+  float: right;
+  width: 100%;
+  margin: 20px 0 0 5%;  
+
+  @media screen and (max-width: $widthMobile) { 
+    margin: 0;
+    width: 100%;
+  }  
+
+  div {
+    float: left;
+    width: 250px;
+    height: 250px;
+    margin-right: 20px;
+  }  
+}

@@ -130,7 +130,8 @@
                     ng-model="query">
               <span class="input-group-btn">
                 <button class="btn btn-primary" type="button" ng-click="search(query)">
-                    Найти
+                    <span ng-show="queryInProgress == 0">Найти</span>
+                    <img ng-show="queryInProgress > 0" src="images/loading.GIF" />
                 </button>
               </span>
             </div>
@@ -157,17 +158,32 @@
                         <span>{{country.name}}</span>
                     </li>
                 </ul>
+  
             </div>
 
             <div class="town-list">
             </div>            
         </article>
-        	
-		<article class="tag-cloud" ng-controller="TagCloudCtrl">
-
-             <jqcloud words="words" steps="7"></jqcloud> 
-
+        
+        <!-- Облако тегов -->
+		<article class="tag-cloud" ng-controller="TagCloudCtrl" ng-hide="hasResults()">
+              <jqcloud words="words" steps="7"></jqcloud> 
 		</article>
+
+        <!-- Графики -->
+        <article class="search-result" ng-show="hasResults()">
+
+            <div class="main-chart">
+                <highchart id="mainChart" config="chartConfig"></highchart>
+            </div>
+
+            <div class="demo-chart-container">
+                <div ng-repeat="chart in demoCharts">
+                    <highchart id="demoChart{{$index}}" config="chart"></highchart>
+                </div>
+            </div>
+
+        </article>        
 	
 	</section>
 
@@ -178,14 +194,24 @@
     <script src="/bower_components/angular/angular.js"></script>
     <script src="/bower_components/jqcloud2/dist/jqcloud.js"></script>
     <script src="/bower_components/angular-jqcloud/angular-jqcloud.js"></script>
+    <script src="/bower_components/highcharts/lib/highcharts.js"></script>
+    <script src="/bower_components/highcharts-ng/dist/highcharts-ng.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
+    <script>
+        angular.module('hhStat', ['angular-jqcloud', 'highcharts-ng']);
+    </script>
 
     <!-- build:js scripts/main.js -->
+    <script src="scripts/model/SearchResult.js"></script>
+
     <script src="scripts/TagCloudCtrl.js"></script>
     <script src="scripts/SearchCtrl.js"></script>
     <script src="scripts/FilterCtrl.js"></script>
+    
+    <script src="scripts/SearchService.js"></script>
+    <script src="scripts/ChartService.js"></script>
     <!-- endbuild -->
 
     

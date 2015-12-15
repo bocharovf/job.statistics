@@ -1,49 +1,101 @@
 
 
 angular.module('hhStat')
-    .controller('SearchCtrl', function($scope) {
+    .controller('SearchCtrl', ['$scope', 'search', 'chart', function($scope, search, chart) {
        
-		$scope.query = "";
+		//$scope.query = "";
 		$scope.suggestion = "c#, java, c++";
+		$scope.queryInProgress = 0;
 		
-		$scope.search = search;
+		$scope.results = Object.create(null);
+		$scope.hasResults = hasResults;
 
-		function search (phrase) {
+		$scope.selectedChartType = 'pie';
+
+		$scope.chartConfig = chart.createConfig($scope.selectedChartType);
+
+		$scope.demoCharts = chart.chartTypes.map(function (type) {
+			return chart.createConfig(type.id);
+		});
+		console.log($scope.chartConfig);
+		$scope.search = search.search;
+
+		search.subscribe ('SEARCH_SUCCESS', $scope, onSearchSuccess);
+		search.subscribe ('SEARCH_FAILED', $scope, onSearchFailed);
+		search.subscribe ('SEARCH_START', $scope, onSearchStart);
+
+		function onSearchStart (event, args) {
+			$scope.queryInProgress += args.length;
+		}
+
+		function onSearchSuccess (event, args) {
+			$scope.queryInProgress--;
+
+			var result = new SearchResult(args.request, args.response);
+			mergeResult(result);	
+			refreshChartSeries();
+
+			if($scope.queryInProgress==0) console.log("RESULT", $scope.results);
+		}
+
+		function onSearchFailed (event, args) {
+			$scope.queryInProgress--;
+		}
+
+		function hasResults () {
+			return (Object.keys($scope.results).length > 0);
+		}
+
+		function mergeResult (result) {
+			var key = result.request.token;
+			if (key in $scope.results) { 
+				// merge results
+				var existed = $scope.results[key];
+				existed.amount.total += result.amount.total;
+				existed.amount.used += result.amount.used;
+
+				existed.salary.min = Math.min(result.salary.min, existed.salary.min);
+				existed.salary.max = Math.max(result.salary.max, existed.salary.max);
+				existed.salary.avg = (existed.salary.avg + result.salary.avg) / 2.0;
+			} else {
+				$scope.results[key] = result;
+			}
+		}
+
+		// TODO: use different type of chart and series
+		function refreshChartSeries () {
+			var colors = Highcharts.getOptions().colors;
+			var chart = $scope.chartConfig;
 			
-			var tokenArray = tokenise (phrase, /[,;]/);
-			tokenArray.forEach(searchToken);
-		}
+			var categories = Object.keys($scope.results).sort();
+			var data = categories.map(function (token, i) {
+				return {
+					y: $scope.results[token].salary.avg,
+					color: colors[i],
+					name: token
+				};
+			});		
 
-		/**
-		 * Split search phrase into array of tokens
-		 * @param  {string} phrase Search phrase
-		 * @sep    {RegExp} sep    Separator regular expression 
-		 * @return {string[]}      Array of tokens
-		 */
-		function tokenise (phrase, sep) {
-			var rawArray = phrase.split(sep);
-			return rawArray
-			.map(function (x) {
-				return x.trim();
-			})
-			// remove empty items
-			.filter(function (x) {
-				return x;
-			})
-			// distinct
-			.reduce(function(a,b) {
-				if (a.indexOf(b) < 0 ) a.push(b);
-				return a;
-			},[]);
-		}
+			var serie =	{
+		            name: 'Avg. salary',
+		            data: data,
+		            size: '100%',
+		            dataLabels: {
+		                formatter: function () {
+		                    return this.y > 5 ? this.point.name : null;
+		                },
+		                color: '#ffffff',
+		                distance: -30
+		            }
+		        };
 
-		/**
-		 * Query external api with concrete search token 
-		 * @param  {string} token Search token
-		 */
-		function searchToken (token) {
-			console.log("Search for " + token);
+		    chart.series[0] = serie;
+
+		    $scope.demoCharts.forEach(function (chart) {
+		    	chart.series[0] = serie;
+		    });
 		}
-    });
+		
+    }]);
 
 

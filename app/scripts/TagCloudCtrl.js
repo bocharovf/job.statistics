@@ -1,16 +1,11 @@
 
+
 /**
  * Tag cloud controller
  */
-angular.module('hhStat', ['angular-jqcloud'])
-    .controller('TagCloudCtrl', ['$scope',  function($scope) {
-
-
-    	var handlers = {
-    		click: function  () {
-    			window.alert("Work!");
-    		}
-    	};
+angular.module('hhStat')
+    .controller('TagCloudCtrl', ['$scope', 'search',  
+    	function($scope, search) {
 
 		var words = [{text: "Lorem", weight: 13},
 					  {text: "Ipsum", weight: 10.5},
@@ -23,10 +18,12 @@ angular.module('hhStat', ['angular-jqcloud'])
 		$scope.words = words.map(function (w) {
 			w.handlers = {
 				click: 	function () {
-							$scope.$parent.search(w.text);
+							search.search(w.text);
 			    		}
 			}
 			 
 			return w;
 		});
-    }]);
+    }
+    ]
+    );
