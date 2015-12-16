@@ -7,7 +7,6 @@
 $widthMobile : 758px;
 $section-height: 700px;
 $bg-filter-color:  rgb(216,227,216);
-$bg-color:  rgb(237,237,234);
 
 .search-section {
   width: 100%;
@@ -142,8 +141,15 @@ $bg-color:  rgb(237,237,234);
 
   div {
     float: left;
-    width: 250px;
-    height: 250px;
-    margin-right: 20px;
+    width: 33.333%;
+
+    div {
+      cursor: pointer;
+      width: 200px;
+      height: 200px;
+      margin: 0 auto;
+    }
   }  
+
+
 }

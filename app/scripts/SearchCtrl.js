@@ -3,7 +3,6 @@
 angular.module('hhStat')
     .controller('SearchCtrl', ['$scope', 'search', 'chart', function($scope, search, chart) {
        
-		//$scope.query = "";
 		$scope.suggestion = "c#, java, c++";
 		$scope.queryInProgress = 0;
 		
@@ -11,14 +10,15 @@ angular.module('hhStat')
 		$scope.hasResults = hasResults;
 
 		$scope.selectedChartType = 'pie';
-
-		$scope.chartConfig = chart.createConfig($scope.selectedChartType);
+		$scope.chartConfig = chart.createConfig(false, $scope.selectedChartType, 
+													'Сравнение средних зарплат', 'Рубли');
 
 		$scope.demoCharts = chart.chartTypes.map(function (type) {
-			return chart.createConfig(type.id);
+			return chart.createConfig(true, type.id);
 		});
-		console.log($scope.chartConfig);
+
 		$scope.search = search.search;
+		$scope.changeChartType = changeChartType;
 
 		search.subscribe ('SEARCH_SUCCESS', $scope, onSearchSuccess);
 		search.subscribe ('SEARCH_FAILED', $scope, onSearchFailed);
@@ -94,6 +94,10 @@ angular.module('hhStat')
 		    $scope.demoCharts.forEach(function (chart) {
 		    	chart.series[0] = serie;
 		    });
+		}
+
+		function changeChartType (chart) {
+			$scope.chartConfig.options.chart.type = chart.options.chart.type;
 		}
 		
     }]);
