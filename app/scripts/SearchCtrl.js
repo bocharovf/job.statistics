@@ -77,12 +77,13 @@ angular.module('hhStat')
 			});		
 
 			var serie =	{
-		            name: 'Avg. salary',
+		            name: null,
 		            data: data,
 		            size: '100%',
+		            //showInLegend: false,
 		            dataLabels: {
 		                formatter: function () {
-		                    return this.y > 5 ? this.point.name : null;
+		                    return this.point.name;
 		                },
 		                color: '#ffffff',
 		                distance: -30
@@ -90,9 +91,11 @@ angular.module('hhStat')
 		        };
 
 		    chart.series[0] = serie;
+			chart.xAxis.categories = categories;
 
 		    $scope.demoCharts.forEach(function (chart) {
 		    	chart.series[0] = serie;
+		    	chart.xAxis.categories = categories;
 		    });
 		}
 

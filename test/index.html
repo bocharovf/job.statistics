@@ -16,10 +16,28 @@
     var should = chai.should();
   </script>
   <!-- bower:js -->
+  <script src="/bower_components/jquery/dist/jquery.js"></script>
+  <script src="/bower_components/angular/angular.js"></script>
+  <script src="/bower_components/jqcloud2/dist/jqcloud.js"></script>
+  <script src="/bower_components/angular-jqcloud/angular-jqcloud.js"></script>
+  <script src="/bower_components/highcharts/lib/highcharts.js"></script>
+  <script src="/bower_components/highcharts-ng/dist/highcharts-ng.js"></script>
   <!-- endbower -->
+  <script src="/bower_components/angular-mocks/angular-mocks.js"></script>
+
   <!-- include source files here... -->
+  <script src="scripts/model/SearchResult.js"></script>
+<!-- 
+  <script src="/app/scripts/TagCloudCtrl.js"></script>
+  <script src="/app/scripts/SearchCtrl.js"></script>
+  <script src="/app/scripts/FilterCtrl.js"></script>
+  
+  <script src="/app/scripts/SearchService.js"></script>
+  <script src="/app/scripts/ChartService.js"></script>  
+ -->
   <!-- include spec files here... -->
-  <script src="spec/test.js"></script>
+  <script src="spec/SearchResultTests.js"></script>
+
   <script>
     if (navigator.userAgent.indexOf('PhantomJS') === -1) {
       mocha.run();

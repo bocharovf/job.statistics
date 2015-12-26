@@ -206,6 +206,15 @@
         angular.module('hhStat', ['angular-jqcloud', 'highcharts-ng']);
     </script>
 
+    <!--(if target dev)><!-->
+      <script src="scripts/Config.debug.js"></script>
+    <!--<!(endif)-->
+     
+    <!--(if target dist)>
+      <script src="scripts/Config.release.js"></script>
+    <!(endif)-->
+
+
     <!-- build:js scripts/main.js -->
     <script src="scripts/model/SearchResult.js"></script>
 

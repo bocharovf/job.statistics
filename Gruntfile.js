@@ -21,7 +21,9 @@ module.exports = function (grunt) {
   // Configurable paths
   var config = {
     app: 'app',
-    dist: 'dist'
+    dist: 'dist',
+    test: 'test',
+    docs: 'docs'
   };
 
   // Define the configuration for all the tasks
@@ -42,7 +44,7 @@ module.exports = function (grunt) {
       },
       babelTest: {
         files: ['test/spec/{,*/}*.js'],
-        tasks: ['babel:test', 'test:watch']
+        tasks: ['babel:test'] //'test:watch'
       },
       gruntfile: {
         files: ['Gruntfile.js']
@@ -84,8 +86,12 @@ module.exports = function (grunt) {
       },
       test: {
         options: {
+          files: [
+            '.tmp/scripts/{,*/}*.js',
+            '.tmp/spec/{,*/}*.js'
+          ],          
           port: 9001,
-          open: false,
+          open: true,
           logLevel: 'silent',
           host: 'localhost',
           server: {
@@ -206,7 +212,7 @@ module.exports = function (grunt) {
     // Automatically inject Bower components into the HTML file
     wiredep: {
       app: {
-        src: ['<%= config.app %>/index.html'],
+        src: ['<%= config.app %>/index.html', '<%= config.test %>/index.html'],
         exclude: ['bootstrap.js'],
         ignorePath: /^(\.\.\/)*\.\./
       },
@@ -274,6 +280,14 @@ module.exports = function (grunt) {
         }]
       }
     },
+
+    targethtml: {
+      dist: {
+        files: {
+          '<%= config.dist %>/index.html': '<%= config.dist %>/index.html'
+        }
+      }
+    },    
 
     htmlmin: {
       dist: {
@@ -380,8 +394,17 @@ module.exports = function (grunt) {
         'imagemin',
         'svgmin'
       ]
+    },
+
+    jsdoc: {
+      dist: {
+        src: ['<%= config.app %>/scripts/*.js', '<%= config.test %>/spec/*.js', '<%= config.docs %>/README.md'],
+        options: {
+          destination: 'docs'
+        }
+      }
     }
-  });
+});
 
 
   grunt.registerTask('serve', 'start the server and preview your app', function (target) {
@@ -415,8 +438,10 @@ module.exports = function (grunt) {
     }
 
     grunt.task.run([
+      'wiredep',
       'browserSync:test',
-      'mocha'
+      'mocha',
+      'watch'
     ]);
   });
 
@@ -433,7 +458,12 @@ module.exports = function (grunt) {
     'modernizr',
     'filerev',
     'usemin',
+    'targethtml:dist',
     'htmlmin'
+  ]);
+
+  grunt.registerTask('doc', [
+    'jsdoc:dist'
   ]);
 
   grunt.registerTask('default', [

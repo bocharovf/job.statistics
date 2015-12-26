@@ -11,9 +11,9 @@ function SearchResult (request, rawData) {
 	this.request = request;
 
 	this.salary = {
-		min: 0,
-		max: 0,
-		avg: 0
+		min: null,
+		max: null,
+		avg: null 
 	};
 
 	this.amount = {
@@ -23,14 +23,14 @@ function SearchResult (request, rawData) {
 
 	var self = this;
 	var salarySum = rawData.items.filter(function (x) {
-		return x.salary;
+		return x.salary && (x.salary.from || x.salary.to);
 	}).map(function (x) {
 		self.amount.used++;
-		var low = x.salary.from | x.salary.to;
-		var high = x.salary.to | x.salary.from;
+		var low = Math.min(x.salary.from || x.salary.to, x.salary.to || x.salary.from);
+		var high = Math.max(x.salary.to || x.salary.from, x.salary.from || x.salary.to);
 
-		if (self.salary.min > low) self.salary.min = low;
-		if (self.salary.max < high) self.salary.max = high;
+		self.salary.min = self.salary.min ? Math.min(self.salary.min, low, high) : Math.min(low, high);
+		self.salary.max = self.salary.max ? Math.max(self.salary.max, low, high) : Math.max(low, high);
 
 		return (low + high) / 2.0;
 	}).reduce(function (a, b) {
