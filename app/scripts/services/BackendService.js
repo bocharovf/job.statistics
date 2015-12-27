@@ -16,6 +16,7 @@ angular.module('hhStat')
 	/**
 	 * @name getSuggestions
 	 * @function
+	 * @memberOf hhStat.BackendService
 	 * @description Query backend for array of suggestions
 	 * @return {Promise}
 	 */
@@ -29,6 +30,7 @@ angular.module('hhStat')
 	/**
 	 * @name getCloudTags
 	 * @function
+	 * @memberOf hhStat.BackendService
 	 * @description Query backend for array of tags and weights
 	 * @return {Promise}
 	 */

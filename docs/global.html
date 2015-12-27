@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: SearchService</title>
+    <title>JSDoc: Global</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: SearchService</h1>
+    <h1 class="page-title">Global</h1>
 
     
 
@@ -28,7 +28,7 @@
 
 <header>
     
-        <h2>SearchService</h2>
+        <h2></h2>
         
     
 </header>
@@ -38,24 +38,7 @@
     
         
 
-    
-
-    <h4 class="name" id="SearchService"><span class="type-signature"></span>new SearchService<span class="signature">()</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
+        
 
 
 <dl class="details">
@@ -85,11 +68,6 @@
     
 
     
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_SearchService.js.html">services/SearchService.js</a>, <a href="services_SearchService.js.html#line1">line 1</a>
-    </li></ul></dd>
-    
 
     
 
@@ -99,20 +77,7 @@
 </dl>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        
     
     </div>
 
@@ -136,14 +101,14 @@
 
     
 
-    <h4 class="name" id=".subscribe"><span class="type-signature">(static) </span>subscribe<span class="signature">(name, scope, callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="SearchResult"><span class="type-signature"></span>SearchResult<span class="signature">(token, alias, page, rawData)</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    Subscribe to event
+    Represents aggregated search result
 </div>
 
 
@@ -179,7 +144,7 @@
 
         <tr>
             
-                <td class="name"><code>name</code></td>
+                <td class="name"><code>token</code></td>
             
 
             <td class="type">
@@ -195,20 +160,20 @@
 
             
 
-            <td class="description last">Event name</td>
+            <td class="description last">Token, requested by user</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>scope</code></td>
+                <td class="name"><code>alias</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">object</span>
+<span class="param-type">string</span>
 
 
             
@@ -218,20 +183,20 @@
 
             
 
-            <td class="description last">Angular scope object</td>
+            <td class="description last">Alias of token</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>callback</code></td>
+                <td class="name"><code>page</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">function</span>
+<span class="param-type">int</span>
 
 
             
@@ -241,7 +206,30 @@
 
             
 
-            <td class="description last">Function to call</td>
+            <td class="description last">Page of dataset</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>rawData</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">json</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Raw response from service</td>
         </tr>
 
     
@@ -282,7 +270,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_SearchService.js.html">services/SearchService.js</a>, <a href="services_SearchService.js.html#line16">line 16</a>
+        <a href="model_SearchResult.js.html">model/SearchResult.js</a>, <a href="model_SearchResult.js.html#line10">line 10</a>
     </li></ul></dd>
     
 

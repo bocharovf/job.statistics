@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: SearchService</title>
+    <title>JSDoc: Class: BackendService</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: SearchService</h1>
+    <h1 class="page-title">Class: BackendService</h1>
 
     
 
@@ -28,7 +28,7 @@
 
 <header>
     
-        <h2>SearchService</h2>
+        <h2>BackendService</h2>
         
     
 </header>
@@ -40,7 +40,7 @@
 
     
 
-    <h4 class="name" id="SearchService"><span class="type-signature"></span>new SearchService<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="BackendService"><span class="type-signature"></span>new BackendService<span class="signature">()</span><span class="type-signature"></span></h4>
 
     
 
@@ -87,7 +87,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_SearchService.js.html">services/SearchService.js</a>, <a href="services_SearchService.js.html#line1">line 1</a>
+        <a href="services_BackendService.js.html">services/BackendService.js</a>, <a href="services_BackendService.js.html#line1">line 1</a>
     </li></ul></dd>
     
 
@@ -136,14 +136,14 @@
 
     
 
-    <h4 class="name" id=".subscribe"><span class="type-signature">(static) </span>subscribe<span class="signature">(name, scope, callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".getCloudTags"><span class="type-signature">(static) </span>getCloudTags<span class="signature">()</span><span class="type-signature"> &rarr; {Promise}</span></h4>
 
     
 
 
 
 <div class="description">
-    Subscribe to event
+    Query backend for array of tags and weights
 </div>
 
 
@@ -152,101 +152,6 @@
 
 
 
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>name</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Event name</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>scope</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Angular scope object</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>callback</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Function to call</td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -282,7 +187,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="services_SearchService.js.html">services/SearchService.js</a>, <a href="services_SearchService.js.html#line16">line 16</a>
+        <a href="services_BackendService.js.html">services/BackendService.js</a>, <a href="services_BackendService.js.html#line30">line 30</a>
     </li></ul></dd>
     
 
@@ -305,6 +210,124 @@
 
 
 
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".getSuggestions"><span class="type-signature">(static) </span>getSuggestions<span class="signature">()</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Query backend for array of suggestions
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="services_BackendService.js.html">services/BackendService.js</a>, <a href="services_BackendService.js.html#line16">line 16</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
