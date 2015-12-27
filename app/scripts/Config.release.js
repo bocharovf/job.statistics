@@ -1,4 +1,9 @@
+/**
+  * @class ConfigConst
+  * @memberOf hhStat    
+  */
+ 
 angular.module("hhStat")
-	.constant('config', {
+	.constant('ConfigConst', {
 		backendBaseUrl: "http://job.bocharovf.ru/data/"
 	});

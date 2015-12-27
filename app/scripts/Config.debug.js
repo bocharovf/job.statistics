@@ -1,4 +1,9 @@
+/**
+  * @class ConfigConst
+  * @memberOf hhStat    
+  */
+ 
 angular.module("hhStat")
-	.constant('config', {
-		backendBaseUrl: "http://localhost/data/"
+	.constant('ConfigConst', {
+		backendBaseUrl: "http://localhost/job.statistics.backend/data/"
 	});

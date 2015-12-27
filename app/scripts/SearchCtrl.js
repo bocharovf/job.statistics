@@ -1,9 +1,16 @@
-
+/**
+  * @class SearchCtrl
+  * @memberOf hhStat    
+  */
 
 angular.module('hhStat')
-    .controller('SearchCtrl', ['$scope', 'search', 'chart', function($scope, search, chart) {
+    .controller('SearchCtrl', ['$scope', 'SearchService', 'ChartService', 'BackendService', 
+    	function($scope, search, chart, backend) {
        
-		$scope.suggestion = "c#, java, c++";
+		backend.getSuggestions().then(function (suggestions) {
+			$scope.suggestion = suggestions[0].Query;
+		});
+		
 		$scope.queryInProgress = 0;
 		
 		$scope.results = Object.create(null);

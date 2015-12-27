@@ -1,6 +1,10 @@
+/**
+  * @class ChartService
+  * @memberOf hhStat    
+  */
  
 angular.module('hhStat')
-	.service('chart', function() {
+	.service('ChartService', function() {
 
 		var result = {};
 		result.chartTypes = [
@@ -25,7 +29,10 @@ angular.module('hhStat')
 						enabled: !isDemo
 					},
 					tooltip: {
-						enabled: !isDemo
+						enabled: !isDemo,
+						formatter: function (argument) {
+							return 'Средняя зарплата <b>' + Math.round(this.y,0) + ' руб.</b>';
+						}
 					},
 					exporting: {
 		            	buttons: {
@@ -40,7 +47,7 @@ angular.module('hhStat')
 		            		enabled: !isDemo,
 		            		symbolFill: '#ededea'
 		            	}
-		            },
+		            }, 
 					plotOptions: {
 		                pie: {
 		                    allowPointSelect: true,
@@ -50,10 +57,18 @@ angular.module('hhStat')
 		                    },
 		                    showInLegend: !isDemo
 		                }
-		            }		            
+		            },
+		            credits: {
+		            	enabled: true,
+		            	href: "http://job.bocharovf.ru",
+		            	text: "http://job.bocharovf.ru"
+		            },
+		            loading: {
+		            	showDuration: 0,
+		            	hideDuration: 0
+		            }
 				},					
 				series: [],
-				loading: false,
 				title: { text: text },
 				xAxis: { title: { text: null } },
 				yAxis: { title: { text: (isDemo ? null : yTitle)} }

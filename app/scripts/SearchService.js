@@ -4,7 +4,7 @@
   */
  
 angular.module('hhStat')
-	.service('search', ['$http', '$rootScope', function($http, $rootScope) {
+	.service('SearchService', ['$http', '$rootScope', function($http, $rootScope) {
 	
 	var result = {
 		search: search,
