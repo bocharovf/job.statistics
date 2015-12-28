@@ -5,4 +5,4 @@ before_script:
   - npm install grunt-cli -g
   - npm install -g bower
   - bower install
-  - find . -maxdepth 2
+  - find . -maxdepth 2 
