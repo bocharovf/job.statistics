@@ -5,5 +5,6 @@ before_script:
   - npm install grunt-cli -g
   - npm install -g bower
   - bower install
+  - cd bower_components/mocha && bower install && cd -
 after_failure:
   - find . -maxdepth 2 
