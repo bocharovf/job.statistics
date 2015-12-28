@@ -77,7 +77,7 @@ module.exports = function (grunt) {
           ],
           port: 9000,
           server: {
-            baseDir: ['.tmp', './test', './app', config.app],
+            baseDir: ['.tmp', config.app],
             routes: {
               '/bower_components': './bower_components'
             }
@@ -95,7 +95,7 @@ module.exports = function (grunt) {
           logLevel: 'silent',
           host: 'localhost',
           server: {
-            baseDir: ['.tmp'],
+            baseDir: ['.tmp', config.app, './test', './app'],
             routes: {
               '/bower_components': './bower_components'
             }
