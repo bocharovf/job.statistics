@@ -95,7 +95,7 @@ module.exports = function (grunt) {
           logLevel: 'silent',
           host: 'localhost',
           server: {
-            baseDir: ['.tmp', config.app, './test', './app'],
+            baseDir: ['.tmp', './test', '.tmp/scripts'],
             routes: {
               '/bower_components': './bower_components'
             }
@@ -422,16 +422,6 @@ module.exports = function (grunt) {
       'watch'
     ]);
   });
-  
-  grunt.registerTask('travis', 'prepare app for build on ci server', function (target) {
-    grunt.task.run([
-      'clean:server',
-      'wiredep',
-      'concurrent:server',
-      'postcss',
-      'browserSync:livereload'
-    ]);
-  });  
 
   grunt.registerTask('server', function (target) {
     grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
@@ -439,20 +429,22 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('test', function (target) {
-    if (target !== 'watch') {
-      grunt.task.run([
-        'clean:server',
-        'concurrent:test',
-        'postcss'
-      ]);
-    }
+    
+  	grunt.task.run([
+  		'clean:server',
+  		'concurrent:test',
+  		'postcss',
+  		'wiredep',
+  		'browserSync:test',
+  		'mocha'        
+  	]);
+  
+    if (target === 'watch') {
+  	    grunt.task.run([	  
+  	      'watch'
+  	    ]);
+  	}
 
-    grunt.task.run([
-      'wiredep',
-      'browserSync:test',
-      'mocha',
-      'watch'
-    ]);
   });
 
   grunt.registerTask('build', [
