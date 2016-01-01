@@ -1,3 +1,5 @@
+'use strict';
+
 /**
   * @class ChartService
   * @memberOf hhStat    

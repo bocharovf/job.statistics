@@ -1,10 +1,13 @@
+'use strict';
+
 /**
   * @class SearchService
   * @memberOf hhStat    
   */
  
 angular.module('hhStat')
-	.service('SearchService', ['$http', '$rootScope', function($http, $rootScope) {
+	.service('SearchService', ['$http', '$rootScope', 'HeadHunter', 
+	function($http, $rootScope, headHunter) {
 	
 	var result = {
 		search: search,
@@ -37,6 +40,8 @@ angular.module('hhStat')
     }    
 
     /**
+     * @function
+     * @memberOf hhStat.SearchService
      * Main exposed search function
      * @param  {string} phrase Phrase to search
      */
@@ -62,6 +67,8 @@ angular.module('hhStat')
 	}
 
 	/**
+     * @function
+     * @memberOf hhStat.SearchService
 	 * Split search phrase into array of tokens
 	 * @param  {string} phrase Search phrase
 	 * @sep    {RegExp} sep    Separator regular expression 
@@ -85,6 +92,8 @@ angular.module('hhStat')
 	}
 
 	/**
+     * @function
+     * @memberOf hhStat.SearchService
 	 * Produce array of aliases for token
 	 * @param  {string} token Search token
 	 * @return {string[]}     Array of aliases
@@ -94,12 +103,17 @@ angular.module('hhStat')
 	}
 
 	/**
+     * @function
+     * @memberOf hhStat.SearchService
 	 * Query external api with concrete search token 
 	 * @param  {string} aliases Search aliases
 	 */
 	function perfomRequest (request) {
-		var textSubquery = encodeURIComponent(request.aliases.join(' OR '));
-		$http.get('https://api.hh.ru/vacancies?per_page=500&page='+request.page+'&text=' + textSubquery, {})
+		var textSubquery = request.aliases.join(' OR ');
+		headHunter.getVacancies(textSubquery, {
+				perPage: 500,
+				page: request.page
+			})
 			.then(function (response) {
 				onSearchSuccess(request, response);
 			}, function (response) {

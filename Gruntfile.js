@@ -97,7 +97,8 @@ module.exports = function (grunt) {
           server: {
             baseDir: ['.tmp', './test', '.tmp/scripts'],
             routes: {
-              '/bower_components': './bower_components'
+              '/bower_components': './bower_components',
+              '/node_modules': './node_modules'
             }
           }
         }
@@ -439,11 +440,11 @@ module.exports = function (grunt) {
   		'mocha'        
   	]);
   
-    if (target === 'watch') {
-  	    grunt.task.run([	  
-  	      'watch'
-  	    ]);
-  	}
+    if (target === 'watch') { 
+	    grunt.task.run([	  
+	      'watch'
+	    ]);
+    }
 
   });
 
