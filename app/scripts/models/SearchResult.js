@@ -10,6 +10,8 @@
  * @param {json} rawData 	Raw response from service
  */
 function SearchResult (request, rawData, currency) {
+	var self = this;
+
 	this.request = request;
 	this.merge = merge;
 	this.currency = currency;
@@ -25,10 +27,13 @@ function SearchResult (request, rawData, currency) {
 		used: 0
 	};	
 
-	var self = this;
-	var salarySum = rawData.items.filter(function (x) {
+	var validVacancies = rawData.items.filter(function (x) {
 		return x.salary && (x.salary.from || x.salary.to) && x.salary.currency;
-	}).map(function (x) {
+	});
+
+	if (validVacancies.length === 0) return; // skip empty results
+
+	var salarySum = validVacancies.map(function (x) {
 		self.amount.used++;
 
 		var fromRub = self.currency.convert(x.salary.from, x.salary.currency, "RUR");
@@ -55,6 +60,9 @@ function SearchResult (request, rawData, currency) {
 	 * @param  {SearchResult} result Result to add
 	 */
 	function merge (result) {
+		// skip empty results
+		if (result.amount.used === 0) return;
+
 		this.amount.total += result.amount.total;
 		this.amount.used += result.amount.used;
 

@@ -7,5 +7,6 @@
 angular
 	.module('hhStat', ['angular-jqcloud', 'highcharts-ng'])
 	.run(['$anchorScroll', function($anchorScroll) {
-	  $anchorScroll.yOffset = 90;   // always scroll by 50 extra pixels
+	  // respect fixed header and always scroll by 90 extra pixels
+	  $anchorScroll.yOffset = 90;   
 	}])

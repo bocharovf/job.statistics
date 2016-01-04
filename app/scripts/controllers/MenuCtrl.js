@@ -8,14 +8,13 @@
 angular.module('hhStat')
     .controller('MenuCtrl', ['$location', '$anchorScroll', 
     	function($location, $anchorScroll) {
-    	
-    	//$anchorScroll.yOffset = -190;
-    	this.scrollTo = scrollTo;
+        var self = this;
 
-		function scrollTo(id) {
-			console.log(id);
-			$location.hash(id);
-			$anchorScroll();
-		};
-						
+        this.scrollTo = scrollTo;
+
+        function scrollTo(id) {
+        	$location.hash(id);
+        	$anchorScroll();
+        };
+			
     }]);

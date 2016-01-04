@@ -187,9 +187,53 @@
         expect(result.salary.max).to.almost.equal(15927.37, 2);
       });
 
+      it('should produce empty result if there are no items or they are invalid', function () {
+        var response1 = 
+        {
+          "items": [{
+            "salary": {
+              "to": null,
+              "from": null,
+              "currency": "RUR"
+            }
+          }, {
+            "salary": {
+              "to": 200,
+              "from": 400
+            }
+          }, 
+          {}],
+          "found": 40, "per_page": 2, "page": 0, "pages": 1000
+        };
+
+        var response2 = 
+        {
+          "items": [],
+          "found": 40, "per_page": 2, "page": 0, "pages": 1000
+        };        
+
+        var result1 = new SearchResult(null, response1, currency);
+        var result2 = new SearchResult(null, response2, currency);
+
+        expect(result1.amount.used).to.equal(0);
+        expect(result1.amount.total).to.equal(0);
+
+        expect(result1.salary.avg).to.be.null;
+        expect(result1.salary.min).to.be.null;
+        expect(result1.salary.max).to.be.null;
+
+        expect(result2.amount.used).to.equal(0);
+        expect(result2.amount.total).to.equal(0);
+
+        expect(result2.salary.avg).to.be.null;
+        expect(result2.salary.min).to.be.null;
+        expect(result2.salary.max).to.be.null;        
+      });      
+
     });
   
     describe('merge method', function () {
+      
       it('should merge results', function () {
         
         var response1 = 
@@ -239,7 +283,67 @@
         expect(result1.salary.avg).to.equal(231.25);
         expect(result1.salary.min).to.equal(50);
         expect(result1.salary.max).to.equal(400);
-      });        
+      });
+
+      it('should skip empty results', function () {
+        
+        var response1 = 
+        {
+          "items": [{
+            "salary": {
+              "to": 100,
+              "from": 200,
+              "currency": "RUR"
+            }
+          }, {
+            "salary": {
+              "to": 300,
+              "from": 350,
+              "currency": "RUR"
+            }
+          }],
+          "found": 20, "per_page": 2, "page": 0, "pages": 1000
+        };
+
+        var response2 = 
+        {
+          "items": [],
+          "found": 40, "per_page": 2, "page": 0, "pages": 1000
+        };         
+
+        var response3 = 
+        {
+          "items": [{
+            "salary": {
+              "to": null,
+              "from": null,
+              "currency": "RUR"
+            }
+          }, {
+            "salary": {
+              "to": 200,
+              "from": 400
+            }
+          }, 
+          {}],
+          "found": 40, "per_page": 2, "page": 0, "pages": 1000
+        };
+
+        var result1 = new SearchResult(null, response1, currency);
+        var result2 = new SearchResult(null, response2, currency);
+        var result3 = new SearchResult(null, response3, currency);
+        
+        result1.merge(result2);
+        result1.merge(result3);
+
+        expect(result1.amount.used).to.equal(2);
+        expect(result1.amount.total).to.equal(20);
+
+        expect(result1.salary.avg).to.equal(237.5);
+        expect(result1.salary.min).to.equal(100);
+        expect(result1.salary.max).to.equal(350);
+      });
+
     });
 
   });

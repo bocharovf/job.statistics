@@ -120,31 +120,33 @@
     </section>
 
     <!-- Search --> 
-	<section id="searchSection" class="search-section" ng-controller="SearchCtrl">   
+	<section id="searchSection" class="search-section" ng-controller="SearchCtrl as search">   
 		
         <!-- Строка поиска -->
 		<article class="search-box">
             
             <div class="input-group">
               <input type="text" class="form-control" placeholder="Язык, платформа, фреймворк ..." 
-                    ng-model="query">
+                    ng-model="search.query" ng-keypress="search.searchOnEnter($event)">
               <span class="input-group-btn">
-                <button class="btn btn-primary" type="button" ng-click="search(query)">
-                    <span ng-show="queryInProgress == 0">Найти</span>
-                    <img ng-show="queryInProgress > 0" src="images/loading.GIF" />
+                <button class="btn btn-primary" type="button" ng-click="search.search(search.query)">
+                    <span ng-show="search.queryInProgress == 0">Найти</span>
+                    <img ng-show="search.queryInProgress > 0" src="images/loading.GIF" />
                 </button>
               </span>
             </div>
 
             <div class="search-examples">
-                <span>Например сравните: </span>
-                <span class="action-link" ng-click="search(suggestion)">{{suggestion}}</span>
+                <div ng-hide="search.hasResults()">
+                    <span>Например сравните: </span>
+                    <span class="action-link" ng-click="search.search(search.suggestion)">{{search.suggestion}}</span>
+                </div>
             </div>
 
 		</article>		
 
         <!-- Параметры поиска -->
-        <article class="search-filter" ng-controller="FilterCtrl">
+        <article class="search-filter" ng-controller="FilterCtrl as filter">
             <div class="currency-row">
                 <span class="glyphicon glyphicon-euro action-currency-icon" aria-hidden="true"></span>
                 <span class="glyphicon glyphicon-usd action-currency-icon" aria-hidden="true"></span>
@@ -152,7 +154,7 @@
             </div>
 
             <div class="country-list">
-                <ul ng-repeat="country in countries">
+                <ul ng-repeat="country in filter.countries">
                     <li class="selected-option">
                         <span class='glyphicon glyphicon-remove glyphicon-10'></span>
                         <span>{{country.name}}</span>
@@ -166,20 +168,20 @@
         </article>
         
         <!-- Облако тегов -->
-		<article class="tag-cloud" ng-controller="TagCloudCtrl" ng-hide="hasResults()">
-              <jqcloud words="words" steps="7"></jqcloud> 
+		<article class="tag-cloud" ng-controller="TagCloudCtrl as tagCloud" ng-hide="search.hasResults()">
+              <jqcloud words="tagCloud.words" steps="7"></jqcloud> 
 		</article>
 
         <!-- Графики -->
-        <article class="search-result" ng-show="hasResults()">
+        <article class="search-result" ng-show="search.hasResults()">
 
             <div class="main-chart">
-                <highchart id="mainChart" config="chartConfig"></highchart>
+                <highchart id="mainChart" config="search.chartConfig"></highchart>
             </div>
 
             <div class="demo-chart-container">
-                <div ng-repeat="chart in demoCharts">
-                    <div ng-click="changeChartType(chart)">
+                <div ng-repeat="chart in search.demoCharts">
+                    <div ng-click="search.changeChartType(chart)">
                         <highchart id="demoChart{{$index}}" config="chart" >
                         </highchart>
                     </div>

@@ -8,24 +8,25 @@
 
 angular.module('hhStat')
     .controller('FilterCtrl', function($scope) {
-         
-    	$scope.selCurrency = "rub";
-    	$scope.selCountry = "rus";
-    	$scope.selCity = "moscow";
+        var self = this;
+        
+    	this.selCurrency = "rub";
+    	this.selCountry = "rus";
+    	this.selCity = "moscow";
 
-		$scope.currencies = [
+		this.currencies = [
 			{id: "rub", name: "Рубль"},
 			{id: "usd", name: "Доллар"},
 			{id: "eur", name: "Евро"}
 		];
 
-		$scope.countries = [
+		this.countries = [
 			{id: "rus", name: "Россия"},
 			{id: "ukr", name: "Украина"},
 			{id: "blr", name: "Белорусия"}
 		];
 
-		$scope.cities = [
+		this.cities = [
 			{id: "moscow", name: "Москва"},
 			{id: "kiev", name: "Киев"},
 			{id: "st.petersburg", name: "Санкт-Петербург"}
