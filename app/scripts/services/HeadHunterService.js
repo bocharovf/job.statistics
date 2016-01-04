@@ -31,6 +31,10 @@ angular.module('hhStat')
 
 	function getVacancies (text, settings) {
 		var params = [
+			{param: 'only_with_salary', value: 'true'},
+			{param: 'order_by', value: 'relevance'},
+			//"id": "1", "name": "Информационные технологии, интернет, телеком"
+			//{param: 'specialization', value: '1'}, 
 			{param: 'per_page', value: settings.perPage || 500 },
 			{param: 'page', value: settings.page || 0 },
 			{param: 'text', value: encodeURIComponent(text) }
