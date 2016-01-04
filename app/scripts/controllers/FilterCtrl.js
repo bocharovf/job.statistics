@@ -1,8 +1,11 @@
 'use strict';
 
+
 /**
- * Filter controller
- */
+  * @class FilterCtrl
+  * @memberOf hhStat    
+  */
+
 angular.module('hhStat')
     .controller('FilterCtrl', function($scope) {
          

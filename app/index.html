@@ -57,7 +57,7 @@
     <![endif]-->
 
     <!-- Fixed header --> 
-    <header>
+    <header ng-controller="MenuCtrl as menu">
 
         <div class="logo">
             <img src="images/logo90x90.png">
@@ -65,11 +65,11 @@
         
         <nav class="navigation">
             <ul>
-                <li class="mobile-hidden"> <span class="nav-link">О проекте</span></li>
-                <li class="mobile-hidden"> <span class="nav-link">Поиск</span></li>
+                <li class="mobile-hidden"> <span class="nav-link" ng-click="menu.scrollTo('aboutSection')">О проекте</span></li>
+                <li class="mobile-hidden"> <span class="nav-link" ng-click="menu.scrollTo('searchSection')">Поиск</span></li>
 
-                <li class="desktop-hidden"> <span class="glyphicon glyphicon-education nav-icon"></span></li>
-                <li class="desktop-hidden"> <span class="glyphicon glyphicon-search nav-icon"></span></li>             
+                <li class="desktop-hidden"> <span class="glyphicon glyphicon-education nav-icon" ng-click="menu.scrollTo('aboutSection')"></span></li>
+                <li class="desktop-hidden"> <span class="glyphicon glyphicon-search nav-icon" ng-click="menu.scrollTo('searchSection')"></span></li>             
             </ul>
         </nav>
 
@@ -92,7 +92,7 @@
     </header>
     
     <!-- About --> 
-	<section class="about-section">
+	<section id="aboutSection" class="about-section">
         		
         <div class="devise">
     	     <h1>Статистика для IT-специалистов</h1>
@@ -120,7 +120,7 @@
     </section>
 
     <!-- Search --> 
-	<section class="search-section" ng-controller="SearchCtrl">   
+	<section id="searchSection" class="search-section" ng-controller="SearchCtrl">   
 		
         <!-- Строка поиска -->
 		<article class="search-box">
@@ -202,6 +202,8 @@
     <!-- endbower -->
     <!-- endbuild -->
 
+    <script src="scripts/hhStat.js"></script>
+
     <!--(if target dev)><!-->
       <script src="scripts/constants/Config-debug.js"></script>
     <!--<!(endif)-->
@@ -214,6 +216,7 @@
     <!-- build:js scripts/main.js -->
     <script src="scripts/models/SearchResult.js"></script>
 
+    <script src="scripts/controllers/MenuCtrl.js"></script>
     <script src="scripts/controllers/TagCloudCtrl.js"></script>
     <script src="scripts/controllers/SearchCtrl.js"></script>
     <script src="scripts/controllers/FilterCtrl.js"></script>
