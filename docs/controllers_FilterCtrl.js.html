@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: services/BackendService.js</title>
+    <title>JSDoc: Source: controllers/FilterCtrl.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: services/BackendService.js</h1>
+    <h1 class="page-title">Source: controllers/FilterCtrl.js</h1>
 
     
 
@@ -28,59 +28,40 @@
         <article>
             <pre class="prettyprint source linenums"><code>'use strict';
 
+
 /**
-  * @class BackendService
-  * @memberOf hhStat 
-  * @description Data service to interact with backend API   
+  * @class FilterCtrl
+  * @memberOf hhStat    
+  * @description Manage search filters
   */
- 
+
 angular.module('hhStat')
-	.service('BackendService', ['ConfigConst', '$http', function(config, $http) {
+    .controller('FilterCtrl', function($scope) {
+        var self = this;
+        
+    	this.selCurrency = "rub";
+    	this.selCountry = "rus";
+    	this.selCity = "moscow";
 
-	var result = {
-		getSuggestions: getSuggestions,
-		getCloudTags: getCloudTags
-	};
+		this.currencies = [
+			{id: "rub", name: "Рубль"},
+			{id: "usd", name: "Доллар"},
+			{id: "eur", name: "Евро"}
+		];
 
-	return result;
+		this.countries = [
+			{id: "rus", name: "Россия"},
+			{id: "ukr", name: "Украина"},
+			{id: "blr", name: "Белорусия"}
+		];
 
-	/**
-	 * @function
-	 * @memberOf hhStat.BackendService
-	 * @description Query backend for array of suggestions
-	 * @return {Promise}
-	 */
-	function getSuggestions () {
-		return $http.get(config.backendBaseUrl + 'suggestions', {})
-					.then(function (result) {
-						return result.data;
-					});
-	}
-
-	/**
-	 * @function
-	 * @memberOf hhStat.BackendService
-	 * @description Query backend for array of tags and weights
-	 * @return {Promise}
-	 */
-	function getCloudTags () {
-		return $http.get(config.backendBaseUrl + 'cloudTags', {})
-					.then(function (result) {
-						return result.data.map(function (tag) {
-							return {
-								text: tag.Tag,
-								weight: tag.Weight,
-							}
-						});
-					});
-	}
-
-}]);
-
-
-
-
-
+		this.cities = [
+			{id: "moscow", name: "Москва"},
+			{id: "kiev", name: "Киев"},
+			{id: "st.petersburg", name: "Санкт-Петербург"}
+		];
+						
+    });
 </code></pre>
         </article>
     </section>

@@ -26,13 +26,17 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+/**
   * @class SearchService
   * @memberOf hhStat    
+  * @description Service responsible for searching
   */
  
 angular.module('hhStat')
-	.service('SearchService', ['$http', '$rootScope', function($http, $rootScope) {
+	.service('SearchService', ['$http', '$rootScope', 'HeadHunter', 
+	function($http, $rootScope, headHunter) {
 	
 	var result = {
 		search: search,
@@ -42,10 +46,9 @@ angular.module('hhStat')
 	return result;
 	
 	/**
-	 * @name subscribe
+	 * @function	 
 	 * @memberOf hhStat.SearchService
 	 * @description Subscribe to event
-	 * @function
 	 * @param  {string}   name     Event name
 	 * @param  {object}   scope    Angular scope object
 	 * @param  {Function} callback Function to call
@@ -56,7 +59,9 @@ angular.module('hhStat')
     }
 
     /**
-     * Fire an event
+     * @function
+     * @memberOf hhStat.SearchService* 
+     * @description Fire an event
      * @param  {string} name Event name
      * @param  {object} args Event args
      */
@@ -65,7 +70,9 @@ angular.module('hhStat')
     }    
 
     /**
-     * Main exposed search function
+     * @function
+     * @memberOf hhStat.SearchService
+     * @description Search whole phrase
      * @param  {string} phrase Phrase to search
      */
 	function search (phrase) {
@@ -90,7 +97,10 @@ angular.module('hhStat')
 	}
 
 	/**
-	 * Split search phrase into array of tokens
+     * @function
+     * @private
+     * @memberOf hhStat.SearchService
+	 * @description Split search phrase into array of tokens
 	 * @param  {string} phrase Search phrase
 	 * @sep    {RegExp} sep    Separator regular expression 
 	 * @return {string[]}      Array of tokens
@@ -113,7 +123,10 @@ angular.module('hhStat')
 	}
 
 	/**
-	 * Produce array of aliases for token
+     * @function
+     * @private
+     * @memberOf hhStat.SearchService
+	 * @description Produce array of aliases for token
 	 * @param  {string} token Search token
 	 * @return {string[]}     Array of aliases
 	 */
@@ -122,12 +135,18 @@ angular.module('hhStat')
 	}
 
 	/**
-	 * Query external api with concrete search token 
+     * @function
+     * @private
+     * @memberOf hhStat.SearchService
+	 * @description Query external api with concrete search token 
 	 * @param  {string} aliases Search aliases
 	 */
 	function perfomRequest (request) {
-		var textSubquery = encodeURIComponent(request.aliases.join(' OR '));
-		$http.get('https://api.hh.ru/vacancies?per_page=500&amp;page='+request.page+'&amp;text=' + textSubquery, {})
+		var textSubquery = request.aliases.join(' OR ');
+		headHunter.getVacancies(textSubquery, {
+				perPage: 500,
+				page: request.page
+			})
 			.then(function (response) {
 				onSearchSuccess(request, response);
 			}, function (response) {
@@ -135,10 +154,26 @@ angular.module('hhStat')
 			});
 	}
 
+	/**
+	 * @function
+	 * @private
+	 * @memberOf hhStat.SearchService
+	 * @description Fire 'SEARCH_SUCCESS' event
+	 * @param  {Object} request  Request 
+	 * @param  {Object} response Response
+	 */
 	function onSearchSuccess (request, response) {
 		notify('SEARCH_SUCCESS', { request: request, response: response.data} );
 	}
 
+	/**
+	 * @function
+	 * @private
+	 * @memberOf hhStat.SearchService
+	 * @description Fire 'SEARCH_FAILED' event
+	 * @param  {Object} request  Request 
+	 * @param  {Object} response Response
+	 */
 	function onSearchFailed (request, response) {
 		notify('SEARCH_FAILED', { request: request, response: response})
 	}	
@@ -159,13 +194,13 @@ angular.module('hhStat')
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="hhStat.BackendService.html">BackendService</a></li><li><a href="hhStat.ChartService.html">ChartService</a></li><li><a href="hhStat.ConfigConst.html">ConfigConst</a></li><li><a href="hhStat.CurrencyService.html">CurrencyService</a></li><li><a href="hhStat.SearchCtrl.html">SearchCtrl</a></li><li><a href="hhStat.SearchService.html">SearchService</a></li><li><a href="hhStat.TagCloudCtrl.html">TagCloudCtrl</a></li></ul><h3>Global</h3><ul><li><a href="global.html#SearchResult">SearchResult</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="hhStat.html">hhStat</a></li><li><a href="hhStat.BackendService.html">BackendService</a></li><li><a href="hhStat.ChartService.html">ChartService</a></li><li><a href="hhStat.ConfigConst.html">ConfigConst</a></li><li><a href="hhStat.CurrencyService.html">CurrencyService</a></li><li><a href="hhStat.FilterCtrl.html">FilterCtrl</a></li><li><a href="hhStat.HeadHunter.html">HeadHunter</a></li><li><a href="hhStat.MenuCtrl.html">MenuCtrl</a></li><li><a href="hhStat.SearchCtrl.html">SearchCtrl</a></li><li><a href="hhStat.SearchResult.html">SearchResult</a></li><li><a href="hhStat.SearchService.html">SearchService</a></li><li><a href="hhStat.TagCloudCtrl.html">TagCloudCtrl</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sun Dec 27 2015 23:58:44 GMT+0300 (RTZ 2 (зима))
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Tue Jan 05 2016 00:08:43 GMT+0300 (RTZ 2 (зима))
 </footer>
 
 <script> prettyPrint(); </script>

@@ -4,6 +4,7 @@
 /**
   * @class FilterCtrl
   * @memberOf hhStat    
+  * @description Manage search filters
   */
 
 angular.module('hhStat')

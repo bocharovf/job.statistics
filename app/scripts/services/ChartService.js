@@ -2,7 +2,8 @@
 
 /**
   * @class ChartService
-  * @memberOf hhStat    
+  * @memberOf hhStat   
+  * @description Support chart operations
   */
  
 angular.module('hhStat')
@@ -18,6 +19,15 @@ angular.module('hhStat')
 
 		return result;
 
+		/**
+		 * @function
+		 * @memberOf hhStat.ChartService
+		 * @param  {Boolean} isDemo    Specify config creation for main chart or demo
+		 * @param  {String}  chartType Specify chart type
+		 * @param  {String}  text      Chart title
+		 * @param  {String}  yTitle    Y-axis title 
+		 * @return {Object}            Chart config
+		 */
 		function createConfig (isDemo, chartType, text, yTitle) {
 
 			var config = {

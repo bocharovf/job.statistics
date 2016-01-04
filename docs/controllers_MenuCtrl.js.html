@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: services/BackendService.js</title>
+    <title>JSDoc: Source: controllers/MenuCtrl.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: services/BackendService.js</h1>
+    <h1 class="page-title">Source: controllers/MenuCtrl.js</h1>
 
     
 
@@ -29,58 +29,30 @@
             <pre class="prettyprint source linenums"><code>'use strict';
 
 /**
-  * @class BackendService
-  * @memberOf hhStat 
-  * @description Data service to interact with backend API   
+  * @class MenuCtrl
+  * @memberOf hhStat    
+  * @description Responsible for navigation
   */
- 
+
 angular.module('hhStat')
-	.service('BackendService', ['ConfigConst', '$http', function(config, $http) {
+    .controller('MenuCtrl', ['$location', '$anchorScroll', 
+    	function($location, $anchorScroll) {
+        var self = this;
 
-	var result = {
-		getSuggestions: getSuggestions,
-		getCloudTags: getCloudTags
-	};
+        this.scrollTo = scrollTo;
 
-	return result;
-
-	/**
-	 * @function
-	 * @memberOf hhStat.BackendService
-	 * @description Query backend for array of suggestions
-	 * @return {Promise}
-	 */
-	function getSuggestions () {
-		return $http.get(config.backendBaseUrl + 'suggestions', {})
-					.then(function (result) {
-						return result.data;
-					});
-	}
-
-	/**
-	 * @function
-	 * @memberOf hhStat.BackendService
-	 * @description Query backend for array of tags and weights
-	 * @return {Promise}
-	 */
-	function getCloudTags () {
-		return $http.get(config.backendBaseUrl + 'cloudTags', {})
-					.then(function (result) {
-						return result.data.map(function (tag) {
-							return {
-								text: tag.Tag,
-								weight: tag.Weight,
-							}
-						});
-					});
-	}
-
-}]);
-
-
-
-
-
+        /**
+         * @function
+         * @memberOf hhStat.MenuCtrl
+         * @description Scroll to particular anchor
+         * @param  {String} id Anchor to scroll
+         */
+        function scrollTo(id) {
+        	$location.hash(id);
+        	$anchorScroll();
+        };
+			
+    }]);
 </code></pre>
         </article>
     </section>

@@ -3,6 +3,7 @@
 /**
   * @class HeadHunter
   * @memberOf hhStat    
+  * @description Data service to interact with Head Hunter API
   */
  
 angular.module('hhStat')
@@ -16,7 +17,6 @@ angular.module('hhStat')
 	return result;
 
 	/**
-	 * @name getCurrencies
 	 * @function
 	 * @memberOf hhStat.HeadHunter
 	 * @description Query HH for array of currencies
@@ -29,6 +29,14 @@ angular.module('hhStat')
 					});
 	}
 
+	/**
+	 * @function
+	 * @memberOf hhStat.HeadHunter
+	 * @description Query HH for vacancies
+	 * @param  {string} text     'text' query parameter
+	 * @param  {Object} settings Additional query parameters
+	 * @return {Promise}
+	 */
 	function getVacancies (text, settings) {
 		var params = [
 			{param: 'only_with_salary', value: 'true'},

@@ -2,7 +2,8 @@
 
 /**
   * @class SearchCtrl
-  * @memberOf hhStat    
+  * @memberOf hhStat 
+  * @description Control all search operations and chart display   
   */
 
 angular.module('hhStat')
@@ -38,7 +39,7 @@ angular.module('hhStat')
 		
 		/**
 		 * @function
-		 * @memberOf SearchCtrl
+		 * @memberOf hhStat.SearchCtrl
 		 * @description Indicates whether search results are available
 		 * @return {Boolean} True if search results are available
 		 */
@@ -48,7 +49,7 @@ angular.module('hhStat')
 		
 		/**
 		 * @function
-		 * @memberOf SearchCtrl
+		 * @memberOf hhStat.SearchCtrl
 		 * @description Search for query if enter pressed 
 		 * @param  {Event} keyEvent Event class
 		 */
@@ -59,7 +60,7 @@ angular.module('hhStat')
 
 		/**
 		 * @function
-		 * @memberOf SearchCtrl
+		 * @memberOf hhStat.SearchCtrl
 		 * @description Change type of main chart
 		 * @param  {string} chart Identifier of chart type
 		 */
@@ -69,6 +70,13 @@ angular.module('hhStat')
 
 		// -------- Internals		
 
+		/**
+		 * @function
+		 * @private
+		 * @memberOf hhStat.SearchCtrl
+		 * @description Register new result or merge existed
+		 * @param  {SearchResult} result New received SearchResult
+		 */
 		function mergeResult (result) {
 			var key = result.request.token;
 			if (key in self.results) { 
@@ -78,7 +86,12 @@ angular.module('hhStat')
 			}
 		}
 
-		// TODO: use different type of chart and series
+		/**
+		 * @function
+		 * @private
+		 * @memberOf hhStat.SearchCtrl
+		 * @description Refresh all charts according to current results
+		 */
 		function refreshChartSeries () {
 			var colors = Highcharts.getOptions().colors;
 			var chart = self.chartConfig;
@@ -115,16 +128,38 @@ angular.module('hhStat')
 		    });
 		}
 		
+		/**
+		 * @function
+		 * @private
+		 * @memberOf hhStat.SearchCtrl
+		 * @description Select random suggestion from available list
+		 */
 		function selectRandomSuggestion () {
 			var amount = self.suggestions.length;
 			var randomIndex = Math.floor(Math.random() * amount);
 			self.suggestion = self.suggestions[randomIndex].Query;
 		}
 
+		/**
+		 * @function
+		 * @private
+		 * @memberOf hhStat.SearchCtrl
+		 * @description Handle search start event
+		 * @param  {Event} event Event
+		 * @param  {Object} args  Args
+		 */
 		function onSearchStart (event, args) {
 			self.queryInProgress += args.length;
 		}
 
+		/**
+		 * @function
+		 * @private
+		 * @memberOf hhStat.SearchCtrl
+		 * @description Handle search success event
+		 * @param  {Event} event Event
+		 * @param  {Object} args  Args
+		 */
 		function onSearchSuccess (event, args) {
 			self.queryInProgress--;
 
@@ -135,12 +170,26 @@ angular.module('hhStat')
 			if (self.queryInProgress === 0) finishSearch();
 		}
 
+		/**
+		 * @function
+		 * @private
+		 * @memberOf hhStat.SearchCtrl
+		 * @description Handle search fail event
+		 * @param  {Event} event Event
+		 * @param  {Object} args  Args
+		 */
 		function onSearchFailed (event, args) {
 			self.queryInProgress--;
 
 			if (self.queryInProgress === 0) finishSearch();
 		}
 
+		/**
+		 * @function
+		 * @private
+		 * @memberOf hhStat.SearchCtrl
+		 * @description Handle end of search
+		 */
 		function finishSearch () {
 			self.query = '';
 		}

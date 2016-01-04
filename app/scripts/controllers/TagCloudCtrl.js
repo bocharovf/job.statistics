@@ -3,6 +3,7 @@
 /**
   * @class TagCloudCtrl
   * @memberOf hhStat    
+  * @description Control tag cloud
   */
  
 angular.module('hhStat')
@@ -12,6 +13,11 @@ angular.module('hhStat')
     	
 		backend.getCloudTags().then(applyCloudTags);
 
+		/**
+		 * @function
+		 * @memberOf hhStat.TagCloudCtrl
+		 * @param  {Object[]} words Array of words and weights
+		 */
 		function applyCloudTags (words) {
 
 			self.words = words.map(function (w) {

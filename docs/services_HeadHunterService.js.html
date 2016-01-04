@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: services/BackendService.js</title>
+    <title>JSDoc: Source: services/HeadHunterService.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: services/BackendService.js</h1>
+    <h1 class="page-title">Source: services/HeadHunterService.js</h1>
 
     
 
@@ -29,51 +29,62 @@
             <pre class="prettyprint source linenums"><code>'use strict';
 
 /**
-  * @class BackendService
-  * @memberOf hhStat 
-  * @description Data service to interact with backend API   
+  * @class HeadHunter
+  * @memberOf hhStat    
+  * @description Data service to interact with Head Hunter API
   */
  
 angular.module('hhStat')
-	.service('BackendService', ['ConfigConst', '$http', function(config, $http) {
+	.service('HeadHunter', ['ConfigConst', '$http', function(config, $http) {
 
 	var result = {
-		getSuggestions: getSuggestions,
-		getCloudTags: getCloudTags
+		getCurrencies: getCurrencies,
+		getVacancies: getVacancies
 	};
 
 	return result;
 
 	/**
 	 * @function
-	 * @memberOf hhStat.BackendService
-	 * @description Query backend for array of suggestions
+	 * @memberOf hhStat.HeadHunter
+	 * @description Query HH for array of currencies
 	 * @return {Promise}
 	 */
-	function getSuggestions () {
-		return $http.get(config.backendBaseUrl + 'suggestions', {})
+	function getCurrencies () {
+		return $http.get(config.headHunterUrl + 'dictionaries', {})
 					.then(function (result) {
-						return result.data;
+						return result.data.currency;
 					});
 	}
 
 	/**
 	 * @function
-	 * @memberOf hhStat.BackendService
-	 * @description Query backend for array of tags and weights
+	 * @memberOf hhStat.HeadHunter
+	 * @description Query HH for vacancies
+	 * @param  {string} text     'text' query parameter
+	 * @param  {Object} settings Additional query parameters
 	 * @return {Promise}
 	 */
-	function getCloudTags () {
-		return $http.get(config.backendBaseUrl + 'cloudTags', {})
-					.then(function (result) {
-						return result.data.map(function (tag) {
-							return {
-								text: tag.Tag,
-								weight: tag.Weight,
-							}
-						});
-					});
+	function getVacancies (text, settings) {
+		var params = [
+			{param: 'only_with_salary', value: 'true'},
+			{param: 'order_by', value: 'relevance'},
+			//"id": "1", "name": "Информационные технологии, интернет, телеком"
+			//{param: 'specialization', value: '1'}, 
+			{param: 'per_page', value: settings.perPage || 500 },
+			{param: 'page', value: settings.page || 0 },
+			{param: 'text', value: encodeURIComponent(text) }
+		];
+		var queryString = '?' + params.map(function (arg) {
+								return arg.param + '=' + arg.value;
+							})
+							.join('&amp;');
+
+		return $http.get(config.headHunterUrl + 'vacancies' + queryString, {})
+			
 	}
+
+
 
 }]);
 

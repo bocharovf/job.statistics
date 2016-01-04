@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: services/BackendService.js</title>
+    <title>JSDoc: Source: hhStat.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: services/BackendService.js</h1>
+    <h1 class="page-title">Source: hhStat.js</h1>
 
     
 
@@ -29,58 +29,16 @@
             <pre class="prettyprint source linenums"><code>'use strict';
 
 /**
-  * @class BackendService
-  * @memberOf hhStat 
-  * @description Data service to interact with backend API   
+  * @class hhStat
+  * @description Application module
   */
  
-angular.module('hhStat')
-	.service('BackendService', ['ConfigConst', '$http', function(config, $http) {
-
-	var result = {
-		getSuggestions: getSuggestions,
-		getCloudTags: getCloudTags
-	};
-
-	return result;
-
-	/**
-	 * @function
-	 * @memberOf hhStat.BackendService
-	 * @description Query backend for array of suggestions
-	 * @return {Promise}
-	 */
-	function getSuggestions () {
-		return $http.get(config.backendBaseUrl + 'suggestions', {})
-					.then(function (result) {
-						return result.data;
-					});
-	}
-
-	/**
-	 * @function
-	 * @memberOf hhStat.BackendService
-	 * @description Query backend for array of tags and weights
-	 * @return {Promise}
-	 */
-	function getCloudTags () {
-		return $http.get(config.backendBaseUrl + 'cloudTags', {})
-					.then(function (result) {
-						return result.data.map(function (tag) {
-							return {
-								text: tag.Tag,
-								weight: tag.Weight,
-							}
-						});
-					});
-	}
-
-}]);
-
-
-
-
-
+angular
+	.module('hhStat', ['angular-jqcloud', 'highcharts-ng'])
+	.run(['$anchorScroll', function($anchorScroll) {
+	  // respect fixed header and always scroll by 90 extra pixels
+	  $anchorScroll.yOffset = 90;   
+	}])
 </code></pre>
         </article>
     </section>

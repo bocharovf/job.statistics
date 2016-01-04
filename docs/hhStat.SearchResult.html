@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: TagCloudCtrl</title>
+    <title>JSDoc: Class: SearchResult</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: TagCloudCtrl</h1>
+    <h1 class="page-title">Class: SearchResult</h1>
 
     
 
@@ -29,7 +29,7 @@
 <header>
     
         <h2>
-            <span class="ancestors"><a href="hhStat.html">hhStat</a>.</span>TagCloudCtrl</h2>
+            <span class="ancestors"><a href="hhStat.html">hhStat</a>.</span>SearchResult</h2>
         
     
 </header>
@@ -41,14 +41,14 @@
 
     
 
-    <h4 class="name" id="TagCloudCtrl"><span class="type-signature"></span>new TagCloudCtrl<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="SearchResult"><span class="type-signature"></span>new SearchResult<span class="signature">(request, rawData, currency)</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    Control tag cloud
+    Represents aggregated search result
 </div>
 
 
@@ -57,6 +57,101 @@
 
 
 
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>request</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Request made to HH</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>rawData</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">JSON</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">JSON response from HH</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>currency</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">CurrencyService</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Instance of CurrencyService</td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -92,7 +187,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_TagCloudCtrl.js.html">controllers/TagCloudCtrl.js</a>, <a href="controllers_TagCloudCtrl.js.html#line3">line 3</a>
+        <a href="models_SearchResult.js.html">models/SearchResult.js</a>, <a href="models_SearchResult.js.html#line3">line 3</a>
     </li></ul></dd>
     
 
@@ -141,11 +236,15 @@
 
     
 
-    <h4 class="name" id=".applyCloudTags"><span class="type-signature">(static) </span>applyCloudTags<span class="signature">(words)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".merge"><span class="type-signature">(static) </span>merge<span class="signature">(result)</span><span class="type-signature"></span></h4>
 
     
 
 
+
+<div class="description">
+    Add specified result into current result
+</div>
 
 
 
@@ -180,13 +279,13 @@
 
         <tr>
             
-                <td class="name"><code>words</code></td>
+                <td class="name"><code>result</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;Object></span>
+<span class="param-type">SearchResult</span>
 
 
             
@@ -196,7 +295,7 @@
 
             
 
-            <td class="description last">Array of words and weights</td>
+            <td class="description last">Result to add</td>
         </tr>
 
     
@@ -237,7 +336,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controllers_TagCloudCtrl.js.html">controllers/TagCloudCtrl.js</a>, <a href="controllers_TagCloudCtrl.js.html#line21">line 21</a>
+        <a href="models_SearchResult.js.html">models/SearchResult.js</a>, <a href="models_SearchResult.js.html#line61">line 61</a>
     </li></ul></dd>
     
 

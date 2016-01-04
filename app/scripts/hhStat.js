@@ -2,6 +2,7 @@
 
 /**
   * @class hhStat
+  * @description Application module
   */
  
 angular

@@ -2,7 +2,8 @@
 
 /**
   * @class CurrencyService
-  * @memberOf hhStat    
+  * @memberOf hhStat   
+  * @description Support currency operations 
   */
  
 angular.module('hhStat')
@@ -24,7 +25,9 @@ angular.module('hhStat')
 	return result;
 
 	/**
-	 * Convert money from one currency to another
+	 * @function
+	 * @memberOf hhStat.CurrencyService
+	 * @description Convert money from one currency to another
 	 * @param  {float} amount  Value in source currency
 	 * @param  {string} fromCur Source currency
 	 * @param  {string} toCur   Target currency

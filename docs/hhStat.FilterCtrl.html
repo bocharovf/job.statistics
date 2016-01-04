@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: services/BackendService.js</title>
+    <title>JSDoc: Class: FilterCtrl</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,73 +17,130 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: services/BackendService.js</h1>
+    <h1 class="page-title">Class: FilterCtrl</h1>
 
     
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>'use strict';
+        <h2>
+            <span class="ancestors"><a href="hhStat.html">hhStat</a>.</span>FilterCtrl</h2>
+        
+    
+</header>
 
-/**
-  * @class BackendService
-  * @memberOf hhStat 
-  * @description Data service to interact with backend API   
-  */
- 
-angular.module('hhStat')
-	.service('BackendService', ['ConfigConst', '$http', function(config, $http) {
+<article>
+    <div class="container-overview">
+    
+        
 
-	var result = {
-		getSuggestions: getSuggestions,
-		getCloudTags: getCloudTags
-	};
+    
 
-	return result;
+    <h4 class="name" id="FilterCtrl"><span class="type-signature"></span>new FilterCtrl<span class="signature">()</span><span class="type-signature"></span></h4>
 
-	/**
-	 * @function
-	 * @memberOf hhStat.BackendService
-	 * @description Query backend for array of suggestions
-	 * @return {Promise}
-	 */
-	function getSuggestions () {
-		return $http.get(config.backendBaseUrl + 'suggestions', {})
-					.then(function (result) {
-						return result.data;
-					});
-	}
+    
 
-	/**
-	 * @function
-	 * @memberOf hhStat.BackendService
-	 * @description Query backend for array of tags and weights
-	 * @return {Promise}
-	 */
-	function getCloudTags () {
-		return $http.get(config.backendBaseUrl + 'cloudTags', {})
-					.then(function (result) {
-						return result.data.map(function (tag) {
-							return {
-								text: tag.Tag,
-								weight: tag.Weight,
-							}
-						});
-					});
-	}
 
-}]);
+
+<div class="description">
+    Manage search filters
+</div>
 
 
 
 
 
-</code></pre>
-        </article>
-    </section>
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_FilterCtrl.js.html">controllers/FilterCtrl.js</a>, <a href="controllers_FilterCtrl.js.html#line4">line 4</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 

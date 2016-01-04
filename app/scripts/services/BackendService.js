@@ -2,7 +2,8 @@
 
 /**
   * @class BackendService
-  * @memberOf hhStat    
+  * @memberOf hhStat 
+  * @description Data service to interact with backend API   
   */
  
 angular.module('hhStat')
@@ -16,7 +17,6 @@ angular.module('hhStat')
 	return result;
 
 	/**
-	 * @name getSuggestions
 	 * @function
 	 * @memberOf hhStat.BackendService
 	 * @description Query backend for array of suggestions
@@ -30,7 +30,6 @@ angular.module('hhStat')
 	}
 
 	/**
-	 * @name getCloudTags
 	 * @function
 	 * @memberOf hhStat.BackendService
 	 * @description Query backend for array of tags and weights

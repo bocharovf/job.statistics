@@ -3,6 +3,7 @@
 /**
   * @class SearchService
   * @memberOf hhStat    
+  * @description Service responsible for searching
   */
  
 angular.module('hhStat')
@@ -17,10 +18,9 @@ angular.module('hhStat')
 	return result;
 	
 	/**
-	 * @name subscribe
+	 * @function	 
 	 * @memberOf hhStat.SearchService
 	 * @description Subscribe to event
-	 * @function
 	 * @param  {string}   name     Event name
 	 * @param  {object}   scope    Angular scope object
 	 * @param  {Function} callback Function to call
@@ -31,7 +31,9 @@ angular.module('hhStat')
     }
 
     /**
-     * Fire an event
+     * @function
+     * @memberOf hhStat.SearchService* 
+     * @description Fire an event
      * @param  {string} name Event name
      * @param  {object} args Event args
      */
@@ -42,7 +44,7 @@ angular.module('hhStat')
     /**
      * @function
      * @memberOf hhStat.SearchService
-     * Main exposed search function
+     * @description Search whole phrase
      * @param  {string} phrase Phrase to search
      */
 	function search (phrase) {
@@ -68,8 +70,9 @@ angular.module('hhStat')
 
 	/**
      * @function
+     * @private
      * @memberOf hhStat.SearchService
-	 * Split search phrase into array of tokens
+	 * @description Split search phrase into array of tokens
 	 * @param  {string} phrase Search phrase
 	 * @sep    {RegExp} sep    Separator regular expression 
 	 * @return {string[]}      Array of tokens
@@ -93,8 +96,9 @@ angular.module('hhStat')
 
 	/**
      * @function
+     * @private
      * @memberOf hhStat.SearchService
-	 * Produce array of aliases for token
+	 * @description Produce array of aliases for token
 	 * @param  {string} token Search token
 	 * @return {string[]}     Array of aliases
 	 */
@@ -104,8 +108,9 @@ angular.module('hhStat')
 
 	/**
      * @function
+     * @private
      * @memberOf hhStat.SearchService
-	 * Query external api with concrete search token 
+	 * @description Query external api with concrete search token 
 	 * @param  {string} aliases Search aliases
 	 */
 	function perfomRequest (request) {
@@ -121,10 +126,26 @@ angular.module('hhStat')
 			});
 	}
 
+	/**
+	 * @function
+	 * @private
+	 * @memberOf hhStat.SearchService
+	 * @description Fire 'SEARCH_SUCCESS' event
+	 * @param  {Object} request  Request 
+	 * @param  {Object} response Response
+	 */
 	function onSearchSuccess (request, response) {
 		notify('SEARCH_SUCCESS', { request: request, response: response.data} );
 	}
 
+	/**
+	 * @function
+	 * @private
+	 * @memberOf hhStat.SearchService
+	 * @description Fire 'SEARCH_FAILED' event
+	 * @param  {Object} request  Request 
+	 * @param  {Object} response Response
+	 */
 	function onSearchFailed (request, response) {
 		notify('SEARCH_FAILED', { request: request, response: response})
 	}	
