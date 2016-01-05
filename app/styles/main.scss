@@ -29,10 +29,6 @@ html, body {
 .action-icon {
   cursor: pointer;
 
-  &:before {
-    border-bottom: 1px black dashed; 
-  }
-
   &:hover:before {
       color: $color-text-accent;
       border-color: $color-text-accent;
@@ -44,6 +40,10 @@ html, body {
   font-size: 16px;
   margin: 2px 3px;
   padding-bottom: 3px;
+
+  &:before {
+    border-bottom: 1px black dashed; 
+  }  
 
   &:not(:last-child):after{
       content: " \B7 ";

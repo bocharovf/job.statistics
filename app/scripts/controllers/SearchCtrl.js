@@ -30,6 +30,8 @@ angular.module('hhStat')
 		this.searchOnEnter = searchOnEnter;
 		this.search = search.search;		
 		this.changeChartType = changeChartType;
+		this.clearResult = clearResult;
+		this.placeholder = placeholder;
 
 		search.subscribe ('SEARCH_SUCCESS', $scope, onSearchSuccess);
 		search.subscribe ('SEARCH_FAILED', $scope, onSearchFailed);
@@ -37,6 +39,34 @@ angular.module('hhStat')
 
 		// -------- Exposed
 		
+		/**
+		 * @function
+		 * @memberOf hhStat.SearchCtrl
+		 * @description Show placeholder based on current state 
+		 * @return {String} Placeholder for search box
+		 */
+		function placeholder () {
+			return self.hasResults() ? 
+					'Добавьте к сравнению язык, платформу, фреймворк ...' : 
+					'Язык, платформа, фреймворк ...';
+		}
+
+		/**
+		 * @function
+		 * @memberOf hhStat.SearchCtrl
+		 * @description Clear all results or results for specific token
+		 * @param {String} [token] Token to remove
+		 */
+		function clearResult (token) {
+			if (token) {
+				delete self.results[token];
+				refreshChartSeries ();
+			}
+			else {
+				this.results = Object.create(null);
+			}
+		}
+
 		/**
 		 * @function
 		 * @memberOf hhStat.SearchCtrl

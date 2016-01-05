@@ -142,14 +142,42 @@ $bg-filter-color:  rgb(216,227,216);
   div {
     float: left;
     width: 33.333%;
+    min-width: 200px;
 
     div {
       cursor: pointer;
       width: 200px;
       height: 200px;
+
       margin: 0 auto;
     }
   }  
+}
 
+.badg-container {
+  float: left;
+  margin: 3px 0 27px 0;
+  
+  ul {
+    padding: 0;
+    display: inline-block;
+    list-style-type: none;
 
+    li {
+      display: inline-block;  
+      font-size: 15px;
+    }
+  }
+}
+
+li.new-search-action {
+  padding: 0px;
+}
+
+li.manage-results-label {
+  padding-right: 20px; 
+}
+
+li.clear-result-action {
+  padding-right: 15px;
 }

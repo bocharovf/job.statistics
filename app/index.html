@@ -126,8 +126,11 @@
 		<article class="search-box">
             
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="Язык, платформа, фреймворк ..." 
-                    ng-model="search.query" ng-keypress="search.searchOnEnter($event)">
+              <input type="text" 
+                    class="form-control" 
+                    placeholder="{{search.placeholder()}}" 
+                    ng-model="search.query" 
+                    ng-keypress="search.searchOnEnter($event)">
               <span class="input-group-btn">
                 <button class="btn btn-primary" type="button" ng-click="search.search(search.query)">
                     <span ng-show="search.queryInProgress == 0">Найти</span>
@@ -136,11 +139,31 @@
               </span>
             </div>
 
-            <div class="search-examples">
-                <div ng-hide="search.hasResults()">
-                    <span>Например сравните: </span>
-                    <span class="action-link" ng-click="search.search(search.suggestion)">{{search.suggestion}}</span>
-                </div>
+            <div class="search-examples" ng-hide="search.hasResults()">
+                <span>Например сравните: </span>
+                <span class="action-link" ng-click="search.search(search.suggestion)">{{search.suggestion}}</span>
+            </div>
+
+            <!-- Баджы с результатами поиска -->
+            <div class="badg-container" ng-show="search.hasResults()">
+                
+                <ul>
+                    <li class="new-search-action">
+                        <span>Начните </span>
+                        <span class="action-link" ng-click="search.clearResult()">новый поиск</span>
+                    </li>
+                    <li class="manage-results-label">
+                        <span>или управляйте результатами: </span>
+                    </li>                    
+                    <li class="clear-result-action" ng-repeat="result in search.results">
+                        <span 
+                            class="glyphicon glyphicon-remove glyphicon-10 action-icon" 
+                            aria-hidden="true"
+                            ng-click="search.clearResult(result.request.token)"></span>
+                        <span>{{result.request.token}}</span>
+                    </li>
+                </ul>
+                
             </div>
 
 		</article>		
@@ -169,7 +192,7 @@
         
         <!-- Облако тегов -->
 		<article class="tag-cloud" ng-controller="TagCloudCtrl as tagCloud" ng-hide="search.hasResults()">
-              <jqcloud words="tagCloud.words" steps="7"></jqcloud> 
+            <jqcloud words="tagCloud.words" steps="7"></jqcloud> 
 		</article>
 
         <!-- Графики -->
