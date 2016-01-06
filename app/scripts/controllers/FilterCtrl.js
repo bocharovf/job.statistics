@@ -11,6 +11,9 @@ angular.module('hhStat')
     .controller('FilterCtrl', function($scope) {
         var self = this;
         
+		this.isExpanded = false;
+		this.collapsedContent = collapsedContent;
+
     	this.selCurrency = "rub";
     	this.selCountry = "rus";
     	this.selCity = "moscow";
@@ -32,5 +35,8 @@ angular.module('hhStat')
 			{id: "kiev", name: "Киев"},
 			{id: "st.petersburg", name: "Санкт-Петербург"}
 		];
-						
+		
+		function collapsedContent () {
+			return "Фильтр не выбран";
+		}
     });

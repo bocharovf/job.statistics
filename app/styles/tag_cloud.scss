@@ -1,0 +1,24 @@
+@import "global_settings.scss";
+
+// облако тегов
+
+.tag-cloud {
+  float: right;
+  width: 65%;
+  margin-left: 5%;
+
+  div {
+    margin: 0px auto;
+    height: 250px;
+    width: 350px;
+
+    span {
+      cursor: pointer;
+    }
+  }
+
+  @media screen and (max-width: $widthMobile) { 
+    margin: 0;
+    width: 100%;
+  }  
+}

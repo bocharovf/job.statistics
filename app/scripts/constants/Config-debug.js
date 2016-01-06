@@ -10,6 +10,6 @@
 angular
 	.module('hhStat')
 	.constant('ConfigConst', {
-		backendBaseUrl: "http://localhost/job.statistics.backend/data/",
+		backendBaseUrl: "http://192.168.0.103/job.statistics.backend/data/",
 		headHunterUrl: "https://api.hh.ru/"
 	});

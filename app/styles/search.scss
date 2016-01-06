@@ -4,9 +4,8 @@
 
 @import "global_settings.scss";
 
-$widthMobile : 758px;
 $section-height: 700px;
-$bg-filter-color:  rgb(216,227,216);
+$demoChartSize: 200px;
 
 .search-section {
   width: 100%;
@@ -20,48 +19,12 @@ $bg-filter-color:  rgb(216,227,216);
   }
 }
 
-.search-filter {
-  float: left;
-  width: 200px;
-  height: 350px;
-  min-width: 140px;
-  padding: 10px 5px;
-  border-radius: 4px;
-  background-color: $bg-filter-color;
-  background-image: url($img-path + "filter-bg.png");
-
+@mixin search-box-margin() {
+  margin: 3px 0 27px 0;
   @media screen and (max-width: $widthMobile) {
-      float: right;
-      clear: both;
-      width: 90%;
-      margin: 10px 5% 0 5%;
+    margin: 3px 0 10px 0;
   }
 }
-
-.currency-row {
-  margin: 0 auto;
-  max-width: 130px;
-}
-
-.country-list {
-  max-width: 130px;
-  margin: 10px auto;
-  ul {
-    padding: 0px;
-    list-style-type: none;
-    font-size: 15px;
-    text-align: center;
-    li {
-
-    }
-  }
-}
-
-.town-list {
-
-}
-
-// поиск
 
 .search-box {
   float: right;
@@ -78,7 +41,7 @@ $bg-filter-color:  rgb(216,227,216);
 }
 
 .search-examples {
-  margin: 3px 0 27px 0;
+  @include search-box-margin();
   height: 20px;
 
   @media screen and (max-width: $widthMobile) { 
@@ -86,34 +49,33 @@ $bg-filter-color:  rgb(216,227,216);
   }
 }
 
-.progress-indicator {
-  margin: 10px 0 0 0;
+.badg-container {
+  float: left;
+  @include search-box-margin();
+  
+  ul {
+    padding: 0;
+    display: inline-block;
+    list-style-type: none;
 
-}
-
-// облако тегов
-
-.tag-cloud {
-  float: right;
-  width: 65%;
-  margin-left: 5%;
-
-  div {
-    margin: 0px auto;
-    height: 250px;
-    width: 350px;
-
-    span {
-      cursor: pointer;
+    li {
+      display: inline-block;  
+      font-size: 15px;
     }
   }
-
-  @media screen and (max-width: $widthMobile) { 
-    margin: 0;
-    width: 100%;
-  }  
 }
 
+li.new-search-action {
+  padding: 0px;
+}
+
+li.manage-results-label {
+  padding-right: 20px; 
+}
+
+li.clear-result-action {
+  padding-right: 15px;
+}
 
 // результаты поиска
 
@@ -139,45 +101,24 @@ $bg-filter-color:  rgb(216,227,216);
     width: 100%;
   }  
 
-  div {
+  div { // demo chart container
     float: left;
     width: 33.333%;
-    min-width: 200px;
+    min-width: $demoChartSize;
 
-    div {
+    div { // demo chart
       cursor: pointer;
-      width: 200px;
-      height: 200px;
+      width: $demoChartSize;
+      height: $demoChartSize;
 
       margin: 0 auto;
     }
+
+    @media screen and (max-width: $demoChartSize * 2 + 60px) { 
+      float: none;
+      width: 100%;
+    }
+
   }  
 }
 
-.badg-container {
-  float: left;
-  margin: 3px 0 27px 0;
-  
-  ul {
-    padding: 0;
-    display: inline-block;
-    list-style-type: none;
-
-    li {
-      display: inline-block;  
-      font-size: 15px;
-    }
-  }
-}
-
-li.new-search-action {
-  padding: 0px;
-}
-
-li.manage-results-label {
-  padding-right: 20px; 
-}
-
-li.clear-result-action {
-  padding-right: 15px;
-}

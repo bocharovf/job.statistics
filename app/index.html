@@ -36,8 +36,6 @@
     <meta name="msapplication-wide310x150logo" content="mstile-310x150.png" />
     <meta name="msapplication-square310x310logo" content="mstile-310x310.png" />
 
-
-
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="/bower_components/jqcloud2/dist/jqcloud.css" />
@@ -60,7 +58,7 @@
     <header ng-controller="MenuCtrl as menu">
 
         <div class="logo">
-            <img src="images/logo90x90.png">
+            <img src="images/logo90x90.png" alt="job.bocharovf.ru">
         </div>
         
         <nav class="navigation">
@@ -150,7 +148,10 @@
                 <ul>
                     <li class="new-search-action">
                         <span>Начните </span>
-                        <span class="action-link" ng-click="search.clearResult()">новый поиск</span>
+                        <span 
+                            class="action-link" 
+                            title="очистить все результаты"
+                            ng-click="search.clearResult()">новый поиск</span>
                     </li>
                     <li class="manage-results-label">
                         <span>или управляйте результатами: </span>
@@ -159,6 +160,7 @@
                         <span 
                             class="glyphicon glyphicon-remove glyphicon-10 action-icon" 
                             aria-hidden="true"
+                            title="удалить результат"
                             ng-click="search.clearResult(result.request.token)"></span>
                         <span>{{result.request.token}}</span>
                     </li>
@@ -169,24 +171,54 @@
 		</article>		
 
         <!-- Параметры поиска -->
-        <article class="search-filter" ng-controller="FilterCtrl as filter">
-            <div class="currency-row">
-                <span class="glyphicon glyphicon-euro action-currency-icon" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-usd action-currency-icon" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-ruble action-currency-icon" aria-hidden="true"></span>
+        <article 
+            class="search-filter" 
+            ng-controller="FilterCtrl as filter"
+            ng-class="filter.isExpanded ? '' : 'search-filter-collapsed'">
+            
+            <!-- Переключение режимов панели фильтра -->
+            <div class="filter-collapse-container">
+                <span 
+                    class="glyphicon glyphicon-20 action-icon" 
+                    ng-class="filter.isExpanded ? 'glyphicon-resize-small' : 'glyphicon-resize-full'"
+                    ng-click="filter.isExpanded = !filter.isExpanded"
+                    title="свернуть или развернуть панель"
+                    aria-hidden="true">
+                </span>
             </div>
+            
+            <!-- В свернутом режиме -->
+            <div 
+                class="search-filter-collapsed-content" 
+                ng-class="filter.isExpanded ? '' : 'search-filter-collapsed'">
 
-            <div class="country-list">
-                <ul ng-repeat="country in filter.countries">
-                    <li class="selected-option">
-                        <span class='glyphicon glyphicon-remove glyphicon-10'></span>
-                        <span>{{country.name}}</span>
-                    </li>
-                </ul>
-  
+                <span ng-hide="filter.isExpanded">{{filter.collapsedContent()}}</span>
             </div>
+            
+            <!-- В развернутом режиме -->
+            <div 
+                class="search-filter-expanded-content" 
+                ng-class="filter.isExpanded ? '' : 'search-filter-collapsed'">
 
-            <div class="town-list">
+                <div class="currency-row">
+                    <span class="glyphicon glyphicon-euro action-currency-icon" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-usd action-currency-icon" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-ruble action-currency-icon" aria-hidden="true"></span>
+                </div>
+
+                <div class="country-list">
+                    <ul ng-repeat="country in filter.countries">
+                        <li class="selected-option">
+                            <span class='glyphicon glyphicon-remove glyphicon-10'></span>
+                            <span>{{country.name}}</span>
+                        </li>
+                    </ul>
+      
+                </div>
+
+                <div class="town-list">
+                </div>
+
             </div>            
         </article>
         
