@@ -12,7 +12,8 @@ angular.module('hhStat')
 	
 	var result = {
 		search: search,
-		subscribe: subscribe
+		subscribe: subscribe,
+		selectedRegion: null
 	};
 	
 	return result;
@@ -117,7 +118,8 @@ angular.module('hhStat')
 		var textSubquery = request.aliases.join(' OR ');
 		headHunter.getVacancies(textSubquery, {
 				perPage: 500,
-				page: request.page
+				page: request.page,
+				area: result.selectedRegion
 			})
 			.then(function (response) {
 				onSearchSuccess(request, response);

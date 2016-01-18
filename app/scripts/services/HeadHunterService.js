@@ -7,11 +7,14 @@
   */
  
 angular.module('hhStat')
-	.service('HeadHunter', ['ConfigConst', '$http', function(config, $http) {
+	.service('HeadHunter', ['ConfigConst', '$http', '$q', function(config, $http, $q) {
+
+	var cache = {};
 
 	var result = {
 		getCurrencies: getCurrencies,
-		getVacancies: getVacancies
+		getVacancies: getVacancies,
+		getAreas: getAreas
 	};
 
 	return result;
@@ -23,11 +26,21 @@ angular.module('hhStat')
 	 * @return {Promise}
 	 */
 	function getCurrencies () {
-		return $http.get(config.headHunterUrl + 'dictionaries', {})
+		return getCacheableResource('dictionaries')
 					.then(function (result) {
-						return result.data.currency;
+						return result.currency;
 					});
 	}
+
+	/**
+	 * @function
+	 * @memberOf hhStat.HeadHunter
+	 * @description Query HH for tree of areas
+	 * @return {Promise}
+	 */
+	function getAreas () {
+		return getCacheableResource('areas');
+	}	
 
 	/**
 	 * @function
@@ -47,6 +60,10 @@ angular.module('hhStat')
 			{param: 'page', value: settings.page || 0 },
 			{param: 'text', value: encodeURIComponent(text) }
 		];
+		
+		if (settings.area) 
+			params.push({param: 'area', value: settings.area});
+
 		var queryString = '?' + params.map(function (arg) {
 								return arg.param + '=' + arg.value;
 							})
@@ -56,7 +73,28 @@ angular.module('hhStat')
 			
 	}
 
+	/**
+	 * @function
+	 * @memberOf hhStat.HeadHunter
+	 * @private
+	 * @description Query for resource for first time and cache response
+	 * @return {Promise} Returns requested resource
+	 */
+	function getCacheableResource (resourceName) {
 
+		if (cache[resourceName])
+		{
+			var def = $q.defer();
+			def.resolve(cache[resourceName]);
+			return def.promise;
+		}
+
+		return $http.get(config.headHunterUrl + resourceName, {})
+					.then(function (result) {
+						cache[resourceName] = result.data;
+						return result.data;
+					});
+	}
 
 }]);
 

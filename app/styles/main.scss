@@ -9,6 +9,7 @@
 @import "startup.scss";
 @import "search.scss";
 @import "filter.scss";
+@import "filter_group.scss";
 @import "tag_cloud.scss";
 
 // общее
@@ -54,6 +55,7 @@ html, body {
 }
 
 .selected-option {
+  cursor: pointer;
   color: $color-text-accent;
 }
 

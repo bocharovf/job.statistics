@@ -19,13 +19,6 @@ $demoChartSize: 200px;
   }
 }
 
-@mixin search-box-margin() {
-  margin: 3px 0 27px 0;
-  @media screen and (max-width: $widthMobile) {
-    margin: 3px 0 10px 0;
-  }
-}
-
 .search-box {
   float: right;
   width: 65%;
@@ -41,8 +34,8 @@ $demoChartSize: 200px;
 }
 
 .search-examples {
-  @include search-box-margin();
   height: 20px;
+  margin: 3px 0 0 0; 
 
   @media screen and (max-width: $widthMobile) { 
     text-align: center;
@@ -51,7 +44,7 @@ $demoChartSize: 200px;
 
 .badg-container {
   float: left;
-  @include search-box-margin();
+  margin: 3px 0 0 0; 
   
   ul {
     padding: 0;
@@ -83,9 +76,10 @@ li.clear-result-action {
   float: right;
   width: 65%;
   margin-left: 5%;  
+  margin-top: 27px;
 
   @media screen and (max-width: $widthMobile) { 
-    margin: 0;
+    margin: 10px 0 0 0;
     width: 100%;
   }  
 

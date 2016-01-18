@@ -8,35 +8,57 @@
   */
 
 angular.module('hhStat')
-    .controller('FilterCtrl', function($scope) {
+    .controller('FilterCtrl', ['HeadHunter', 'SearchService', '$scope', '$rootScope',
+    	function(headHunter, search, $scope, $rootScope) {
         var self = this;
         
 		this.isExpanded = false;
 		this.collapsedContent = collapsedContent;
 
-    	this.selCurrency = "rub";
-    	this.selCountry = "rus";
-    	this.selCity = "moscow";
+    	this.currencies = [];
+		this.selectedCurrency = null;
 
-		this.currencies = [
-			{id: "rub", name: "Рубль"},
-			{id: "usd", name: "Доллар"},
-			{id: "eur", name: "Евро"}
-		];
+		this.areas = null;
 
-		this.countries = [
-			{id: "rus", name: "Россия"},
-			{id: "ukr", name: "Украина"},
-			{id: "blr", name: "Белорусия"}
-		];
+		subscribe ('FILTER_CHANGED', $scope, onFilterChanged);
 
-		this.cities = [
-			{id: "moscow", name: "Москва"},
-			{id: "kiev", name: "Киев"},
-			{id: "st.petersburg", name: "Санкт-Петербург"}
-		];
-		
+		activate();
+
+		/****************** Functions ***************/
+
+		function activate () {
+			headHunter.getCurrencies().then(function (currencies) {
+				self.currencies = currencies;
+				self.selectedCurrency = self.currencies[0];
+			});
+
+			headHunter.getAreas().then(function (areas) {
+				self.areas = areas;
+			});
+			
+		}
+
+		function onSelectedCountryChanged (newValue, oldValue) {
+			if (newValue) {
+				headHunter.getCities(newValue.id)
+					.then(function(cities) {
+						self.cities = cities;
+					});
+			} else {
+				self.cities = [];
+			}
+		}
+
+		function onFilterChanged (event, args) {
+			search.selectedRegion = args;
+		}
+
 		function collapsedContent () {
 			return "Фильтр не выбран";
 		}
-    });
+
+		function subscribe (name, scope, callback) {
+	        var handler = scope.$on(name, callback);
+	        scope.$on('$destroy', handler);
+	    }		
+    }]);

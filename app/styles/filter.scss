@@ -14,7 +14,8 @@ $collapsedFilterHeight: 30px;
       float: right;
       clear: both;
       width: 100%;
-     
+      margin: 10px 0 0 0;
+
       &.search-filter-collapsed {
         height: $collapsedFilterHeight;
       }
@@ -42,7 +43,7 @@ $collapsedFilterHeight: 30px;
   padding: 0 5px;
   display: none;
   line-height: $collapsedFilterHeight;
-  
+
   @media screen and (max-width: $widthMobile) {
     
     &.search-filter-collapsed {
@@ -52,7 +53,6 @@ $collapsedFilterHeight: 30px;
   }
 
 }
-
 
 .filter-collapse-container {
   display: none;
@@ -70,31 +70,5 @@ $collapsedFilterHeight: 30px;
 
 }
 
-
-
-.currency-row {
-  margin: 0 auto;
-  max-width: 130px;
-}
-
-.country-list {
-  max-width: 130px;
-  margin: 10px auto;
-  
-  ul {
-    padding: 0px;
-    list-style-type: none;
-    font-size: 15px;
-    text-align: center;
-  
-    li {
-
-    }
-  }
-}
-
-.town-list {
-
-}
 
 

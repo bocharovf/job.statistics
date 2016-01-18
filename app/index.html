@@ -63,11 +63,21 @@
         
         <nav class="navigation">
             <ul>
-                <li class="mobile-hidden"> <span class="nav-link" ng-click="menu.scrollTo('aboutSection')">О проекте</span></li>
-                <li class="mobile-hidden"> <span class="nav-link" ng-click="menu.scrollTo('searchSection')">Поиск</span></li>
+                <li class="mobile-hidden"> 
+                    <span class="nav-link" ng-click="menu.scrollTo('aboutSection')">О проекте</span>
+                </li>
+                <li class="mobile-hidden"> 
+                    <span class="nav-link" ng-click="menu.scrollTo('searchSection')">Поиск</span>
+                </li>
 
-                <li class="desktop-hidden"> <span class="glyphicon glyphicon-education nav-icon" ng-click="menu.scrollTo('aboutSection')"></span></li>
-                <li class="desktop-hidden"> <span class="glyphicon glyphicon-search nav-icon" ng-click="menu.scrollTo('searchSection')"></span></li>             
+                <li class="desktop-hidden"> 
+                    <span class="glyphicon glyphicon-education nav-icon" ng-click="menu.scrollTo('aboutSection')">
+                    </span>
+                </li>
+                <li class="desktop-hidden"> 
+                    <span class="glyphicon glyphicon-search nav-icon" ng-click="menu.scrollTo('searchSection')">
+                    </span>
+                </li>             
             </ul>
         </nav>
 
@@ -199,25 +209,13 @@
             <div 
                 class="search-filter-expanded-content" 
                 ng-class="filter.isExpanded ? '' : 'search-filter-collapsed'">
+                
+                <hierarchy-filter 
+                    header="Регион"
+                    hierarchy="filter.areas" 
+                    max=10> 
+                </hierarchy-filter>
 
-                <div class="currency-row">
-                    <span class="glyphicon glyphicon-euro action-currency-icon" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-usd action-currency-icon" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-ruble action-currency-icon" aria-hidden="true"></span>
-                </div>
-
-                <div class="country-list">
-                    <ul ng-repeat="country in filter.countries">
-                        <li class="selected-option">
-                            <span class='glyphicon glyphicon-remove glyphicon-10'></span>
-                            <span>{{country.name}}</span>
-                        </li>
-                    </ul>
-      
-                </div>
-
-                <div class="town-list">
-                </div>
 
             </div>            
         </article>
@@ -271,6 +269,8 @@
 
 
     <!-- build:js scripts/main.js -->
+    <script src="scripts/misc/Extensions.js"></script>
+
     <script src="scripts/models/SearchResult.js"></script>
 
     <script src="scripts/controllers/MenuCtrl.js"></script>
@@ -283,6 +283,8 @@
     <script src="scripts/services/CurrencyService.js"></script>
     <script src="scripts/services/BackendService.js"></script>
     <script src="scripts/services/HeadHunterService.js"></script>
+
+    <script src="scripts/directives/HierarchyFilter.js"></script>
     <!-- endbuild -->
 
     
