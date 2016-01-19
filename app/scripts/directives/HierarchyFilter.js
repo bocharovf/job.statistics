@@ -12,6 +12,7 @@ angular.module('hhStat')
 		 scope: {
 		 	max: "@",
 		 	header: "@",
+		 	eventName: "@",
 		 	hierarchy: "="
 		 },
 		controller: ['$scope', hierarchyFilterController],
@@ -44,7 +45,7 @@ angular.module('hhStat')
 								? $scope.selectedOptions[$scope.selectedOptions.length - 1].id
 								: null;
 
-			notify('FILTER_CHANGED', filter);			
+			notify($scope.eventName, filter);			
 		}
 
 		function hierarchyApplyFilter (tree, filters) {

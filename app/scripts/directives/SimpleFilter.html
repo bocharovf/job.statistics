@@ -1,0 +1,34 @@
+<div class="filter-group">
+    <span 
+        class="filter-group-header"
+        ng-click="toggleExpanded()">
+        <span 
+            class="glyphicon"
+            ng-class="isExpanded ? 'glyphicon-chevron-down' : 'glyphicon-chevron-up'"></span> {{header}}:
+    </span>
+
+    <ul ng-if="isExpanded">
+        <!-- Selected options -->
+        <li class="selected-option">
+            <span>{{selectedOption[displayField]}}</span>
+        </li>
+        
+        <!-- Available options -->
+        <li 
+            ng-repeat="option in availableOptions | limitTo:max" 
+            class="filter-option">
+            
+            <span 
+                ng-click="selectOption(option)"
+                class="action-link">{{option[displayField]}}</span>
+        </li>
+        
+        <!-- More options selector -->
+        <li 
+            ng-click="expandOptions()"
+            ng-if="max < availableOptions.length"
+            class="filter-show-more"> 
+            <span class="action-link">Еще {{availableOptions.length - max}}</span>
+        </li>
+    </ul>      
+</div>

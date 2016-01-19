@@ -11,7 +11,8 @@ angular.module('hhStat')
     .controller('FilterCtrl', ['HeadHunter', 'SearchService', '$scope', '$rootScope',
     	function(headHunter, search, $scope, $rootScope) {
         var self = this;
-        
+        var availableCurrencies = ['RUR','USD','EUR'];
+
 		this.isExpanded = false;
 		this.collapsedContent = collapsedContent;
 
@@ -20,7 +21,8 @@ angular.module('hhStat')
 
 		this.areas = null;
 
-		subscribe ('FILTER_CHANGED', $scope, onFilterChanged);
+		subscribe ('REGION_CHANGED', $scope, onSelectedRegionChanged);
+		subscribe ('CURRENCY_CHANGED', $scope, onSelectedCurrencyChanged);
 
 		activate();
 
@@ -28,28 +30,25 @@ angular.module('hhStat')
 
 		function activate () {
 			headHunter.getCurrencies().then(function (currencies) {
-				self.currencies = currencies;
+				self.currencies = currencies.filter(function (cur) {
+					return availableCurrencies.indexOf(cur.code) >= 0;
+				});
+
+				// TODO: select currency based on geo location 
 				self.selectedCurrency = self.currencies[0];
 			});
 
 			headHunter.getAreas().then(function (areas) {
 				self.areas = areas;
+				// TODO: select area based on geo location
 			});
-			
 		}
 
-		function onSelectedCountryChanged (newValue, oldValue) {
-			if (newValue) {
-				headHunter.getCities(newValue.id)
-					.then(function(cities) {
-						self.cities = cities;
-					});
-			} else {
-				self.cities = [];
-			}
+		function onSelectedCurrencyChanged (event, args) {
+			search.selectedCurrency = args;
 		}
 
-		function onFilterChanged (event, args) {
+		function onSelectedRegionChanged (event, args) {
 			search.selectedRegion = args;
 		}
 

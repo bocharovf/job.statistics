@@ -210,10 +210,21 @@
                 class="search-filter-expanded-content" 
                 ng-class="filter.isExpanded ? '' : 'search-filter-collapsed'">
                 
+                <simple-filter 
+                    header="Валюта"
+                    options="filter.currencies" 
+                    selectedOption="filter.selectedCurrency"
+                    max=10
+                    event-name="CURRENCY_CHANGED"
+                    display-field="name"
+                    value-field="code"> 
+                </simple-filter>
+
                 <hierarchy-filter 
                     header="Регион"
                     hierarchy="filter.areas" 
-                    max=10> 
+                    max=10
+                    eventName="REGION_CHANGED"> 
                 </hierarchy-filter>
 
 
@@ -284,6 +295,7 @@
     <script src="scripts/services/BackendService.js"></script>
     <script src="scripts/services/HeadHunterService.js"></script>
 
+    <script src="scripts/directives/SimpleFilter.js"></script>
     <script src="scripts/directives/HierarchyFilter.js"></script>
     <!-- endbuild -->
 
