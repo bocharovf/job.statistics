@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: constants/Config-release.js</title>
+    <title>JSDoc: Source: directives/SimpleFilter.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: constants/Config-release.js</h1>
+    <h1 class="page-title">Source: directives/SimpleFilter.js</h1>
 
     
 
@@ -29,20 +29,75 @@
             <pre class="prettyprint source linenums"><code>'use strict';
 
 /**
-  * @class ConfigConst
+  * @class simpleFilter
   * @memberOf hhStat    
-  * @description Contains release constants
-  * @property {String}  backendBaseUrl	Url of project backend API
-  * @property {String}  headHunterUrl	Url of HH api
+  * @description Directive that represents simple filter
   */
  
- 
-angular
-	.module('hhStat')
-	.constant('ConfigConst', {
-		backendBaseUrl: "http://job.bocharovf.ru/data/",
-		headHunterUrl: "https://api.hh.ru/"
-	});</code></pre>
+angular.module('hhStat')
+	.directive('simpleFilter', function(){
+	return {
+		 scope: {
+		 	max: "@",
+		 	header: "@",
+		 	eventName: "@",
+		 	displayField: "@",
+		 	valueField: "@",		 	
+		 	options: "=",
+		 	selectedOption: "="
+		 },
+		controller: ['$scope', simpleFilterController],
+		restrict: 'E',
+		templateUrl: 'scripts/directives/SimpleFilter.html'
+	};
+
+	function simpleFilterController($scope) {
+		var defaultMax = $scope.max;
+		var val = $scope.valueField;
+
+		$scope.isExpanded = true;
+		$scope.availableOptions = [];
+
+		$scope.selectOption = selectOption;
+		$scope.expandOptions = expandOptions;
+		$scope.toggleExpanded = toggleExpanded;
+
+		$scope.$watch(function () { return $scope.options }, 
+					updateAvailableOptions, true);
+
+		/*************** Functions ****************/
+
+		function updateAvailableOptions() {
+			if (!$scope.options || $scope.options.length === 0) return;
+			$scope.selectedOption = $scope.selectedOption || $scope.options[0];
+
+			$scope.availableOptions = $scope.options
+											.filter(function (option) {
+												return option[val] !== $scope.selectedOption[val];
+											});
+
+			notify($scope.eventName, $scope.selectedOption);
+		}
+
+		function selectOption (option) {
+			$scope.selectedOption = option;
+			updateAvailableOptions();
+		}
+
+		function expandOptions () {
+			$scope.max = $scope.options.length;
+		}
+
+		function toggleExpanded () {
+			$scope.isExpanded = !$scope.isExpanded;
+		}
+
+	    function notify(name, args) {
+	        $scope.$emit(name, args);
+	    }    		
+	}
+
+});</code></pre>
         </article>
     </section>
 

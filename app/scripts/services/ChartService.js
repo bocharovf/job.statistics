@@ -15,6 +15,12 @@ angular.module('hhStat')
 			{id: 'column', name: 'Колоночная'},
 			{id: 'bar', name: 'Бары'}
 		];		
+
+		result.valueTypes = [
+			{id: 'avgSalary', name: 'Средняя зарплата'},
+			{id: 'amountTotal', name: 'Кол-во вакансий'}
+		];		
+
 		result.createConfig = createConfig;
 
 		return result;

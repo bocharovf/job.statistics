@@ -14,9 +14,7 @@
             class="selected-option"
             ng-class="{'last-selected-option': $last}">
             
-            <span 
-                ng-click="removeSelection($index)"
-                >
+            <span ng-click="removeSelection($index)">
                 <span class='glyphicon glyphicon-remove glyphicon-10'></span>
                 {{selectedOption.name}}
             </span>

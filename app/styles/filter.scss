@@ -9,15 +9,19 @@ $collapsedFilterHeight: 30px;
   border-radius: 4px;
   background-color: $bg-filter-color;
   background-image: url($img-path + "filter-bg.png");
+  
+  padding: 0 10px;
 
   @media screen and (max-width: $widthMobile) {
       float: right;
       clear: both;
       width: 100%;
       margin: 10px 0 0 0;
+      
+      padding: 0;
 
       &.search-filter-collapsed {
-        height: $collapsedFilterHeight;
+        //height: $collapsedFilterHeight;
       }
      
   }
@@ -37,17 +41,43 @@ $collapsedFilterHeight: 30px;
 
 }
 
+.filter-container {
+  width: 100%;
+
+  div {
+    max-width: 130px;
+    min-width: 130px;  
+    margin: 0px auto;
+  }
+
+  @media screen and (max-width: $widthMobile) {
+    min-width: 130px;      
+    width: 33%; 
+    float: left;
+    
+    div {
+      min-width: 0;  
+    }
+
+  }    
+}
 
 // Header of filter panel
 .search-filter-collapsed-content {
   padding: 0 5px;
   display: none;
+
   line-height: $collapsedFilterHeight;
 
   @media screen and (max-width: $widthMobile) {
     
     &.search-filter-collapsed {
       display: block;
+
+      span {
+        display: inline-block;
+        margin-right: 20px;
+      }
     }
   
   }
@@ -55,20 +85,18 @@ $collapsedFilterHeight: 30px;
 }
 
 .filter-collapse-container {
+  position: relative;
+}
+
+.collapse-icon {
   display: none;
 
   @media screen and (max-width: $widthMobile) {
     display: block;
-    position: relative;
-    float: right;
-    span {
-      position: relative;
-      top: 5px;
-      right: 5px;
-    }
+    position: absolute;
+    top: 5px;
+    right: 5px;
   }
-
 }
-
 
 

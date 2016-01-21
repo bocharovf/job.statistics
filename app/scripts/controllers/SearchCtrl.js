@@ -11,20 +11,16 @@ angular.module('hhStat')
     	function($scope, search, chart, backend, currency) {
        	var self = this;
 
-		backend.getSuggestions().then(function (suggestions) {
-			self.suggestions = suggestions;
-			selectRandomSuggestion();
-		});
-
 		this.queryInProgress = 0;
 		this.results = Object.create(null);
 		this.selectedChartType = 'pie';
 		this.chartConfig = chart.createConfig(false, this.selectedChartType, 
 													'Сравнение средних зарплат', 'Рубли');
 
-		this.demoCharts = chart.chartTypes.map(function (type) {
-			return chart.createConfig(true, type.id);
-		});
+		this.demoCharts = chart.chartTypes
+								.map(function (type) {
+									return chart.createConfig(true, type.id);
+								});
 
 		this.hasResults = hasResults;
 		this.searchOnEnter = searchOnEnter;
@@ -36,9 +32,25 @@ angular.module('hhStat')
 		search.subscribe ('SEARCH_SUCCESS', $scope, onSearchSuccess);
 		search.subscribe ('SEARCH_FAILED', $scope, onSearchFailed);
 		search.subscribe ('SEARCH_START', $scope, onSearchStart);
+		search.subscribe ('CURRENCY_CHANGED', $scope, onSelectedCurrencyChanged);
 
-		// -------- Exposed
+		activate();
+
+		/****************** Functions ***************/
 		
+		/**
+		 * @function
+		 * @private
+		 * @memberOf hhStat.SearchCtrl
+		 * @description Module activation function
+		 */
+		function activate () {
+			backend.getSuggestions().then(function (suggestions) {
+				self.suggestions = suggestions;
+				selectRandomSuggestion();
+			});			
+		}
+
 		/**
 		 * @function
 		 * @memberOf hhStat.SearchCtrl
@@ -97,8 +109,6 @@ angular.module('hhStat')
 		function changeChartType (chart) {
 			self.chartConfig.options.chart.type = chart.options.chart.type;
 		}
-
-		// -------- Internals		
 
 		/**
 		 * @function
@@ -168,6 +178,18 @@ angular.module('hhStat')
 			var amount = self.suggestions.length;
 			var randomIndex = Math.floor(Math.random() * amount);
 			self.suggestion = self.suggestions[randomIndex].Query;
+		}
+
+		/**
+		 * @function
+		 * @private
+		 * @memberOf hhStat.SearchCtrl
+		 * @description Handle change of currency 
+		 * @param  {Event} event Event
+		 * @param  {Object} args  Args
+		 */
+		function onSelectedCurrencyChanged (event, args) {
+			refreshChartSeries();
 		}
 
 		/**

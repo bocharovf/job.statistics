@@ -40,7 +40,6 @@ angular.module('hhStat')
 		/*************** Functions ****************/
 
 		function updateAvailableOptions() {
-			console.log("!");
 			if (!$scope.options || $scope.options.length === 0) return;
 			$scope.selectedOption = $scope.selectedOption || $scope.options[0];
 
@@ -49,7 +48,7 @@ angular.module('hhStat')
 												return option[val] !== $scope.selectedOption[val];
 											});
 
-			notify($scope.eventName, $scope.selectedOption[val]);
+			notify($scope.eventName, $scope.selectedOption);
 		}
 
 		function selectOption (option) {

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: constants/Config-release.js</title>
+    <title>JSDoc: Source: misc/Extensions.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: constants/Config-release.js</h1>
+    <h1 class="page-title">Source: misc/Extensions.js</h1>
 
     
 
@@ -29,20 +29,17 @@
             <pre class="prettyprint source linenums"><code>'use strict';
 
 /**
-  * @class ConfigConst
-  * @memberOf hhStat    
-  * @description Contains release constants
-  * @property {String}  backendBaseUrl	Url of project backend API
-  * @property {String}  headHunterUrl	Url of HH api
-  */
- 
- 
-angular
-	.module('hhStat')
-	.constant('ConfigConst', {
-		backendBaseUrl: "http://job.bocharovf.ru/data/",
-		headHunterUrl: "https://api.hh.ru/"
-	});</code></pre>
+ * @class extensions
+ * @description SelectMany analog written by @sharkbrainguy (https://gist.github.com/sharkbrainguy/5086585)
+ */
+(function () {
+    var apply = Function.prototype.apply;
+    var flatten = apply.bind(Array.prototype.concat, []);
+
+    Array.prototype.selectMany = function (fn) {
+        return flatten(this.map(fn));
+    };
+}());</code></pre>
         </article>
     </section>
 

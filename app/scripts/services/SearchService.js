@@ -119,7 +119,7 @@ angular.module('hhStat')
 		headHunter.getVacancies(textSubquery, {
 				perPage: 500,
 				page: request.page,
-				area: result.selectedRegion
+				area: (result.selectedRegion ? result.selectedRegion.id : null) 
 			})
 			.then(function (response) {
 				onSearchSuccess(request, response);

@@ -187,9 +187,9 @@
             ng-class="filter.isExpanded ? '' : 'search-filter-collapsed'">
             
             <!-- Переключение режимов панели фильтра -->
-            <div class="filter-collapse-container">
+            <div class="filter-collapse-container"> 
                 <span 
-                    class="glyphicon glyphicon-20 action-icon" 
+                    class="glyphicon glyphicon-20 action-icon collapse-icon" 
                     ng-class="filter.isExpanded ? 'glyphicon-resize-small' : 'glyphicon-resize-full'"
                     ng-click="filter.isExpanded = !filter.isExpanded"
                     title="свернуть или развернуть панель"
@@ -205,28 +205,45 @@
                 <span ng-hide="filter.isExpanded">{{filter.collapsedContent()}}</span>
             </div>
             
+            
             <!-- В развернутом режиме -->
             <div 
                 class="search-filter-expanded-content" 
                 ng-class="filter.isExpanded ? '' : 'search-filter-collapsed'">
                 
-                <simple-filter 
-                    header="Валюта"
-                    options="filter.currencies" 
-                    selectedOption="filter.selectedCurrency"
-                    max=10
-                    event-name="CURRENCY_CHANGED"
-                    display-field="name"
-                    value-field="code"> 
-                </simple-filter>
-
-                <hierarchy-filter 
-                    header="Регион"
-                    hierarchy="filter.areas" 
-                    max=10
-                    eventName="REGION_CHANGED"> 
-                </hierarchy-filter>
-
+                <div class="filter-container">
+                    <simple-filter 
+                        header="Валюта"
+                        options="filter.currencies" 
+                        selectedOption="filter.selectedCurrency"
+                        max=10
+                        event-name="CURRENCY_CHANGED"
+                        display-field="name"
+                        value-field="code"> 
+                    </simple-filter>
+                </div>
+                
+                <div class="filter-container">
+                    <simple-filter 
+                        header="График"
+                        options="filter.valueTypes" 
+                        selectedOption="filter.selectedValueType"
+                        max=10
+                        event-name="VALUE_TYPE_CHANGED"
+                        display-field="name"
+                        value-field="id"> 
+                    </simple-filter>                
+                </div>
+                
+                <div class="filter-container">
+                    <hierarchy-filter 
+                        header="Регион"
+                        hierarchy="filter.areas" 
+                        max=10
+                        event-name="REGION_CHANGED"
+                        always-on-top="filter.specialAreas"> 
+                    </hierarchy-filter>
+                </div>
 
             </div>            
         </article>
@@ -280,8 +297,6 @@
 
 
     <!-- build:js scripts/main.js -->
-    <script src="scripts/misc/Extensions.js"></script>
-
     <script src="scripts/models/SearchResult.js"></script>
 
     <script src="scripts/controllers/MenuCtrl.js"></script>
