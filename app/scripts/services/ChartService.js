@@ -7,92 +7,24 @@
   */
  
 angular.module('hhStat')
-	.service('ChartService', function() {
+	.service('ChartService', [ 'CurrencyService', function (currencyService) {
 
 		var result = {};
 		result.chartTypes = [
 			{id: 'pie', name: 'Круговая'},
 			{id: 'column', name: 'Колоночная'},
-			{id: 'bar', name: 'Бары'}
+			{id: 'bar', name: 'Бары'},
+			{id: 'polar', name: 'Полюса'}
 		];		
 
 		result.valueTypes = [
-			{id: 'avgSalary', name: 'Средняя зарплата'},
-			{id: 'amountTotal', name: 'Кол-во вакансий'}
-		];		
+			{id: 'avgSalary', name: 'Средняя зарплата', title: 'Соотношение средних зарплат'},
+			{id: 'amountTotal', name: 'Кол-во вакансий', title: 'Соотношение количества вакансий'}
+		];
 
-		result.createConfig = createConfig;
+		result.selectedCurrency = null;
+		result.selectedValueType = result.valueTypes[0];
+		result.selectedChartType = result.chartTypes[0];
 
 		return result;
-
-		/**
-		 * @function
-		 * @memberOf hhStat.ChartService
-		 * @param  {Boolean} isDemo    Specify config creation for main chart or demo
-		 * @param  {String}  chartType Specify chart type
-		 * @param  {String}  text      Chart title
-		 * @param  {String}  yTitle    Y-axis title 
-		 * @return {Object}            Chart config
-		 */
-		function createConfig (isDemo, chartType, text, yTitle) {
-
-			var config = {
-				options: {
-					chart: {
-						type: chartType,
-						animation: false,
-						backgroundColor: '#ededea'
-					},
-					legend: {
-						enabled: !isDemo
-					},
-					tooltip: {
-						enabled: !isDemo,
-						formatter: function (argument) {
-							return 'Средняя зарплата <b>' + Math.round(this.y,0) + ' руб.</b>';
-						}
-					},
-					exporting: {
-		            	buttons: {
-		            		contextButton: {
-		            			enabled: !isDemo,
-		            			symbolFill: '#ededea'
-		            		}
-		            	}
-		            },
-		            navigation: {
-		            	buttonOptions: {
-		            		enabled: !isDemo,
-		            		symbolFill: '#ededea'
-		            	}
-		            }, 
-					plotOptions: {
-		                pie: {
-		                    allowPointSelect: true,
-		                    cursor: 'pointer',
-		                    dataLabels: {
-		                        enabled: false
-		                    },
-		                    showInLegend: !isDemo
-		                }
-		            },
-		            credits: {
-		            	enabled: true,
-		            	href: "http://job.bocharovf.ru",
-		            	text: "http://job.bocharovf.ru"
-		            },
-		            loading: {
-		            	showDuration: 0,
-		            	hideDuration: 0
-		            }
-				},					
-				series: [],
-				title: { text: text },
-				xAxis: { title: { text: null } },
-				yAxis: { title: { text: (isDemo ? null : yTitle)} }
-				
-			}; 
-
-			return config;
-		}
-	});
+}]);

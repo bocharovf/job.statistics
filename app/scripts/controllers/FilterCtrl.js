@@ -8,8 +8,8 @@
   */
 
 angular.module('hhStat')
-    .controller('FilterCtrl', ['HeadHunter', 'SearchService', 'ChartService', '$scope', '$rootScope',
-    	function(headHunter, search, chart, $scope, $rootScope) {
+    .controller('FilterCtrl', ['HeadHunter', 'SearchService', 'ChartService', '$scope', 
+    	function(headHunter, search, chart, $scope) {
         var self = this;
         var availableCurrencies = ['RUR','USD','EUR'];
         this.specialAreas = [
@@ -24,10 +24,7 @@ angular.module('hhStat')
 		this.collapsedContent = collapsedContent;
 
     	this.currencies = [];
-		this.selectedCurrency = null;
-
 		this.valueTypes = chart.valueTypes;
-		this.selectedValueType = chart.valueTypes[0];
 
 		this.experiences = null;
 		this.areas = null;
@@ -54,7 +51,7 @@ angular.module('hhStat')
 				});
 
 				// TODO: select currency based on geo location 
-				self.selectedCurrency = self.currencies[0];
+				chart.selectedCurrency = self.currencies[0];
 			});
 
 			headHunter.getExperiences().then(function (experiences) {
@@ -76,8 +73,22 @@ angular.module('hhStat')
 		 * @param  {Object} args  Selected currency
 		 */
 		function onSelectedCurrencyChanged (event, args) {
-			self.selectedCurrency = args;
+			chart.selectedCurrency = args;
+			notify('FILTER_CHANGED', { isSeriesRefreshRequired: true });
 		}
+
+		/**
+		 * @function
+		 * @private
+		 * @memberOf hhStat.FilterCtrl
+		 * @description Handle change of value type
+		 * @param  {Object} event Event
+		 * @param  {Object} args  Selected value type
+		 */
+		function onSelectedValueTypeChanged (event, args) {
+			chart.selectedValueType = args;
+			notify('FILTER_CHANGED', { isSeriesRefreshRequired: true });
+		}		
 
 		/**
 		 * @function
@@ -89,6 +100,7 @@ angular.module('hhStat')
 		 */
 		function onSelectedRegionChanged (event, args) {
 			search.selectedRegion = args;
+			notify('FILTER_CHANGED', { isNewSearchRequired: true });
 		}
 
 		/**
@@ -101,19 +113,8 @@ angular.module('hhStat')
 		 */
 		function onSelectedExperienceChanged (event, args) {
 			search.selectedExperience = args;
+			notify('FILTER_CHANGED', { isNewSearchRequired: true });
 		}		
-
-		/**
-		 * @function
-		 * @private
-		 * @memberOf hhStat.FilterCtrl
-		 * @description Handle change of value type
-		 * @param  {Object} event Event
-		 * @param  {Object} args  Selected value type
-		 */
-		function onSelectedValueTypeChanged (event, args) {
-			self.selectedValueType = args;
-		}
 
 		/**
 		 * @function
@@ -122,13 +123,13 @@ angular.module('hhStat')
 		 * @return {string} Filter summary text
 		 */
 		function collapsedContent () {
-											
+	
 			var filtersArray = [];
-			if (self.selectedValueType)
-				filtersArray.push(self.selectedValueType.name.toLowerCase());
+			if (chart.selectedValueType)
+				filtersArray.push(chart.selectedValueType.name.toLowerCase());
 
-			if (self.selectedCurrency)
-				filtersArray.push(self.selectedCurrency.name.toLowerCase());
+			if (chart.selectedCurrency)
+				filtersArray.push(chart.selectedCurrency.name.toLowerCase());
 
 			if (search.selectedExperience)
 				filtersArray.push(search.selectedExperience.name.toLowerCase());
@@ -151,5 +152,18 @@ angular.module('hhStat')
 		function subscribe (name, scope, callback) {
 	        var handler = scope.$on(name, callback);
 	        scope.$on('$destroy', handler);
-	    }		
+	    }
+
+	    /**
+	     * @function
+	     * @private
+	     * @memberOf hhStat.FilterCtrl
+	     * @description Notify parent scope
+	     * @param  {String} name Event name
+	     * @param  {Object} args Event args
+	     */
+	    function notify(name, args) {
+	        $scope.$emit(name, args);
+	    }
+
     }]);

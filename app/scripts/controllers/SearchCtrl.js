@@ -13,28 +13,33 @@ angular.module('hhStat')
 
 		this.queryInProgress = 0;
 		this.results = Object.create(null);
-		this.selectedChartType = 'pie';
-		this.chartConfig = chart.createConfig(false, this.selectedChartType, 
-													'Сравнение средних зарплат', 'Рубли');
+
+
+		this.chartConfig = new ChartExtension(true, chart.selectedChartType, 
+										chart.selectedValueType, chart.selectedCurrency, currency);
 
 		this.demoCharts = chart.chartTypes
+								.filter(function (type) {
+									return type !== chart.selectedChartType;
+								})
 								.map(function (type) {
-									return chart.createConfig(true, type.id);
+									return new ChartExtension(false, type, 
+										chart.selectedValueType, chart.selectedCurrency, currency);
 								});
 
 		this.hasResults = hasResults;
 		this.searchOnEnter = searchOnEnter;
 		this.search = search.search;		
-		this.changeChartType = changeChartType;
+		this.selectAsMainChart = selectAsMainChart;
 		this.clearResult = clearResult;
 		this.placeholder = placeholder;
 		this.isAllResultsEmpty = isAllResultsEmpty;
-		
+
 		search.subscribe ('SEARCH_SUCCESS', $scope, onSearchSuccess);
 		search.subscribe ('SEARCH_FAILED', $scope, onSearchFailed);
 		search.subscribe ('SEARCH_START', $scope, onSearchStart);
-		search.subscribe ('CURRENCY_CHANGED', $scope, onSelectedCurrencyChanged);
 
+		search.subscribe ('FILTER_CHANGED', $scope, onFilterChanged);
 		activate();
 
 		/****************** Functions ***************/
@@ -123,11 +128,36 @@ angular.module('hhStat')
 		/**
 		 * @function
 		 * @memberOf hhStat.SearchCtrl
-		 * @description Change type of main chart
-		 * @param  {string} chart Identifier of chart type
+		 * @description Change main chart to be selected chart   
+		 * @param  {Number} chartIndex Selected chart index
 		 */
-		function changeChartType (chart) {
-			self.chartConfig.options.chart.type = chart.options.chart.type;
+		function selectAsMainChart (chartIndex) {
+			var newMainChart = self.demoCharts[chartIndex];
+			
+			newMainChart.isMainChart = true;
+			self.chartConfig.isMainChart = false;
+
+			self.demoCharts[chartIndex] = self.chartConfig
+			self.chartConfig = newMainChart;
+
+			refreshChartSeries();
+		}
+
+		/**
+		 * @function
+		 * @private
+		 * @memberOf hhStat.SearchCtrl
+		 * @description Handle change of any filter 
+		 * @param  {Event} event Event
+		 * @param  {Object} args  Args
+		 */
+		function onFilterChanged (event, args) {
+
+			if (args.isNewSearchRequired) 
+				retrySearch();	
+
+			if (args.isSeriesRefreshRequired)
+				refreshChartSeries();
 		}
 
 		/**
@@ -150,42 +180,37 @@ angular.module('hhStat')
 		 * @function
 		 * @private
 		 * @memberOf hhStat.SearchCtrl
-		 * @description Refresh all charts according to current results
+		 * @description Perform current search again
+		 */
+		function retrySearch () {
+			var query = Object.keys(self.results)
+							.map(function (key) {
+								return self.results[key].request.token;
+							})
+							.join(',');
+			
+			self.clearResult();
+			self.search(query);
+		}
+
+		/**
+		 * @function
+		 * @private
+		 * @memberOf hhStat.SearchCtrl
+		 * @description Refresh all charts according to current results and settings
 		 */
 		function refreshChartSeries () {
-			var colors = Highcharts.getOptions().colors;
-			var chart = self.chartConfig;
-			
-			var categories = Object.keys(self.results).sort();
-			var data = categories.map(function (token, i) {
-				return {
-					y: self.results[token].salary.avg,
-					color: colors[i],
-					name: token
-				};
-			});		
+			self.chartConfig.currency = chart.selectedCurrency;
+			self.chartConfig.valueType = chart.selectedValueType;
+			self.chartConfig.updateSeries(self.results);
 
-			var serie =	{
-		            name: null,
-		            data: data,
-		            size: '100%',
-		            //showInLegend: false,
-		            dataLabels: {
-		                formatter: function () {
-		                    return this.point.name;
-		                },
-		                color: '#ffffff',
-		                distance: -30
-		            }
-		        };
+			self.demoCharts.forEach(function (demoChart) {
+				demoChart.currency = chart.selectedCurrency;
+				demoChart.valueType = chart.selectedValueType;	
 
-		    chart.series[0] = serie;
-			chart.xAxis.categories = categories;
-
-		    self.demoCharts.forEach(function (chart) {
-		    	chart.series[0] = serie;
-		    	chart.xAxis.categories = categories;
+				demoChart.updateSeries(self.results)		    	
 		    });
+
 		}
 		
 		/**
@@ -200,17 +225,6 @@ angular.module('hhStat')
 			self.suggestion = self.suggestions[randomIndex].Query;
 		}
 
-		/**
-		 * @function
-		 * @private
-		 * @memberOf hhStat.SearchCtrl
-		 * @description Handle change of currency 
-		 * @param  {Event} event Event
-		 * @param  {Object} args  Args
-		 */
-		function onSelectedCurrencyChanged (event, args) {
-			refreshChartSeries();
-		}
 
 		/**
 		 * @function

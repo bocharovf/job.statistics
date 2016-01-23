@@ -284,13 +284,13 @@
         <!-- Графики -->
         <article class="search-result" ng-show="search.hasResults()">
             <div class="main-chart">
-                <highchart id="mainChart" config="search.chartConfig"></highchart>
+                <highchart id="mainChart" config="search.chartConfig.config"></highchart>
             </div>
 
             <div class="demo-chart-container">
                 <div ng-repeat="chart in search.demoCharts">
-                    <div ng-click="search.changeChartType(chart)">
-                        <highchart id="demoChart{{$index}}" config="chart" >
+                    <div ng-click="search.selectAsMainChart($index)">
+                        <highchart id="demoChart{{$index}}" config="chart.config" >
                         </highchart>
                     </div>
                 </div>
@@ -325,6 +325,7 @@
 
     <!-- build:js scripts/main.js -->
     <script src="scripts/models/SearchResult.js"></script>
+    <script src="scripts/extensions/ChartExtension.js"></script>
 
     <script src="scripts/controllers/MenuCtrl.js"></script>
     <script src="scripts/controllers/TagCloudCtrl.js"></script>
@@ -344,6 +345,7 @@
     
     <!-- build:js(.) scripts/plugins.js -->
     <script src="/bower_components/highcharts/lib/modules/exporting.js"></script>
+    <script src="/bower_components/highcharts/lib/highcharts-more.js"></script>
     <!--<script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/affix.js"></script>
     <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/alert.js"></script>
     <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/dropdown.js"></script>
@@ -358,7 +360,6 @@
     <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/tab.js"></script>-->
     <!-- endbuild -->
     
-
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. 
     <script>
