@@ -13,7 +13,8 @@ angular.module('hhStat')
 	var result = {
 		search: search,
 		subscribe: subscribe,
-		selectedRegion: null
+		selectedRegion: null,
+		selectedExperience: null
 	};
 	
 	return result;
@@ -119,7 +120,8 @@ angular.module('hhStat')
 		headHunter.getVacancies(textSubquery, {
 				perPage: 500,
 				page: request.page,
-				area: (result.selectedRegion ? result.selectedRegion.id : null) 
+				area: (result.selectedRegion ? result.selectedRegion.id : null),
+				experience: (result.selectedExperience ? result.selectedExperience.id : null) 
 			})
 			.then(function (response) {
 				onSearchSuccess(request, response);

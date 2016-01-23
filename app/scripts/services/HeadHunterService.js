@@ -13,6 +13,7 @@ angular.module('hhStat')
 
 	var result = {
 		getCurrencies: getCurrencies,
+		getExperiences: getExperiences, 
 		getVacancies: getVacancies,
 		getAreas: getAreas
 	};
@@ -29,6 +30,19 @@ angular.module('hhStat')
 		return getCacheableResource('dictionaries')
 					.then(function (result) {
 						return result.currency;
+					});
+	}
+
+	/**
+	 * @function
+	 * @memberOf hhStat.HeadHunter
+	 * @description Query HH for array of experiences
+	 * @return {Promise}
+	 */
+	function getExperiences (argument) {
+		return getCacheableResource('dictionaries')
+					.then(function (result) {
+						return result.experience;
 					});
 	}
 
@@ -63,6 +77,8 @@ angular.module('hhStat')
 		
 		if (settings.area) 
 			params.push({param: 'area', value: settings.area});
+		if (settings.experience) {};
+			params.push({param: 'experience', value: settings.experience});
 
 		var queryString = '?' + params.map(function (arg) {
 								return arg.param + '=' + arg.value;

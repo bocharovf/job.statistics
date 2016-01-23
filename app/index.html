@@ -236,6 +236,18 @@
                 </div>
                 
                 <div class="filter-container">
+                    <simple-filter 
+                        header="Опыт работы"
+                        options="filter.experiences" 
+                        selectedOption="filter.selectedExperience"
+                        max=10
+                        event-name="EXPERIENCE_CHANGED"
+                        display-field="name"
+                        value-field="id"> 
+                    </simple-filter>
+                </div>
+
+                <div class="filter-container">
                     <hierarchy-filter 
                         header="Регион"
                         hierarchy="filter.areas" 

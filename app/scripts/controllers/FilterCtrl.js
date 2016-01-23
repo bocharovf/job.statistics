@@ -29,11 +29,13 @@ angular.module('hhStat')
 		this.valueTypes = chart.valueTypes;
 		this.selectedValueType = chart.valueTypes[0];
 
+		this.experiences = null;
 		this.areas = null;
 
 		subscribe ('REGION_CHANGED', $scope, onSelectedRegionChanged);
 		subscribe ('CURRENCY_CHANGED', $scope, onSelectedCurrencyChanged);
-		subscribe ('VALUE_TYPE_CHANGED', $scope, onSelectedValueType);
+		subscribe ('VALUE_TYPE_CHANGED', $scope, onSelectedValueTypeChanged);
+		subscribe ('EXPERIENCE_CHANGED', $scope, onSelectedExperienceChanged);
 
 		activate();
 
@@ -54,6 +56,10 @@ angular.module('hhStat')
 				// TODO: select currency based on geo location 
 				self.selectedCurrency = self.currencies[0];
 			});
+
+			headHunter.getExperiences().then(function (experiences) {
+				self.experiences = experiences;
+			});			
 
 			headHunter.getAreas().then(function (areas) {
 				self.areas = areas;
@@ -89,11 +95,23 @@ angular.module('hhStat')
 		 * @function
 		 * @private
 		 * @memberOf hhStat.FilterCtrl
+		 * @description Handle change of region
+		 * @param  {Object} event Event
+		 * @param  {Object} args  Selected region
+		 */
+		function onSelectedExperienceChanged (event, args) {
+			search.selectedExperience = args;
+		}		
+
+		/**
+		 * @function
+		 * @private
+		 * @memberOf hhStat.FilterCtrl
 		 * @description Handle change of value type
 		 * @param  {Object} event Event
 		 * @param  {Object} args  Selected value type
 		 */
-		function onSelectedValueType (event, args) {
+		function onSelectedValueTypeChanged (event, args) {
 			self.selectedValueType = args;
 		}
 
