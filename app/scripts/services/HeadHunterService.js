@@ -77,7 +77,7 @@ angular.module('hhStat')
 		
 		if (settings.area) 
 			params.push({param: 'area', value: settings.area});
-		if (settings.experience) {};
+		if (settings.experience)
 			params.push({param: 'experience', value: settings.experience});
 
 		var queryString = '?' + params.map(function (arg) {
