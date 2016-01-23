@@ -12,6 +12,8 @@ angular.module('hhStat')
        	var self = this;
 
 		this.queryInProgress = 0;
+		this.maxQueryInProgress = 0;
+		
 		this.results = Object.create(null);
 
 
@@ -28,8 +30,9 @@ angular.module('hhStat')
 								});
 
 		this.hasResults = hasResults;
+		this.percentProgress = percentProgress;
 		this.searchOnEnter = searchOnEnter;
-		this.search = search.search;		
+		this.search = searchQuery;		
 		this.selectAsMainChart = selectAsMainChart;
 		this.clearResult = clearResult;
 		this.placeholder = placeholder;
@@ -55,6 +58,11 @@ angular.module('hhStat')
 				self.suggestions = suggestions;
 				selectRandomSuggestion();
 			});			
+		}
+
+		function searchQuery (query) {
+			clearEmptyResults();
+			search.search(query);
 		}
 
 		/**
@@ -142,6 +150,16 @@ angular.module('hhStat')
 
 			refreshChartSeries();
 		}
+
+		/**
+		 * @function
+		 * @memberOf hhStat.SearchCtrl
+		 * @description Current search progress in percent
+		 * @return {Number} Percent of completion
+		 */
+		function percentProgress () {
+			return Math.round(100.0 - 100.0 * self.queryInProgress / self.maxQueryInProgress, 0);
+		}		
 
 		/**
 		 * @function
@@ -236,6 +254,7 @@ angular.module('hhStat')
 		 */
 		function onSearchStart (event, args) {
 			self.queryInProgress += args.length;
+			self.maxQueryInProgress += args.length;
 		}
 
 		/**
@@ -278,6 +297,22 @@ angular.module('hhStat')
 		 */
 		function finishSearch () {
 			self.query = '';
+			self.maxQueryInProgress = 0;
+		}
+
+		/**
+		 * @function
+		 * @private
+		 * @memberOf hhStat.SearchCtrl
+		 * @description Clear empty results
+		 */
+		function clearEmptyResults () {
+			var emptyKeys = Object.keys(self.results)
+									.filter(function (key) {
+										return self.results[key].amount.used == 0;
+									}).forEach(function  (argument) {
+										self.results[key] = undefined;
+									});
 		}
 
     }]);

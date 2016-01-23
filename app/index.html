@@ -262,9 +262,19 @@
 
             </div>            
         </article>
-        
+      
+        <article class="progress-container" ng-show="search.queryInProgress > 0">
+            <div class="spinner">
+              <div class="double-bounce1"></div>
+              <div class="double-bounce2"></div>
+            </div>
+            <span>Завершено на {{search.percentProgress()}}%</span>
+        </article>  
+
         <!-- Zero result panel -->
-        <article class="zero-result" ng-show="search.isAllResultsEmpty()">
+        <article 
+                class="zero-result" 
+                ng-show="search.isAllResultsEmpty() && search.queryInProgress == 0">
             <h3 class="zero-result-title">
                 Похоже, что ничего не найдено !
             </h3>
@@ -277,12 +287,17 @@
         </article>        
 
         <!-- Облако тегов -->
-		<article class="tag-cloud" ng-controller="TagCloudCtrl as tagCloud" ng-hide="search.hasResults()">
+		<article 
+            class="tag-cloud" 
+            ng-controller="TagCloudCtrl as tagCloud" 
+            ng-hide="search.hasResults() || search.queryInProgress > 0">
             <jqcloud words="tagCloud.words" steps="7"></jqcloud> 
 		</article>
 
         <!-- Графики -->
-        <article class="search-result" ng-show="search.hasResults()">
+        <article 
+            class="search-result" 
+            ng-show="search.hasResults() && search.queryInProgress == 0">
             <div class="main-chart">
                 <highchart id="mainChart" config="search.chartConfig.config"></highchart>
             </div>

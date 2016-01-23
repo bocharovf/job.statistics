@@ -39,14 +39,18 @@ function ChartExtension (isMainChart, chartType, valueType, currency, currencySe
 	        	buttons: {
 	        		contextButton: {
 	        			enabled: isMainChart,
-	        			symbolFill: '#ededea'
+	        			symbolFill: '#ededea',
+						symbol: "menu",
+						symbolSize: 14,
+						symbolStroke: "#666",
+						symbolStrokeWidth: 1
 	        		}
 	        	}
 	        },
 	        navigation: {
 	        	buttonOptions: {
 	        		enabled: isMainChart,
-	        		symbolFill: '#ededea'
+	        		symbolFill: '#ededea',
 	        	}
 	        }, 
 			plotOptions: {
