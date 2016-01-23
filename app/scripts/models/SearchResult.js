@@ -59,14 +59,26 @@ function SearchResult (request, rawData, currency) {
 	 * @param  {SearchResult} result Result to add
 	 */
 	function merge (result) {
-		// skip empty results
+		// skip merge with empty results
 		if (result.amount.used === 0) return;
 
-		this.amount.total += result.amount.total;
-		this.amount.used += result.amount.used;
+		 
+		if (this.amount.used === 0 ) { 
+			// if this is empty result - copy from real
+			this.amount.total = result.amount.total;
+			this.amount.used = result.amount.used;
+			this.salary.min = result.salary.min;
+			this.salary.max = result.salary.max;
+			this.salary.avg = result.salary.avg;
+		}
+		else {
+			// if both results are real - merge
+			this.amount.total = result.amount.total;
+			this.amount.used += result.amount.used;
+			this.salary.min = Math.min(result.salary.min, this.salary.min);
+			this.salary.max = Math.max(result.salary.max, this.salary.max);
+			this.salary.avg = (this.salary.avg + result.salary.avg) / 2.0;
+		}
 
-		this.salary.min = Math.min(result.salary.min, this.salary.min);
-		this.salary.max = Math.max(result.salary.max, this.salary.max);
-		this.salary.avg = (this.salary.avg + result.salary.avg) / 2.0;
 	}
 }

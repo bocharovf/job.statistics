@@ -251,7 +251,7 @@
               "currency": "RUR"
             }
           }],
-          "found": 20, "per_page": 2, "page": 0, "pages": 1000
+          "found": 40, "per_page": 2, "page": 0, "pages": 1000
         };
 
         var response2 = 
@@ -278,7 +278,7 @@
         result1.merge(result2);
 
         expect(result1.amount.used).to.equal(4);
-        expect(result1.amount.total).to.equal(60);
+        expect(result1.amount.total).to.equal(40);
 
         expect(result1.salary.avg).to.equal(231.25);
         expect(result1.salary.min).to.equal(50);
@@ -344,7 +344,42 @@
         expect(result1.salary.max).to.equal(350);
       });
 
+      it('should copy data from real result if current is empty ', function () {
+        
+        var response1 = 
+        {
+          "items": [],
+          "found": 40, "per_page": 2, "page": 0, "pages": 1000
+        };         
+
+        var response2 = 
+        {
+          "items": [ 
+          {
+            "salary": {
+              "to": 200,
+              "from": 400,
+              "currency": "RUR"
+            }
+          }],
+          "found": 40, "per_page": 2, "page": 0, "pages": 1000
+        };
+
+        var result1 = new SearchResult(null, response1, currency);
+        var result2 = new SearchResult(null, response2, currency);
+
+        result1.merge(result2);
+
+        expect(result1.amount.used).to.equal(1);
+        expect(result1.amount.total).to.equal(40);
+
+        expect(result1.salary.avg).to.equal(300);
+        expect(result1.salary.min).to.equal(200);
+        expect(result1.salary.max).to.equal(400);
+      });
+
     });
+
 
   });
 
