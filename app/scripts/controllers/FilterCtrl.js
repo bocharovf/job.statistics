@@ -136,9 +136,7 @@ angular.module('hhStat')
 			if (search.selectedRegion)
 				filtersArray.push(search.selectedRegion.name);			
 
-			var filter = filtersArray.join(', ') || "не выбран";
-
-			return 	"Фильтр: " + filter;
+			return filtersArray.join(', ') || "не выбран";
 		}
 
 		/**

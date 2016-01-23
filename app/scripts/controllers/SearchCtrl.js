@@ -28,7 +28,8 @@ angular.module('hhStat')
 		this.changeChartType = changeChartType;
 		this.clearResult = clearResult;
 		this.placeholder = placeholder;
-
+		this.isAllResultsEmpty = isAllResultsEmpty;
+		
 		search.subscribe ('SEARCH_SUCCESS', $scope, onSearchSuccess);
 		search.subscribe ('SEARCH_FAILED', $scope, onSearchFailed);
 		search.subscribe ('SEARCH_START', $scope, onSearchStart);
@@ -86,8 +87,27 @@ angular.module('hhStat')
 		 * @return {Boolean} True if search results are available
 		 */
 		function hasResults () {
-			return (Object.keys(self.results).length > 0);
+			var realResults = Object.keys(self.results)
+									.filter(function (key) {
+										return self.results[key].amount.used > 0;
+									});
+
+			return realResults.length > 0;
 		}
+
+		/**
+		 * @function
+		 * @memberOf hhStat.SearchCtrl
+		 * @description Check if all result are empty
+		 * @return {Boolean} True if all results are empty
+		 */
+		function isAllResultsEmpty () {
+			var realResults = Object.keys(self.results)
+									.filter(function (key) {
+										return self.results[key].amount.used > 0;
+									});
+			return Object.keys(self.results).length > 0 && realResults.length === 0;
+		}		
 		
 		/**
 		 * @function

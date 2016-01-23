@@ -1,0 +1,28 @@
+@import "global_settings.scss";
+
+
+.zero-result {
+  float: right;
+  width: 65%;
+  margin: 0 0 50px 5%;
+
+  @media screen and (max-width: $widthMobile) { 
+    margin: 0;
+    width: 100%;
+  }  
+}
+
+.zero-result-title{
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.zero-result-description {
+  font-size: 15px;
+  display: block;
+}
+
+.zero-result-suggestion{
+  font-size: 15px;
+  display: block;
+}
