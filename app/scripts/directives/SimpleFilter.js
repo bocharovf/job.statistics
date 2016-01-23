@@ -15,6 +15,7 @@ angular.module('hhStat')
 		 	eventName: "@",
 		 	displayField: "@",
 		 	valueField: "@",		 	
+		 	allowEmpty: "@",
 		 	options: "=",
 		 	selectedOption: "="
 		 },
@@ -33,6 +34,7 @@ angular.module('hhStat')
 		$scope.selectOption = selectOption;
 		$scope.expandOptions = expandOptions;
 		$scope.toggleExpanded = toggleExpanded;
+		$scope.removeSelection = removeSelection;
 
 		$scope.$watch(function () { return $scope.options }, 
 					updateAvailableOptions, true);
@@ -41,15 +43,31 @@ angular.module('hhStat')
 
 		function updateAvailableOptions() {
 			if (!$scope.options || $scope.options.length === 0) return;
-			$scope.selectedOption = $scope.selectedOption || $scope.options[0];
+			
+			if (!$scope.allowEmpty)
+				$scope.selectedOption = $scope.selectedOption || $scope.options[0];
 
 			$scope.availableOptions = $scope.options
-											.filter(function (option) {
-												return option[val] !== $scope.selectedOption[val];
-											});
+												.filter(function (option) {
+													return $scope.selectedOption 
+															? option[val] !== $scope.selectedOption[val]
+															: true;
+												});
 
 			notify($scope.eventName, $scope.selectedOption);
 		}
+
+		/**
+		 * @function
+		 * @memberOf hhStat.simpleFilter
+		 * @description Remove selection
+		 */
+		function removeSelection () {
+			if ($scope.allowEmpty) {
+				$scope.selectedOption = null;
+				updateAvailableOptions();
+			}
+		}		
 
 		function selectOption (option) {
 			$scope.selectedOption = option;

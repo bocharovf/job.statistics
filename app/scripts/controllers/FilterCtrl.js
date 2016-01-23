@@ -130,8 +130,11 @@ angular.module('hhStat')
 			if (self.selectedCurrency)
 				filtersArray.push(self.selectedCurrency.name.toLowerCase());
 
+			if (search.selectedExperience)
+				filtersArray.push(search.selectedExperience.name.toLowerCase());
+			
 			if (search.selectedRegion)
-				filtersArray.push(search.selectedRegion.name);
+				filtersArray.push(search.selectedRegion.name);			
 
 			var filter = filtersArray.join(', ') || "не выбран";
 

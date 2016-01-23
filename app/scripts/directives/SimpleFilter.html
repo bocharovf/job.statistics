@@ -9,8 +9,13 @@
 
     <ul ng-if="isExpanded">
         <!-- Selected options -->
-        <li class="selected-option">
-            <span>{{selectedOption[displayField]}}</span>
+        <li class="selected-option" ng-if="selectedOption">
+            <span ng-click="removeSelection()">
+                <span 
+                    ng-if="allowEmpty"
+                    class='glyphicon glyphicon-remove glyphicon-10'></span>
+                <span>{{selectedOption[displayField]}}</span>
+            </span>
         </li>
         
         <!-- Available options -->

@@ -1,6 +1,7 @@
 @import "global_settings.scss";
 
 $collapsedFilterHeight: 30px;
+$filterGroupMinWidth: 140px;
 
 .search-filter {
   float: left;
@@ -19,10 +20,6 @@ $collapsedFilterHeight: 30px;
       margin: 10px 0 0 0;
       
       padding: 0;
-
-      &.search-filter-collapsed {
-        //height: $collapsedFilterHeight;
-      }
      
   }
 }
@@ -45,14 +42,16 @@ $collapsedFilterHeight: 30px;
   width: 100%;
 
   div {
-    max-width: 130px;
-    min-width: 130px;  
+    max-width: $filterGroupMinWidth;
+    min-width: $filterGroupMinWidth;  
     margin: 0px auto;
   }
 
   @media screen and (max-width: $widthMobile) {
-    min-width: 130px;      
-    width: 33%; 
+    text-align: center;
+
+    min-width: $filterGroupMinWidth;      
+    width: 25%; 
     float: left;
     
     div {
