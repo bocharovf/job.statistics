@@ -7,9 +7,7 @@
   */
  
 angular.module('hhStat')
-	.service('HeadHunter', ['ConfigConst', '$http', '$q', function(config, $http, $q) {
-
-	var cache = {};
+	.service('HeadHunter', ['ConfigConst', '$http', function(config, $http) {
 
 	var result = {
 		getCurrencies: getCurrencies,
@@ -97,17 +95,8 @@ angular.module('hhStat')
 	 * @return {Promise} Returns requested resource
 	 */
 	function getCacheableResource (resourceName) {
-
-		if (cache[resourceName])
-		{
-			var def = $q.defer();
-			def.resolve(cache[resourceName]);
-			return def.promise;
-		}
-
-		return $http.get(config.headHunterUrl + resourceName, {})
+		return $http.get(config.headHunterUrl + resourceName, { cache: true })
 					.then(function (result) {
-						cache[resourceName] = result.data;
 						return result.data;
 					});
 	}
