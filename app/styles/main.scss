@@ -19,6 +19,9 @@ html, body {
   width: 100%;
   background-color: $bg-color;
 }
+.ng-cloak {
+  display: none;
+}
 
 .action-link {
     cursor: pointer;

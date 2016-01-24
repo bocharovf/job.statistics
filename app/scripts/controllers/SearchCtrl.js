@@ -16,7 +16,6 @@ angular.module('hhStat')
 		
 		this.results = Object.create(null);
 
-
 		this.chartConfig = new ChartExtension(true, chart.selectedChartType, 
 										chart.selectedValueType, chart.selectedCurrency, currency);
 
@@ -43,6 +42,7 @@ angular.module('hhStat')
 		search.subscribe ('SEARCH_START', $scope, onSearchStart);
 
 		search.subscribe ('FILTER_CHANGED', $scope, onFilterChanged);
+
 		activate();
 
 		/****************** Functions ***************/
@@ -61,6 +61,8 @@ angular.module('hhStat')
 		}
 
 		function searchQuery (query) {
+			if (query) selectRandomSuggestion();
+			
 			clearEmptyResults();
 			search.search(query);
 		}
@@ -84,6 +86,7 @@ angular.module('hhStat')
 		 * @param {String} [token] Token to remove
 		 */
 		function clearResult (token) {
+
 			if (token) {
 				delete self.results[token];
 				refreshChartSeries ();

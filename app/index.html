@@ -136,7 +136,7 @@
             <div class="input-group">
               <input type="text" 
                     class="form-control" 
-                    placeholder="{{search.placeholder()}}" 
+                    ng-attr-placeholder="{{search.placeholder()}}" 
                     ng-model="search.query" 
                     ng-keypress="search.searchOnEnter($event)">
               <span class="input-group-btn">
@@ -147,13 +147,16 @@
               </span>
             </div>
 
-            <div class="search-examples" ng-hide="search.hasResults()">
+            <div class="search-examples" ng-hide="search.hasResults() || search.queryInProgress > 0">
                 <span>Например сравните: </span>
-                <span class="action-link" ng-click="search.search(search.suggestion)">{{search.suggestion}}</span>
+                <span 
+                    class="action-link ng-cloak" 
+                    ng-click="search.search(search.suggestion)"
+                    ng-bind="search.suggestion"></span>
             </div>
 
             <!-- Баджы с результатами поиска -->
-            <div class="badg-container" ng-show="search.hasResults()">
+            <div class="badg-container ng-cloak" ng-show="search.hasResults()">
                 
                 <ul>
                     <li class="new-search-action">
@@ -263,7 +266,7 @@
             </div>            
         </article>
       
-        <article class="progress-container" ng-show="search.queryInProgress > 0">
+        <article class="progress-container ng-cloak" ng-show="search.queryInProgress > 0">
             <div class="spinner">
               <div class="double-bounce1"></div>
               <div class="double-bounce2"></div>
@@ -273,7 +276,7 @@
 
         <!-- Zero result panel -->
         <article 
-                class="zero-result" 
+                class="zero-result ng-cloak" 
                 ng-show="search.isAllResultsEmpty() && search.queryInProgress == 0">
             <h3 class="zero-result-title">
                 Похоже, что ничего не найдено !
