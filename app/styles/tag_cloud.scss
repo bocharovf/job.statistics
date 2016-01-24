@@ -5,7 +5,7 @@
 .tag-cloud {
   float: right;
   width: 65%;
-  margin-left: 5%;
+  margin: 20px 0 0 5%;
 
   div {
     margin: 0px auto;
@@ -18,7 +18,7 @@
   }
 
   @media screen and (max-width: $widthMobile) { 
-    margin: 0;
+    margin: 20px 0 0 0;
     width: 100%;
   }  
 }
