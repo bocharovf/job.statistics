@@ -83,7 +83,8 @@ angular.module('hhStat')
 							})
 							.join('&');
 
-		return $http.get(config.headHunterUrl + 'vacancies' + queryString, {})
+		return $http.get(config.headHunterUrl + 'vacancies' + queryString, 
+						{ timeout: config.headHunterTimeout })
 			
 	}
 
@@ -95,7 +96,12 @@ angular.module('hhStat')
 	 * @return {Promise} Returns requested resource
 	 */
 	function getCacheableResource (resourceName) {
-		return $http.get(config.headHunterUrl + resourceName, { cache: true })
+		var requestConfig = {
+			timeout: config.headHunterTimeout,
+			cache: true
+		};
+
+		return $http.get(config.headHunterUrl + resourceName, requestConfig)
 					.then(function (result) {
 						return result.data;
 					});

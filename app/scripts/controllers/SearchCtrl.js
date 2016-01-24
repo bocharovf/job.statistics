@@ -54,15 +54,19 @@ angular.module('hhStat')
 		 * @description Module activation function
 		 */
 		function activate () {
-			backend.getSuggestions().then(function (suggestions) {
-				self.suggestions = suggestions;
-				selectRandomSuggestion();
-			});			
+			backend.getSuggestions()
+				.then(function (suggestions) {
+					self.suggestions = suggestions;
+					selectRandomSuggestion();
+				}, function (error) {
+					self.suggestions = [{ Query: "java, c++, c#"}];
+					selectRandomSuggestion();
+				});			
 		}
 
 		function searchQuery (query) {
 			if (query) selectRandomSuggestion();
-			
+
 			clearEmptyResults();
 			search.search(query);
 		}
