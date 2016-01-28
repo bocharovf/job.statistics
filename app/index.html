@@ -141,8 +141,10 @@
                     ng-keypress="search.searchOnEnter($event)">
               <span class="input-group-btn">
                 <button class="btn btn-primary" type="button" ng-click="search.search(search.query)">
-                    <span ng-show="search.queryInProgress == 0">Найти</span>
-                    <img ng-show="search.queryInProgress > 0" src="images/loading.GIF" />
+                    <span
+                        ng-bind="search.buttonText()" 
+                        ng-show="search.queryInProgress == 0"></span>
+                    <img ng-show="search.queryInProgress > 0" src="images/loading.gif" />
                 </button>
               </span>
             </div>
@@ -170,12 +172,15 @@
                         <span>или управляйте результатами: </span>
                     </li>                    
                     <li class="clear-result-action" ng-repeat="result in search.results">
+                        <span
+                            class="action-link" 
+                            ng-click="search.clearResult(result.request.token)">
                         <span 
                             class="glyphicon glyphicon-remove glyphicon-10 action-icon" 
                             aria-hidden="true"
-                            title="удалить результат"
-                            ng-click="search.clearResult(result.request.token)"></span>
-                        <span>{{result.request.token}}</span>
+                            title="удалить результат"></span>
+                            {{result.request.token}}
+                        </span>
                     </li>
                 </ul>
                 
@@ -299,11 +304,13 @@
 
         <!-- Графики -->
         <article 
-            class="search-result" 
+            class="search-result ng-cloak" 
             ng-show="search.hasResults() && search.queryInProgress == 0">
             <div class="main-chart">
                 <highchart id="mainChart" config="search.chartConfig.config"></highchart>
             </div>
+            
+            <span class="chart-select-tip">Нажмите, чтобы выбрать график:</span>
 
             <div class="demo-chart-container">
                 <div ng-repeat="chart in search.demoCharts">
@@ -330,6 +337,8 @@
     <!-- endbower -->
     <!-- endbuild -->
 
+    <!-- build:js scripts/main.js -->
+
     <script src="scripts/hhStat.js"></script>
 
     <!--(if target dev)><!-->
@@ -340,8 +349,6 @@
       <script src="scripts/constants/Config-release.js"></script>
     <!(endif)-->
 
-
-    <!-- build:js scripts/main.js -->
     <script src="scripts/exceptions/ExceptionConfig.js"></script>
 
     <script src="scripts/models/SearchResult.js"></script>
@@ -380,8 +387,7 @@
     <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/tab.js"></script>-->
     <!-- endbuild -->
     
-
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. 
+    <!--(if target dist)>
     <script>
       (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
       function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
@@ -389,11 +395,14 @@
       e.src='https://www.google-analytics.com/analytics.js';
       r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
       ga('create','UA-XXXXX-X');ga('send','pageview');
-    </script>-->
-    <!--
+    </script>
+    <!(endif)-->
+    
+    <!--(if target dist)>
     <script type="text/javascript">var switchTo5x=true;</script>
     <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
     <script type="text/javascript">stLight.options({publisher: "fb8811d3-6073-4a6f-a086-17c426dc326f", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
-    -->
+    <!(endif)-->
+
   </body>
 </html>

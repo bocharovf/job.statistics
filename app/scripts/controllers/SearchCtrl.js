@@ -35,6 +35,7 @@ angular.module('hhStat')
 		this.selectAsMainChart = selectAsMainChart;
 		this.clearResult = clearResult;
 		this.placeholder = placeholder;
+		this.buttonText = buttonText;
 		this.isAllResultsEmpty = isAllResultsEmpty;
 
 		search.subscribe ('SEARCH_SUCCESS', $scope, onSearchSuccess);
@@ -81,6 +82,18 @@ angular.module('hhStat')
 			return self.hasResults() ? 
 					'Добавьте к сравнению язык, платформу, фреймворк ...' : 
 					'Язык, платформа, фреймворк ...';
+		}
+
+		/**
+		 * @function
+		 * @memberOf hhStat.SearchCtrl
+		 * @description Return search button text
+		 * @return {String}  Search button text
+		 */
+		function buttonText () {
+			return self.hasResults() ? 
+					'Добавить' : 
+					'Найти';
 		}
 
 		/**

@@ -18,7 +18,7 @@ angular.module('hhStat')
 		 },
 		controller: ['$scope', hierarchyFilterController],
 		restrict: 'E',
-		templateUrl: 'scripts/directives/HierarchyFilter.html'
+		templateUrl: 'templates/HierarchyFilter.html'
 	};
 
 	function hierarchyFilterController($scope) {

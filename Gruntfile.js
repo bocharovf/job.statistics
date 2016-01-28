@@ -243,7 +243,7 @@ module.exports = function (grunt) {
       options: {
         dest: '<%= config.dist %>'
       },
-      html: '<%= config.app %>/index.html'
+      html: '.tmp/index.html'
     },
 
     // Performs rewrites based on rev and the useminPrepare configuration
@@ -285,7 +285,7 @@ module.exports = function (grunt) {
     targethtml: {
       dist: {
         files: {
-          '<%= config.dist %>/index.html': '<%= config.dist %>/index.html'
+          '.tmp/index.html': '<%= config.app %>/index.html'
         }
       }
     },    
@@ -451,17 +451,21 @@ module.exports = function (grunt) {
   grunt.registerTask('build', [
     'clean:dist',
     'wiredep',
+    
+    'targethtml:dist',
+
     'useminPrepare',
     'concurrent:dist',
     'postcss',
     'concat',
     'cssmin',
+
     'uglify',
     'copy:dist',
     'modernizr',
     'filerev',
     'usemin',
-    'targethtml:dist',
+    
     'htmlmin'
   ]);
 

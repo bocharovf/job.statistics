@@ -23,40 +23,27 @@ html, body {
   display: none;
 }
 
+.action {
+  cursor: pointer;
+}
+
 .action-link {
-    cursor: pointer;
-    border-bottom: 1px black dashed; 
-  
-    &:hover {
-        color: $color-text-accent;
-        border-color: $color-text-accent;
-    }    
+  @extend .action;
+  border-bottom: 1px black dashed; 
+
+  &:hover {
+      color: $color-text-accent;
+      border-color: $color-text-accent;
+  }    
 }
 
 .action-icon {
-  cursor: pointer;
+  @extend .action;
 
   &:hover:before {
       color: $color-text-accent;
       border-color: $color-text-accent;
   }
-}
-
-.action-currency-icon {
-  @extend .action-icon;
-  font-size: 16px;
-  margin: 2px 3px;
-  padding-bottom: 3px;
-
-  &:before {
-    border-bottom: 1px black dashed; 
-  }  
-
-  &:not(:last-child):after{
-      content: " \B7 ";
-      border-bottom: 0;
-  }
-
 }
 
 .selected-option {

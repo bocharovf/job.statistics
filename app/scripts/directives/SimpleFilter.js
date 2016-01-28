@@ -21,7 +21,7 @@ angular.module('hhStat')
 		 },
 		controller: ['$scope', simpleFilterController],
 		restrict: 'E',
-		templateUrl: 'scripts/directives/SimpleFilter.html'
+		templateUrl: 'templates/SimpleFilter.html'
 	};
 
 	function simpleFilterController($scope) {

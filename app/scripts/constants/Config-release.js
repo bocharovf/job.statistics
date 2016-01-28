@@ -12,7 +12,7 @@
 angular
 	.module('hhStat')
 	.constant('ConfigConst', {
-		backendBaseUrl: "http://job.bocharovf.ru/api/",
+		backendBaseUrl: "http://test.bocharovf.ru/backend/api/",
     backendTimeout: 1000,
 		headHunterUrl: "https://api.hh.ru/",
     headHunterTimeout: 15000

@@ -24,7 +24,7 @@ angular.module('hhStat')
 
 		result.selectedCurrency = null;
 		result.selectedValueType = result.valueTypes[0];
-		result.selectedChartType = result.chartTypes[0];
+		result.selectedChartType = result.chartTypes[1];
 
 		return result;
 }]);
