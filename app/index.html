@@ -1,20 +1,21 @@
 <!doctype html>
-<html class="no-js" ng-app="hhStat" lang="" >
+<html class="no-js" ng-app="hhStat" lang="ru" >
   <head>
     <meta charset="utf-8">
     <title>Что учить IT специалисту?</title>
     <meta name="title" content="Что учить IT специалисту?" />
-    <meta name="description" content="Графики популярности языков программирования, фреймворков и технологий на рынке труда">
+    <meta name="description" content="Графики востребованности языков программирования, фреймворков и технологий на рынке труда">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <meta property="og:title" content="Что учить IT специалисту?" />
     <meta property="og:description" 
-            content="Графики популярности языков программирования, фреймворков и технологий на рынке труда" />
+            content="Графики востребованности языков программирования, фреймворков и технологий на рынке труда" />
     <meta property="og:url" content="http://job.bocharovf.ru" />
     <meta property="og:image" content="images/logo.png" />
+    
     <link href='https://fonts.googleapis.com/css?family=Play&subset=cyrillic' rel='stylesheet' type='text/css'>
+    
     <link rel="image_src" href="images/logo.png" />
-
     <link rel="apple-touch-icon-precomposed" sizes="57x57" href="apple-touch-icon-57x57.png" />
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="apple-touch-icon-114x114.png" />
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="apple-touch-icon-72x72.png" />
@@ -28,6 +29,7 @@
     <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32" />
     <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16" />
     <link rel="icon" type="image/png" href="favicon-128.png" sizes="128x128" />
+
     <meta name="application-name" content="Что учить IT специалисту?"/>
     <meta name="msapplication-TileColor" content="#FFFFFF" />
     <meta name="msapplication-TileImage" content="mstile-144x144.png" />
@@ -103,28 +105,27 @@
 	<section id="aboutSection" class="about-section">
         		
         <div class="devise">
-    	     <h1>Статистика для IT-специалистов</h1>
+    	     <h1>Что учить IT специалисту?</h1>
              
+             <p class="devise-phrase">Десятки языков, сотни фреймворков, тысячи библиотек ...</p>
+
+             <p>Сравните <span class="devise-key">доход</span> специалистов различных направлений</p>
+             <p>Определите <span class="devise-key">востребованность</span> технологии в Вашем городе</p>
     	</div>
 
-    	<div class="howto-video">
-    	  
-            <video autoplay loop>
-              <source src="images/header.mp4" type="video/mp4">
-            </video>
-
+    	<div class="about-image">
+            <img src="images/about-img.png" alt="Что учить IT специалисту?" />
     	</div>		
 	</section>
     
     <!-- Startup -->
-    <section class="startup-section">
-<!-- 
-        <h1>Что учить? Узнай за 10 секунд ... 
-            <button class="btn-xlg btn-primary" type="button">
-                <span>Старт</span>
-            </button>
-        </h1> -->
+    <section class="startup-section" ng-controller="MenuCtrl as menu">
 
+        <h1>Ваше время стоит денег</h1>
+
+        <button class="btn-xlg btn-primary" type="button" ng-click="menu.scrollTo('searchSection')">
+            <span>Узнать сколько</span>
+        </button>
     </section>
 
     <!-- Search --> 
@@ -144,7 +145,7 @@
                     <span
                         ng-bind="search.buttonText()" 
                         ng-show="search.queryInProgress == 0"></span>
-                    <img ng-show="search.queryInProgress > 0" src="images/loading.gif" />
+                    <img src="images/loading.gif" ng-show="search.queryInProgress > 0" />
                 </button>
               </span>
             </div>
@@ -310,7 +311,7 @@
                 <highchart id="mainChart" config="search.chartConfig.config"></highchart>
             </div>
             
-            <span class="chart-select-tip">Нажмите, чтобы выбрать график:</span>
+            <span class="chart-select-tip">Выберите тип графика:</span>
 
             <div class="demo-chart-container">
                 <div ng-repeat="chart in search.demoCharts">
@@ -369,25 +370,11 @@
     <script src="scripts/directives/HierarchyFilter.js"></script>
     <!-- endbuild -->
 
-    
     <!-- build:js(.) scripts/plugins.js -->
     <script src="/bower_components/highcharts/lib/modules/exporting.js"></script>
     <script src="/bower_components/highcharts/lib/highcharts-more.js"></script>
-    <!--<script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/affix.js"></script>
-    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/alert.js"></script>
-    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/dropdown.js"></script>
-    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/tooltip.js"></script>
-    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/modal.js"></script>
-    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/transition.js"></script>
-    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/button.js"></script>
-    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/popover.js"></script>
-    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/carousel.js"></script>
-    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/scrollspy.js"></script>
-    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/collapse.js"></script>
-    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/tab.js"></script>-->
     <!-- endbuild -->
     
-    <!--(if target dist)>
     <script>
       (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
       function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
@@ -396,13 +383,10 @@
       r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
       ga('create','UA-XXXXX-X');ga('send','pageview');
     </script>
-    <!(endif)-->
-    
-    <!--(if target dist)>
+
     <script type="text/javascript">var switchTo5x=true;</script>
     <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
     <script type="text/javascript">stLight.options({publisher: "fb8811d3-6073-4a6f-a086-17c426dc326f", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
-    <!(endif)-->
 
   </body>
 </html>

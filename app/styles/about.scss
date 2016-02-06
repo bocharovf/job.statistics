@@ -7,33 +7,62 @@ $bg-color: rgb(181,205,206); //blue
 .about-section {
   background-color: $bg-color;
   color: $color-text-primary;
-  //margin-top: $headerHeight; // respect header
-  height: $section-height;
+  min-height: $section-height;
   padding: 20px 50px;  
+  overflow: auto;
+
+  @media screen and (max-width: $width-move-about) {
+    padding: 0;
+  }  
 }
 
-.howto-video {
+.about-image {
   float: right;
-  padding-right: 20px; 
+  width: 40%;
 
-  @media screen and (max-width: $widthNoVideo) {
-    display: none;
+  @media screen and (max-width: $width-move-about) {
+    float: left;
+    width: 100%;
+    clear: both;
+    margin-bottom: 10px;
   }
 
-  iframe, video {
-    width: $videoWidth;
-    height: $videoHeight;
+  @media screen and (max-width: $about-img-width) {
+    display: none;
+  }  
+
+  img {
+    width: $about-img-width;
+    height: $about-img-height;
+    margin: 0 auto;
+    display: block;
   }
 }
 
 .devise {
   float: left;
-  width: 50%;
+  width: 60%;
+  font-size: 22px;
+  
+  @media screen and (max-width: $width-move-about) {
+    width: 100%;
+    text-align: center;
+  }
+
+  h1 {
+    font-size: 55px;
+    font-family: 'Play', sans-serif;  
+  }
+  
 }
 
-.devise-title {
-  h1 {
-    font-family: 'Play', sans-serif;
-    color: white;
-  }
+.devise-phrase {
+  font-style: italic;
+  font-size: 15px;
+  margin-bottom: 50px;
+}
+
+.devise-key {
+  color: #de5842;  
+  font-weight: bold;
 }
