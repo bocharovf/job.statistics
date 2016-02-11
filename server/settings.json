@@ -1,0 +1,5 @@
+{
+	"dbConnectionString": "localhost/job",
+	"portListen": 8080
+}
+

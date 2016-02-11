@@ -15,12 +15,14 @@ module.exports = function (grunt) {
 
   // Automatically load required grunt tasks
   require('jit-grunt')(grunt, {
-    useminPrepare: 'grunt-usemin'
+    useminPrepare: 'grunt-usemin',
+    express: 'grunt-express-server'
   });
 
   // Configurable paths
   var config = {
     app: 'app',
+    server: 'server',
     dist: 'dist',
     test: 'test',
     docs: 'docs'
@@ -31,6 +33,17 @@ module.exports = function (grunt) {
 
     // Project settings
     config: config,
+
+    express: {
+      options: {
+        // Override defaults here
+      },
+      dev: {
+        options: {
+          script: '<%= config.server %>/server.js'
+        }
+      }
+    },
 
     // Watches files for changes and runs tasks based on the changed files
     watch: {
@@ -56,6 +69,13 @@ module.exports = function (grunt) {
       styles: {
         files: ['<%= config.app %>/styles/{,*/}*.css'],
         tasks: ['newer:copy:styles', 'postcss']
+      },
+      express: {
+        files:  [ 'server/*.js' ],
+        tasks:  [ 'express:dev' ],
+        options: {
+          spawn: false // for grunt-contrib-watch v0.5.0+, "nospawn: true" for lower versions. Without this option specified express won't be reloaded
+        }
       }
     },
 
@@ -131,12 +151,13 @@ module.exports = function (grunt) {
       target: [
         'Gruntfile.js',
         '<%= config.app %>/scripts/{,*/}*.js',
+        '<%= config.server %>/{,*/}*.js',
         '!<%= config.app %>/scripts/vendor/*',
         'test/spec/{,*/}*.js'
       ]
     },
 
-    // Mocha testing framework configuration options
+    // Mocha testing framework - client side
     mocha: {
       all: {
         options: {
@@ -145,6 +166,16 @@ module.exports = function (grunt) {
         }
       }
     },
+
+    // Mocha testing framework - server side
+    mochaTest: {
+      test: {
+        options: {
+          reporter: 'spec'
+        },
+        src: ['test/spec/server/*.js']
+      }
+    },  
 
     // Compiles ES6 with Babel
     babel: {
@@ -359,6 +390,12 @@ module.exports = function (grunt) {
           cwd: '.',
           src: 'bower_components/bootstrap-sass/assets/fonts/bootstrap/*',
           dest: '<%= config.dist %>'
+        }, {
+          expand: true,
+          dot: true,
+          cwd: '<%= config.server %>',
+          src: ['**.js', '**.json'],
+          dest: '<%= config.dist %>/server'
         }]
       }
     },
@@ -415,6 +452,7 @@ module.exports = function (grunt) {
     }
 
     grunt.task.run([
+      'express:dev',
       'clean:server',
       'wiredep',
       'concurrent:server',
@@ -434,10 +472,11 @@ module.exports = function (grunt) {
   	grunt.task.run([
   		'clean:server',
   		'concurrent:test',
-  		'postcss',
+  		//'postcss',
   		'wiredep',
   		'browserSync:test',
-  		'mocha'        
+  		'mocha',
+      'mochaTest' 
   	]);
   
     if (target === 'watch') { 

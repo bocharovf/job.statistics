@@ -62,9 +62,9 @@ angular.module('hhStat')
 	 */
 	function logRemote (info, isError) {
 		var payload = {
-			IsError: isError || false,
-			Browser: navigator.userAgent,
-			Error: info
+			isError: isError || false,
+			browser: navigator.userAgent,
+			error: info
 		};
 
 		$http.post(	config.backendBaseUrl + 'common/log', 
