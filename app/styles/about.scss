@@ -24,10 +24,10 @@ $bg-color: rgb(181,205,206); //blue
     float: left;
     width: 100%;
     clear: both;
-    margin-bottom: 10px;
+    margin: 10px 0 20px 0;
   }
 
-  @media screen and (max-width: $about-img-width) {
+  @media screen and (max-width: $width-no-img) {
     display: none;
   }  
 
@@ -36,6 +36,12 @@ $bg-color: rgb(181,205,206); //blue
     height: $about-img-height;
     margin: 0 auto;
     display: block;
+
+    @media screen and (max-width: $width-move-about) {
+      max-width: $about-img-width;
+      max-height: $about-img-height;
+      width: 100%;
+    }    
   }
 }
 
@@ -52,6 +58,10 @@ $bg-color: rgb(181,205,206); //blue
   h1 {
     font-size: 55px;
     font-family: 'Play', sans-serif;  
+
+    @media screen and (max-width: $width-move-about) {
+      font-size: 40px;
+    }    
   }
   
 }
@@ -59,7 +69,11 @@ $bg-color: rgb(181,205,206); //blue
 .devise-phrase {
   font-style: italic;
   font-size: 15px;
-  margin-bottom: 50px;
+  margin: 0 0 50px 0;
+
+  @media screen and (max-width: $width-move-about) {
+    margin: 0 0 10px 0;
+  }  
 }
 
 .devise-key {
