@@ -19,7 +19,7 @@
     },
     "highcharts": {
       "main": [
-        "lib/highcharts.js"
+        "highcharts.js"
       ]
     }
   },
