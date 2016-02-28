@@ -23,7 +23,7 @@ angular.module('hhStat')
 		this.isExpanded = false;
 		this.collapsedContent = collapsedContent;
 
-    	this.currencies = [];
+    this.currencies = [];
 		this.valueTypes = chart.valueTypes;
 
 		this.experiences = null;

@@ -16,8 +16,8 @@ angular.module('hhStat')
 		 	displayField: "@",
 		 	valueField: "@",		 	
 		 	allowEmpty: "@",
-		 	options: "=",
-		 	selectedOption: "="
+		 	options: "=?",
+		 	selectedOption: "=?"
 		 },
 		controller: ['$scope', simpleFilterController],
 		restrict: 'E',
