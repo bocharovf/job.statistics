@@ -46,90 +46,9 @@ module.exports = function (grunt) {
     },
 
     // Watches files for changes and runs tasks based on the changed files
-    watch: {
-      bower: {
-        files: ['bower.json'],
-        tasks: ['wiredep']
-      },
-      babel: {
-        files: ['<%= config.app %>/scripts/{,*/}*.js'],
-        tasks: ['babel:dist']
-      },
-      babelTest: {
-        files: ['test/spec/{,*/}*.js'],
-        tasks: ['babel:test'] //'test:watch'
-      },
-      gruntfile: {
-        files: ['Gruntfile.js']
-      },
-      sass: {
-        files: ['<%= config.app %>/styles/{,*/}*.{scss,sass}'],
-        tasks: ['sass', 'postcss']
-      },
-      styles: {
-        files: ['<%= config.app %>/styles/{,*/}*.css'],
-        tasks: ['newer:copy:styles', 'postcss']
-      },
-      express: {
-        files:  [ 'server/*.js' ],
-        tasks:  [ 'express:dev' ],
-        options: {
-          spawn: false // for grunt-contrib-watch v0.5.0+, "nospawn: true" for lower versions. Without this option specified express won't be reloaded
-        }
-      }
-    },
+    watch: require('./grunt_config/watch_config'),
 
-    browserSync: {
-      options: {
-        notify: false,
-        background: true,
-        watchOptions: {
-          ignored: ''
-        }
-      },
-      livereload: {
-        options: {
-          files: [
-            '<%= config.app %>/{,*/}*.html',
-            '.tmp/styles/{,*/}*.css',
-            '<%= config.app %>/images/{,*/}*',
-            '.tmp/scripts/{,*/}*.js'
-          ],
-          port: 9000,
-          server: {
-            baseDir: ['.tmp', config.app],
-            routes: {
-              '/bower_components': './bower_components'
-            }
-          }
-        }
-      },
-      test: {
-        options: {
-          files: [
-            '.tmp/scripts/{,*/}*.js',
-            '.tmp/spec/{,*/}*.js'
-          ],          
-          port: 9001,
-          open: true,
-          logLevel: 'silent',
-          host: 'localhost',
-          server: {
-            baseDir: ['.tmp', './test', '.tmp/scripts'],
-            routes: {
-              '/bower_components': './bower_components',
-              '/node_modules': './node_modules'
-            }
-          }
-        }
-      },
-      dist: {
-        options: {
-          background: false,
-          server: '<%= config.dist %>'
-        }
-      }
-    },
+    browserSync: require('./grunt_config/browserSync_config'),
 
     // Empties folders to start fresh
     clean: {
@@ -178,68 +97,12 @@ module.exports = function (grunt) {
     },  
 
     // Compiles ES6 with Babel
-    babel: {
-      options: {
-        sourceMap: true
-      },
-      dist: {
-        files: [{
-          expand: true,
-          cwd: '<%= config.app %>/scripts',
-          src: '{,*/}*.js',
-          dest: '.tmp/scripts',
-          ext: '.js'
-        }]
-      },
-      test: {
-        files: [{
-          expand: true,
-          cwd: 'test/spec',
-          src: '{,*/}*.js',
-          dest: '.tmp/spec',
-          ext: '.js'
-        }]
-      }
-    },
+    babel: require('./grunt_config/babel_config'),
 
     // Compiles Sass to CSS and generates necessary files if requested
-    sass: {
-      options: {
-        sourceMap: true,
-        sourceMapEmbed: true,
-        sourceMapContents: true,
-        includePaths: ['.']
-      },
-      dist: {
-        files: [{
-          expand: true,
-          cwd: '<%= config.app %>/styles',
-          src: ['*.{scss,sass}'],
-          dest: '.tmp/styles',
-          ext: '.css'
-        }]
-      }
-    },
+    sass: require('./grunt_config/sass_config'),
 
-    postcss: {
-      options: {
-        map: true,
-        processors: [
-          // Add vendor prefixed styles
-          require('autoprefixer')({
-            browsers: ['> 1%', 'last 2 versions', 'Firefox ESR']
-          })
-        ]
-      },
-      dist: {
-        files: [{
-          expand: true,
-          cwd: '.tmp/styles/',
-          src: '{,*/}*.css',
-          dest: '.tmp/styles/'
-        }]
-      }
-    },
+    postcss: require('./grunt_config/postcss_config'),
 
     // Automatically inject Bower components into the HTML file
     wiredep: {
@@ -321,84 +184,10 @@ module.exports = function (grunt) {
       }
     },    
 
-    htmlmin: {
-      dist: {
-        options: {
-          collapseBooleanAttributes: true,
-          collapseWhitespace: true,
-          conservativeCollapse: true,
-          removeAttributeQuotes: true,
-          removeCommentsFromCDATA: true,
-          removeEmptyAttributes: true,
-          removeOptionalTags: true,
-          // true would impact styles with attribute selectors
-          removeRedundantAttributes: false,
-          useShortDoctype: true
-        },
-        files: [{
-          expand: true,
-          cwd: '<%= config.dist %>',
-          src: '{,*/}*.html',
-          dest: '<%= config.dist %>'
-        }]
-      }
-    },
-
-    // By default, your `index.html`'s <!-- Usemin block --> will take care
-    // of minification. These next options are pre-configured if you do not
-    // wish to use the Usemin blocks.
-    // cssmin: {
-    //   dist: {
-    //     files: {
-    //       '<%= config.dist %>/styles/main.css': [
-    //         '.tmp/styles/{,*/}*.css',
-    //         '<%= config.app %>/styles/{,*/}*.css'
-    //       ]
-    //     }
-    //   }
-    // },
-    // uglify: {
-    //   dist: {
-    //     files: {
-    //       '<%= config.dist %>/scripts/scripts.js': [
-    //         '<%= config.dist %>/scripts/scripts.js'
-    //       ]
-    //     }
-    //   }
-    // },
-    // concat: {
-    //   dist: {}
-    // },
+    htmlmin: require('./grunt_config/htmlmin_config'),
 
     // Copies remaining files to places other tasks can use
-    copy: {
-      dist: {
-        files: [{
-          expand: true,
-          dot: true,
-          cwd: '<%= config.app %>',
-          dest: '<%= config.dist %>',
-          src: [
-            '*.{ico,png,txt}',
-            'images/{,*/}*.webp',
-            '{,*/}*.html',
-            'styles/fonts/{,*/}*.*'
-          ]
-        }, {
-          expand: true,
-          dot: true,
-          cwd: '.',
-          src: 'bower_components/bootstrap-sass/assets/fonts/bootstrap/*',
-          dest: '<%= config.dist %>'
-        }, {
-          expand: true,
-          dot: true,
-          cwd: '<%= config.server %>',
-          src: ['**.js', '**.json'],
-          dest: '<%= config.dist %>/server'
-        }]
-      }
-    },
+    copy: require('./grunt_config/copy_config'),
 
     // Generates a custom Modernizr build that includes only the tests you
     // reference in your app
