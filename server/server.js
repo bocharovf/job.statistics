@@ -43,6 +43,16 @@ app.post('/common/log', function(req, res) {
 	
 });
 
+app.post('/common/queries', function(req, res) {
+  if (!req.body) res.sendStatus(500, "Incorrect request"); 
+  
+  model.logQuery(req.body, function (err, docs) {
+    if (err) res.json(500, err);
+    else res.sendStatus(200);
+  });
+  
+});
+
 var server = app.listen(settings.portListen);
 
 // let grunt-express-server task know that server has started

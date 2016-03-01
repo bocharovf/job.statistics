@@ -9,8 +9,10 @@
 angular.module('hhStat')
     .controller('SearchCtrl', ['$scope', 'SearchService', 'ChartService', 'BackendService', 'CurrencyService', 
     	function($scope, search, chart, backend, currency) {
-       	var self = this;
+    
+    var self = this;
 
+    this.query = '';
 		this.queryInProgress = 0;
 		this.maxQueryInProgress = 0;
 		
@@ -66,6 +68,8 @@ angular.module('hhStat')
 		}
 
 		function searchQuery (query) {
+			self.query = query; // in case of click on suggestion
+
 			if (query) selectRandomSuggestion();
 
 			clearEmptyResults();
@@ -103,7 +107,6 @@ angular.module('hhStat')
 		 * @param {String} [token] Token to remove
 		 */
 		function clearResult (token) {
-
 			if (token) {
 				delete self.results[token];
 				refreshChartSeries ();
@@ -150,7 +153,7 @@ angular.module('hhStat')
 		 */
 		function searchOnEnter (keyEvent) {
 			if (keyEvent.which === 13 /*Enter*/)
-    			self.search(self.query);
+    			searchQuery(self.query);
 		}
 
 		/**
@@ -190,7 +193,6 @@ angular.module('hhStat')
 		 * @param  {Object} args  Args
 		 */
 		function onFilterChanged (event, args) {
-
 			if (args.isNewSearchRequired) 
 				retrySearch();	
 
@@ -207,11 +209,10 @@ angular.module('hhStat')
 		 */
 		function mergeResult (result) {
 			var key = result.request.token;
-			if (key in self.results) { 
+			if (key in self.results)
 				self.results[key].merge(result);
-			} else {
+			else
 				self.results[key] = result;
-			}
 		}
 
 		/**
@@ -248,7 +249,6 @@ angular.module('hhStat')
 
 				demoChart.updateSeries(self.results)		    	
 		    });
-
 		}
 		
 		/**
@@ -316,6 +316,16 @@ angular.module('hhStat')
 		 * @description Handle end of search
 		 */
 		function finishSearch () {
+			
+			var currentFilter = {
+				region: search.selectedRegion ? search.selectedRegion.id : null,
+				experience: search.selectedExperience ? search.selectedExperience.id : null,
+				currency: currency.selectedCurrency,
+				chart: chart.selectedValueType.id,
+				chartType: chart.selectedChartType.id
+			};
+			backend.logQuery(self.query, currentFilter);
+
 			self.query = '';
 			self.maxQueryInProgress = 0;
 		}

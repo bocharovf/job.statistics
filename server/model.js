@@ -16,6 +16,7 @@ var db = monk(settings.dbConnectionString);
 module.exports.getSuggestions = getSuggestions;
 module.exports.getCloudTags = getCloudTags;
 module.exports.addLog = addLog;
+module.exports.logQuery = logQuery;
 
 /**
  * @function
@@ -31,7 +32,7 @@ function getSuggestions (cb) {
 /**
  * @function
  * @memberOf hhStat.Server.Model
- * @description Return array of suggestions
+ * @description Return array of cloud tags
  * @param  {Function} cb Callback
  * @return {Object}      Promise
  */
@@ -42,7 +43,7 @@ function getCloudTags (cb) {
 /**
  * @function
  * @memberOf hhStat.Server.Model
- * @description Return array of suggestions
+ * @description Add log message
  * @param  {Function} cb Callback
  * @return {Object}      Promise
  */
@@ -50,3 +51,13 @@ function addLog (record, cb) {
 	db.get('log').insert(record, cb);
 }
   
+/**
+ * @function
+ * @memberOf hhStat.Server.Model
+ * @description Log query to database
+ * @param  {Function} cb Callback
+ * @return {Object}      Promise
+ */
+function logQuery(record, cb) {
+	db.get('query').insert(record, cb);
+}

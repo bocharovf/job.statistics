@@ -11,7 +11,7 @@
  */
 function ChartExtension (isMainChart, chartType, valueType, currency, currencyService) {
 	var self = this;
-
+	
 	this.isMainChart = isMainChart;
 	this.valueType = valueType;
 	this.currency = currency;

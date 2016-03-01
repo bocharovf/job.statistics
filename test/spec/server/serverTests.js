@@ -42,6 +42,28 @@
 
     });
 
+    describe('POST /common/queries', function () {
+      
+      it('should log query', function () {       
+
+        chai.request( "http://localhost:" + settings.portListen)
+            .post("/common/queries")
+            .send(
+              {
+                session: '3bce4931-6c75-41ab-afe0-2ec108a30860',
+                query: "c#, java, c++"
+              }
+            ).then(function (res) {
+               expect(res).to.have.status(200);
+            })
+            .catch(function (err) {
+               throw err;
+            });
+
+      });
+
+    });    
+
     describe('GET /dictionary/suggestion', function () {
       
       it('should return array of suggestions', function () {       

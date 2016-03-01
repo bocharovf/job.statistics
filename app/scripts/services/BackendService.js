@@ -7,12 +7,14 @@
   */
  
 angular.module('hhStat')
-	.service('BackendService', ['ConfigConst', '$http', function(config, $http) {
+	.service('BackendService', ['ConfigConst', 'CommonService', '$http', 
+		function(config, common, $http) {
 
 	var result = {
 		getSuggestions: getSuggestions,
 		getCloudTags: getCloudTags,
-		logRemote: logRemote
+		logRemote: logRemote,
+		logQuery: logQuery
 	};
 
 	var defaultConfig = {
@@ -56,7 +58,7 @@ angular.module('hhStat')
 	/**
 	 * @function
 	 * @memberOf hhStat.BackendService
-	 * @description Log information to remote machine
+	 * @description Log information to database
 	 * @param  {Object} info Information or error data to log
 	 * @param  {Bool} isError Is it error ot not
 	 */
@@ -71,6 +73,25 @@ angular.module('hhStat')
 					payload, 
 					defaultConfig );
 	}
+
+	/**
+	 * @function
+	 * @memberOf hhStat.BackendService
+	 * @description Log query to database
+	 * @param  {string} query Query to log
+	 * @param {Object} filter Current filter
+	 */
+	function logQuery (query, filter) {
+		var payload = {
+			query: query,
+			session: common.session,
+			filter: filter
+		};
+
+		$http.post(	config.backendBaseUrl + 'common/queries', 
+					payload, 
+					defaultConfig );
+	}	
 
 }]);
 
