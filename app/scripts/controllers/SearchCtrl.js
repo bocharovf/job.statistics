@@ -12,6 +12,7 @@ angular.module('hhStat')
     
     var self = this;
 
+		this.isAnyRequestDone = false;
     this.query = '';
 		this.queryInProgress = 0;
 		this.maxQueryInProgress = 0;
@@ -39,7 +40,7 @@ angular.module('hhStat')
 		this.placeholder = placeholder;
 		this.buttonText = buttonText;
 		this.isAllResultsEmpty = isAllResultsEmpty;
-
+		
 		search.subscribe ('SEARCH_SUCCESS', $scope, onSearchSuccess);
 		search.subscribe ('SEARCH_FAILED', $scope, onSearchFailed);
 		search.subscribe ('SEARCH_START', $scope, onSearchStart);
@@ -67,13 +68,23 @@ angular.module('hhStat')
 				});			
 		}
 
+		/**
+		 * @function
+		 * @memberOf hhStat.SearchCtrl
+		 * @description Perform search
+		 * @param  {String} query Query to search
+		 */
 		function searchQuery (query) {
+			if (!query) return; 
+
 			self.query = query; // in case of click on suggestion
 
-			if (query) selectRandomSuggestion();
+			selectRandomSuggestion();
 
 			clearEmptyResults();
 			search.search(query);
+
+			self.isAnyRequestDone = true;
 		}
 
 		/**

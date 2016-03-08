@@ -135,11 +135,22 @@
 		<article class="search-box">
             
             <div class="input-group">
-              <input type="text" 
+
+              <input
+                    id="searchBox"                     
+                    type="text" 
                     class="form-control" 
+                    
+                    tooltip-trigger="focus"
+                    tooltip-enable="!search.isAnyRequestDone"
+                    tooltip-placement="top"
+                    uib-tooltip="Вы можете искать несколько названий сразу, разделяя их запятыми!"
+
                     ng-attr-placeholder="{{search.placeholder()}}" 
                     ng-model="search.query" 
-                    ng-keypress="search.searchOnEnter($event)">
+                    ng-keypress="search.searchOnEnter($event)"
+                    ng-focus="search.showTooltip()"
+                    ng-blur="search.hideTooltip()">
               <span class="input-group-btn">
                 <button class="btn btn-primary" type="button" ng-click="search.search(search.query)">
                     <span
@@ -335,6 +346,7 @@
     <script src="/bower_components/angular-jqcloud/angular-jqcloud.js"></script>
     <script src="/bower_components/highcharts/highcharts.js"></script>
     <script src="/bower_components/highcharts-ng/dist/highcharts-ng.js"></script>
+    <script src="/bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -374,6 +386,7 @@
     <!-- build:js(.) scripts/plugins.js -->
     <script src="/bower_components/highcharts/modules/exporting.js"></script>
     <script src="/bower_components/highcharts/highcharts-more.js"></script>
+    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/tooltip.js"></script>
     <!-- endbuild -->
     
     <script>
@@ -382,12 +395,19 @@
       e=o.createElement(i);r=o.getElementsByTagName(i)[0];
       e.src='https://www.google-analytics.com/analytics.js';
       r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-      ga('create','UA-XXXXX-X');ga('send','pageview');
+      ga('create','UA-46635392-1');ga('send','pageview');
     </script>
 
     <script type="text/javascript">var switchTo5x=true;</script>
     <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
-    <script type="text/javascript">stLight.options({publisher: "fb8811d3-6073-4a6f-a086-17c426dc326f", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
+    <script type="text/javascript">
+        stLight.options({
+            publisher: "fb8811d3-6073-4a6f-a086-17c426dc326f", 
+            publisherGA:"UA-46635392-1",
+            doNotHash: false, 
+            doNotCopy: false, 
+            hashAddressBar: false});
+    </script>
 
   </body>
 </html>
