@@ -29,75 +29,92 @@
             <pre class="prettyprint source linenums"><code>'use strict';
 
 /**
-  * @class simpleFilter
-  * @memberOf hhStat    
-  * @description Directive that represents simple filter
-  */
- 
+ * @class simpleFilter
+ * @memberOf hhStat    
+ * @description Directive that represents simple filter
+ */
+
 angular.module('hhStat')
-	.directive('simpleFilter', function(){
-	return {
-		 scope: {
-		 	max: "@",
-		 	header: "@",
-		 	eventName: "@",
-		 	displayField: "@",
-		 	valueField: "@",		 	
-		 	options: "=",
-		 	selectedOption: "="
-		 },
-		controller: ['$scope', simpleFilterController],
-		restrict: 'E',
-		templateUrl: 'scripts/directives/SimpleFilter.html'
-	};
+  .directive('simpleFilter', function() {
+    return {
+      scope: {
+        max: '@',
+        header: '@',
+        eventName: '@',
+        displayField: '@',
+        valueField: '@',
+        allowEmpty: '@',
+        options: '=?',
+        selectedOption: '=?'
+      },
+      controller: ['$scope', simpleFilterController],
+      restrict: 'E',
+      templateUrl: 'templates/SimpleFilter.html'
+    };
 
-	function simpleFilterController($scope) {
-		var defaultMax = $scope.max;
-		var val = $scope.valueField;
+    function simpleFilterController($scope) {
+      var val = $scope.valueField;
 
-		$scope.isExpanded = true;
-		$scope.availableOptions = [];
+      $scope.isExpanded = true;
+      $scope.availableOptions = [];
 
-		$scope.selectOption = selectOption;
-		$scope.expandOptions = expandOptions;
-		$scope.toggleExpanded = toggleExpanded;
+      $scope.selectOption = selectOption;
+      $scope.expandOptions = expandOptions;
+      $scope.toggleExpanded = toggleExpanded;
+      $scope.removeSelection = removeSelection;
 
-		$scope.$watch(function () { return $scope.options }, 
-					updateAvailableOptions, true);
+      $scope.$watch(function() {
+        return $scope.options
+      },
+      updateAvailableOptions, true);
 
-		/*************** Functions ****************/
+      /*************** Functions ****************/
 
-		function updateAvailableOptions() {
-			if (!$scope.options || $scope.options.length === 0) return;
-			$scope.selectedOption = $scope.selectedOption || $scope.options[0];
+      function updateAvailableOptions() {
+        if (!$scope.options || $scope.options.length === 0) return;
 
-			$scope.availableOptions = $scope.options
-											.filter(function (option) {
-												return option[val] !== $scope.selectedOption[val];
-											});
+        if (!$scope.allowEmpty)
+          $scope.selectedOption = $scope.selectedOption || $scope.options[0];
 
-			notify($scope.eventName, $scope.selectedOption);
-		}
+        $scope.availableOptions = $scope.options
+          .filter(function(option) {
+            return $scope.selectedOption ? option[val] !== $scope.selectedOption[val] : true;
+          });
 
-		function selectOption (option) {
-			$scope.selectedOption = option;
-			updateAvailableOptions();
-		}
+        notify($scope.eventName, $scope.selectedOption);
+      }
 
-		function expandOptions () {
-			$scope.max = $scope.options.length;
-		}
+      /**
+       * @function
+       * @memberOf hhStat.simpleFilter
+       * @description Remove selection
+       */
+      function removeSelection() {
+        if ($scope.allowEmpty) {
+          $scope.selectedOption = null;
+          updateAvailableOptions();
+        }
+      }
 
-		function toggleExpanded () {
-			$scope.isExpanded = !$scope.isExpanded;
-		}
+      function selectOption(option) {
+        $scope.selectedOption = option;
+        updateAvailableOptions();
+      }
 
-	    function notify(name, args) {
-	        $scope.$emit(name, args);
-	    }    		
-	}
+      function expandOptions() {
+        $scope.max = $scope.options.length;
+      }
 
-});</code></pre>
+      function toggleExpanded() {
+        $scope.isExpanded = !$scope.isExpanded;
+      }
+
+      function notify(name, args) {
+        $scope.$emit(name, args);
+      }
+    }
+
+  });</code></pre>
         </article>
     </section>
 
@@ -107,13 +124,13 @@ angular.module('hhStat')
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="extensions.html">extensions</a></li><li><a href="hhStat.html">hhStat</a></li><li><a href="hhStat.BackendService.html">BackendService</a></li><li><a href="hhStat.ChartService.html">ChartService</a></li><li><a href="hhStat.ConfigConst.html">ConfigConst</a></li><li><a href="hhStat.CurrencyService.html">CurrencyService</a></li><li><a href="hhStat.FilterCtrl.html">FilterCtrl</a></li><li><a href="hhStat.HeadHunter.html">HeadHunter</a></li><li><a href="hhStat.hierarchyFilter.html">hierarchyFilter</a></li><li><a href="hhStat.MenuCtrl.html">MenuCtrl</a></li><li><a href="hhStat.SearchCtrl.html">SearchCtrl</a></li><li><a href="hhStat.SearchResult.html">SearchResult</a></li><li><a href="hhStat.SearchService.html">SearchService</a></li><li><a href="hhStat.simpleFilter.html">simpleFilter</a></li><li><a href="hhStat.TagCloudCtrl.html">TagCloudCtrl</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="hhStat.html">hhStat</a></li><li><a href="hhStat.BackendService.html">BackendService</a></li><li><a href="hhStat.ChartExtension.html">ChartExtension</a></li><li><a href="hhStat.ChartService.html">ChartService</a></li><li><a href="hhStat.CommonService.html">CommonService</a></li><li><a href="hhStat.ConfigConst.html">ConfigConst</a></li><li><a href="hhStat.CurrencyService.html">CurrencyService</a></li><li><a href="hhStat.FilterCtrl.html">FilterCtrl</a></li><li><a href="hhStat.HeadHunterService.html">HeadHunterService</a></li><li><a href="hhStat.hierarchyFilter.html">hierarchyFilter</a></li><li><a href="hhStat.MenuCtrl.html">MenuCtrl</a></li><li><a href="hhStat.SearchCtrl.html">SearchCtrl</a></li><li><a href="hhStat.SearchResult.html">SearchResult</a></li><li><a href="hhStat.SearchService.html">SearchService</a></li><li><a href="hhStat.simpleFilter.html">simpleFilter</a></li><li><a href="hhStat.TagCloudCtrl.html">TagCloudCtrl</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Jan 21 2016 21:53:49 GMT+0300 (RTZ 2 (зима))
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Mar 10 2016 23:05:48 GMT+0300 (MSK)
 </footer>
 
 <script> prettyPrint(); </script>

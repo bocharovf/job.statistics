@@ -30,139 +30,180 @@
 
 
 /**
-  * @class FilterCtrl
-  * @memberOf hhStat    
-  * @description Manage search filters
-  */
+ * @class FilterCtrl
+ * @memberOf hhStat    
+ * @description Manage search filters
+ */
 
 angular.module('hhStat')
-    .controller('FilterCtrl', ['HeadHunter', 'SearchService', 'ChartService', '$scope', '$rootScope',
-    	function(headHunter, search, chart, $scope, $rootScope) {
-        var self = this;
-        var availableCurrencies = ['RUR','USD','EUR'];
-        this.specialAreas = [
-			'Россия','Украина','Беларусь',
-			'Москва','Санкт-Петербург','Московская область',
-			'Новосибирск','Екатеринбург','Нижний Новгород','Казань',
-			'Самара','Челябинск','Омск','Ростов-на-Дону','Уфа',
-			'Красноярск','Пермь','Волгоград','Воронеж'
-        ];
+  .controller('FilterCtrl', ['HeadHunter', 'SearchService', 'ChartService', '$scope',
+    function(headHunter, search, chart, $scope) {
+      var self = this;
+      var availableCurrencies = ['RUR', 'USD', 'EUR'];
+      this.specialAreas = [
+        'Россия', 'Украина', 'Беларусь',
+        'Москва', 'Санкт-Петербург', 'Московская область',
+        'Новосибирск', 'Екатеринбург', 'Нижний Новгород', 'Казань',
+        'Самара', 'Челябинск', 'Омск', 'Ростов-на-Дону', 'Уфа',
+        'Красноярск', 'Пермь', 'Волгоград', 'Воронеж'
+      ];
 
-		this.isExpanded = false;
-		this.collapsedContent = collapsedContent;
+      this.isExpanded = false;
+      this.collapsedContent = collapsedContent;
 
-    	this.currencies = [];
-		this.selectedCurrency = null;
+      this.currencies = [];
+      this.valueTypes = chart.valueTypes;
 
-		this.valueTypes = chart.valueTypes;
-		this.selectedValueType = chart.valueTypes[0];
+      this.experiences = null;
+      this.areas = null;
 
-		this.areas = null;
+      subscribe('REGION_CHANGED', $scope, onSelectedRegionChanged);
+      subscribe('CURRENCY_CHANGED', $scope, onSelectedCurrencyChanged);
+      subscribe('VALUE_TYPE_CHANGED', $scope, onSelectedValueTypeChanged);
+      subscribe('EXPERIENCE_CHANGED', $scope, onSelectedExperienceChanged);
 
-		subscribe ('REGION_CHANGED', $scope, onSelectedRegionChanged);
-		subscribe ('CURRENCY_CHANGED', $scope, onSelectedCurrencyChanged);
-		subscribe ('VALUE_TYPE_CHANGED', $scope, onSelectedValueType);
+      activate();
 
-		activate();
+      /****************** Functions ***************/
 
-		/****************** Functions ***************/
+      /**
+       * @function
+       * @private
+       * @memberOf hhStat.FilterCtrl
+       * @description Module activation function
+       */
+      function activate() {
+        headHunter.getCurrencies().then(function(currencies) {
+          self.currencies = currencies.filter(function(cur) {
+            return availableCurrencies.indexOf(cur.code) >= 0;
+          });
 
-		/**
-		 * @function
-		 * @private
-		 * @memberOf hhStat.FilterCtrl
-		 * @description Module activation function
-		 */
-		function activate () {
-			headHunter.getCurrencies().then(function (currencies) {
-				self.currencies = currencies.filter(function (cur) {
-					return availableCurrencies.indexOf(cur.code) >= 0;
-				});
+          // TODO: select currency based on geo location 
+          chart.selectedCurrency = self.currencies[0];
+        });
 
-				// TODO: select currency based on geo location 
-				self.selectedCurrency = self.currencies[0];
-			});
+        headHunter.getExperiences().then(function(experiences) {
+          self.experiences = experiences;
+        });
 
-			headHunter.getAreas().then(function (areas) {
-				self.areas = areas;
-				// TODO: select area based on geo location
-			});
-		}
+        headHunter.getAreas().then(function(areas) {
+          self.areas = areas;
+          // TODO: select area based on geo location
+        });
+      }
 
-		/**
-		 * @function
-		 * @private
-		 * @memberOf hhStat.FilterCtrl
-		 * @description Handle change of currency
-		 * @param  {Object} event Event
-		 * @param  {Object} args  Selected currency
-		 */
-		function onSelectedCurrencyChanged (event, args) {
-			self.selectedCurrency = args;
-		}
+      /**
+       * @function
+       * @private
+       * @memberOf hhStat.FilterCtrl
+       * @description Handle change of currency
+       * @param  {Object} event Event
+       * @param  {Object} args  Selected currency
+       */
+      function onSelectedCurrencyChanged(event, args) {
+        chart.selectedCurrency = args;
+        notify('FILTER_CHANGED', {
+          isSeriesRefreshRequired: true
+        });
+      }
 
-		/**
-		 * @function
-		 * @private
-		 * @memberOf hhStat.FilterCtrl
-		 * @description Handle change of region
-		 * @param  {Object} event Event
-		 * @param  {Object} args  Selected region
-		 */
-		function onSelectedRegionChanged (event, args) {
-			search.selectedRegion = args;
-		}
+      /**
+       * @function
+       * @private
+       * @memberOf hhStat.FilterCtrl
+       * @description Handle change of value type
+       * @param  {Object} event Event
+       * @param  {Object} args  Selected value type
+       */
+      function onSelectedValueTypeChanged(event, args) {
+        chart.selectedValueType = args;
+        notify('FILTER_CHANGED', {
+          isSeriesRefreshRequired: true
+        });
+      }
 
-		/**
-		 * @function
-		 * @private
-		 * @memberOf hhStat.FilterCtrl
-		 * @description Handle change of value type
-		 * @param  {Object} event Event
-		 * @param  {Object} args  Selected value type
-		 */
-		function onSelectedValueType (event, args) {
-			self.selectedValueType = args;
-		}
+      /**
+       * @function
+       * @private
+       * @memberOf hhStat.FilterCtrl
+       * @description Handle change of region
+       * @param  {Object} event Event
+       * @param  {Object} args  Selected region
+       */
+      function onSelectedRegionChanged(event, args) {
+        search.selectedRegion = args;
+        notify('FILTER_CHANGED', {
+          isNewSearchRequired: true
+        });
+      }
 
-		/**
-		 * @function
-		 * @memberOf hhStat.FilterCtrl
-		 * @description Returns summary of current filter for collapsed mode
-		 * @return {string} Filter summary text
-		 */
-		function collapsedContent () {
-											
-			var filtersArray = [];
-			if (self.selectedValueType)
-				filtersArray.push(self.selectedValueType.name.toLowerCase());
+      /**
+       * @function
+       * @private
+       * @memberOf hhStat.FilterCtrl
+       * @description Handle change of region
+       * @param  {Object} event Event
+       * @param  {Object} args  Selected region
+       */
+      function onSelectedExperienceChanged(event, args) {
+        search.selectedExperience = args;
+        notify('FILTER_CHANGED', {
+          isNewSearchRequired: true
+        });
+      }
 
-			if (self.selectedCurrency)
-				filtersArray.push(self.selectedCurrency.name.toLowerCase());
+      /**
+       * @function
+       * @memberOf hhStat.FilterCtrl
+       * @description Returns summary of current filter for collapsed mode
+       * @return {string} Filter summary text
+       */
+      function collapsedContent() {
 
-			if (search.selectedRegion)
-				filtersArray.push(search.selectedRegion.name);
+        var filtersArray = [];
+        if (chart.selectedValueType)
+          filtersArray.push(chart.selectedValueType.name.toLowerCase());
 
-			var filter = filtersArray.join(', ') || "не выбран";
+        if (chart.selectedCurrency)
+          filtersArray.push(chart.selectedCurrency.name.toLowerCase());
 
-			return 	"Фильтр: " + filter;
-		}
+        if (search.selectedExperience)
+          filtersArray.push(search.selectedExperience.name.toLowerCase());
 
-		/**
-		 * @function
-		 * @private
-		 * @memberOf hhStat.FilterCtrl
-		 * @description Subscribe to event
-		 * @param  {string}   name     Event name
-		 * @param  {Object}   scope    Scope
-		 * @param  {Function} callback Callback 
-		 */
-		function subscribe (name, scope, callback) {
-	        var handler = scope.$on(name, callback);
-	        scope.$on('$destroy', handler);
-	    }		
-    }]);
-</code></pre>
+        if (search.selectedRegion)
+          filtersArray.push(search.selectedRegion.name);
+
+        return filtersArray.join(', ') || 'не выбран';
+      }
+
+      /**
+       * @function
+       * @private
+       * @memberOf hhStat.FilterCtrl
+       * @description Subscribe to event
+       * @param  {string}   name     Event name
+       * @param  {Object}   scope    Scope
+       * @param  {Function} callback Callback 
+       */
+      function subscribe(name, scope, callback) {
+        var handler = scope.$on(name, callback);
+        scope.$on('$destroy', handler);
+      }
+
+      /**
+       * @function
+       * @private
+       * @memberOf hhStat.FilterCtrl
+       * @description Notify parent scope
+       * @param  {String} name Event name
+       * @param  {Object} args Event args
+       */
+      function notify(name, args) {
+        $scope.$emit(name, args);
+      }
+
+    }
+  ]);</code></pre>
         </article>
     </section>
 
@@ -172,13 +213,13 @@ angular.module('hhStat')
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="extensions.html">extensions</a></li><li><a href="hhStat.html">hhStat</a></li><li><a href="hhStat.BackendService.html">BackendService</a></li><li><a href="hhStat.ChartService.html">ChartService</a></li><li><a href="hhStat.ConfigConst.html">ConfigConst</a></li><li><a href="hhStat.CurrencyService.html">CurrencyService</a></li><li><a href="hhStat.FilterCtrl.html">FilterCtrl</a></li><li><a href="hhStat.HeadHunter.html">HeadHunter</a></li><li><a href="hhStat.hierarchyFilter.html">hierarchyFilter</a></li><li><a href="hhStat.MenuCtrl.html">MenuCtrl</a></li><li><a href="hhStat.SearchCtrl.html">SearchCtrl</a></li><li><a href="hhStat.SearchResult.html">SearchResult</a></li><li><a href="hhStat.SearchService.html">SearchService</a></li><li><a href="hhStat.simpleFilter.html">simpleFilter</a></li><li><a href="hhStat.TagCloudCtrl.html">TagCloudCtrl</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="hhStat.html">hhStat</a></li><li><a href="hhStat.BackendService.html">BackendService</a></li><li><a href="hhStat.ChartExtension.html">ChartExtension</a></li><li><a href="hhStat.ChartService.html">ChartService</a></li><li><a href="hhStat.CommonService.html">CommonService</a></li><li><a href="hhStat.ConfigConst.html">ConfigConst</a></li><li><a href="hhStat.CurrencyService.html">CurrencyService</a></li><li><a href="hhStat.FilterCtrl.html">FilterCtrl</a></li><li><a href="hhStat.HeadHunterService.html">HeadHunterService</a></li><li><a href="hhStat.hierarchyFilter.html">hierarchyFilter</a></li><li><a href="hhStat.MenuCtrl.html">MenuCtrl</a></li><li><a href="hhStat.SearchCtrl.html">SearchCtrl</a></li><li><a href="hhStat.SearchResult.html">SearchResult</a></li><li><a href="hhStat.SearchService.html">SearchService</a></li><li><a href="hhStat.simpleFilter.html">simpleFilter</a></li><li><a href="hhStat.TagCloudCtrl.html">TagCloudCtrl</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Jan 21 2016 21:53:49 GMT+0300 (RTZ 2 (зима))
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Mar 10 2016 23:05:48 GMT+0300 (MSK)
 </footer>
 
 <script> prettyPrint(); </script>

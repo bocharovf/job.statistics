@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: services/ChartService.js</title>
+    <title>JSDoc: Source: extensions/CommonFunctions.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: services/ChartService.js</h1>
+    <h1 class="page-title">Source: extensions/CommonFunctions.js</h1>
 
     
 
@@ -29,44 +29,39 @@
             <pre class="prettyprint source linenums"><code>'use strict';
 
 /**
- * @class ChartService
- * @memberOf hhStat   
- * @description Support chart operations
+ * @class CommonService
+ * @memberOf hhStat 
+ * @description Common and shared functionality
  */
 
 angular.module('hhStat')
-  .service('ChartService', [function() {
+  .service('CommonService', [function() {
 
-    var result = {};
-    result.chartTypes = [{
-      id: 'pie',
-      name: 'Круговая'
-    }, {
-      id: 'column',
-      name: 'Колоночная'
-    }, {
-      id: 'bar',
-      name: 'Бары'
-    }, {
-      id: 'polar',
-      name: 'Полюса'
-    }];
-
-    result.valueTypes = [{
-      id: 'avgSalary',
-      name: 'Средняя зарплата',
-      title: 'Соотношение средних зарплат'
-    }, {
-      id: 'amountTotal',
-      name: 'Кол-во вакансий',
-      title: 'Соотношение количества вакансий'
-    }];
-
-    result.selectedCurrency = null;
-    result.selectedValueType = result.valueTypes[0];
-    result.selectedChartType = result.chartTypes[1];
+    var result = {
+      session: guid()
+    };
 
     return result;
+
+    /****************** Functions ***************/
+
+    /**
+     * @function
+     * @private
+     * @memberOf hhStat.CommonService
+     * @description Produce unique identifier
+     * @return {string} Unique identifier
+     */
+    function guid() {
+      function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+          .toString(16)
+          .substring(1);
+      }
+      return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+        s4() + '-' + s4() + s4() + s4();
+    }
+
   }]);</code></pre>
         </article>
     </section>

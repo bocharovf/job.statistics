@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: extensions/ChartExtension.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: extensions/ChartExtension.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict'
+/*eslint no-unused-vars: [2, { "varsIgnorePattern": "ChartExtension" }]*/
+
+/**
+ * @class ChartExtension
+ * @memberOf hhStat
+ * @description Represents chart object
+ * @param {Boolean} isMainChart     Is it main chart or demo
+ * @param {Object}  chartType       Chart type
+ * @param {Object}  valueType       Value type
+ * @param {Object}  currency        Currency
+ * @param {hhStat.CurrencyService}  currencyService Instance of CurrencyService
+ */
+function ChartExtension(isMainChart, chartType, valueType, currency, currencyService) {
+  var self = this;
+
+  this.isMainChart = isMainChart;
+  this.valueType = valueType;
+  this.currency = currency;
+
+  this.updateSeries = updateSeries;
+  this.refresh = refresh;
+
+  var currencyName = (self.currency ? self.currency.name : null);
+
+  this.config = {
+    options: {
+      chart: {
+        type: chartType.id,
+        animation: false,
+        backgroundColor: '#ededea'
+      },
+      legend: {
+        enabled: isMainChart
+      },
+      tooltip: {
+        enabled: isMainChart,
+        formatter: tooltipFormatter
+      },
+      exporting: {
+        buttons: {
+          contextButton: {
+            enabled: isMainChart,
+            symbolFill: '#ededea',
+            symbol: 'menu',
+            symbolSize: 14,
+            symbolStroke: '#666',
+            symbolStrokeWidth: 1
+          }
+        }
+      },
+      navigation: {
+        buttonOptions: {
+          enabled: isMainChart,
+          symbolFill: '#ededea'
+        }
+      },
+      plotOptions: {
+        pie: {
+          allowPointSelect: true,
+          cursor: 'pointer',
+          dataLabels: {
+            enabled: false
+          },
+          showInLegend: isMainChart
+        }
+      },
+      credits: {
+        enabled: true,
+        href: 'http://job.bocharovf.ru',
+        text: 'http://job.bocharovf.ru'
+      },
+      loading: {
+        showDuration: 0,
+        hideDuration: 0
+      }
+    },
+    series: [],
+    title: {
+      text: valueType.title
+    },
+    xAxis: {
+      title: {
+        text: null
+      }
+    },
+    yAxis: {
+      title: {
+        text: currencyName
+      }
+    }
+
+  };
+
+  // special case for polar chart
+  if (chartType.id === 'polar') {
+    this.config.options.chart.type = 'line';
+    this.config.options.chart.polar = true;
+
+    this.config.xAxis.tickmarkPlacement = 'on';
+    this.config.xAxis.lineWidth = 0;
+
+    this.config.yAxis.gridLineInterpolation = 'polygon';
+    this.config.yAxis.lineWidth = 0;
+    this.config.yAxis.min = 0;
+  }
+
+  /****************** Functions ***************/
+
+  /**
+   * @function
+   * @memberOf hhStat.ChartExtension
+   * @description Apply changes of chart settings
+   */
+  function refresh() {
+    self.config.title.text = (self.isMainChart ? self.valueType.title : null);
+
+    if (self.isMainChart) {
+      if (self.valueType.id === 'avgSalary')
+        self.config.yAxis.title.text = (self.currency ? self.currency.name : null)
+      else if (self.valueType.id === 'amountTotal')
+        self.config.yAxis.title.text = 'Вакансии, шт.';
+    }
+
+    self.config.options.legend.enabled = self.isMainChart;
+    self.config.options.tooltip.enabled = self.isMainChart;
+    self.config.options.exporting.buttons.contextButton.enabled = self.isMainChart;
+    self.config.options.navigation.buttonOptions.enabled = self.isMainChart;
+    self.config.options.plotOptions.pie.showInLegend = self.isMainChart;
+  }
+
+  /**
+   * @function
+   * @memberOf hhStat.ChartExtension
+   * @private
+   * @description Apply changes in data source
+   * @param {hhStat.SearchResult[]} results Data source of chart
+   */
+  function updateSeries(results) {
+    refresh();
+
+    var colors = Highcharts.getOptions().colors;
+
+    var categories = Object.keys(results).sort();
+    var data = categories.map(function(token, i) {
+      return {
+        y: getComparisonValue(results[token]),
+        color: colors[i],
+        name: token
+      };
+    });
+
+    var serie = {
+      name: null,
+      data: data,
+      size: '100%',
+      showInLegend: false,
+      dataLabels: {
+        formatter: function() {
+          return this.point.name;
+        },
+        color: '#ffffff',
+        distance: -30
+      }
+    };
+
+    if (chartType.id === 'pie')
+      serie.showInLegend = true;
+
+    if (chartType.id === 'polar')
+      serie.pointPlacement = 'on';
+
+    this.config.series[0] = serie;
+    this.config.xAxis.categories = categories;
+  }
+
+  /**
+   * @function
+   * @memberOf hhStat.ChartExtension
+   * @private
+   * @description Produce tooltip for different value type
+   * @return {String} Tolltip for chart point
+   */
+  function tooltipFormatter() {
+    if (self.valueType.id === 'avgSalary') {
+      return self.valueType.name +
+        ' &lt;b>' + Math.round(this.y, 0) + ' ' + self.currency.abbr + '&lt;/b>';
+    } else if (self.valueType.id === 'amountTotal') {
+      return self.valueType.name +
+        ' &lt;b>' + Math.round(this.y, 0) + '&lt;/b>';
+    }
+
+  }
+
+  /**
+   * @function
+   * @memberOf hhStat.ChartExtension
+   * @private
+   * @description Retrieve value to display on chart from data point
+   * @param {Object} result Data of chart point
+   * @return {Number} Value of point
+   */
+  function getComparisonValue(result) {
+    if (self.valueType.id === 'avgSalary') {
+      return currencyService.convert(result.salary.avg, 'RUR', self.currency.code);
+    } else if (self.valueType.id === 'amountTotal') {
+      return result.amount.total;
+    }
+  }
+
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="hhStat.html">hhStat</a></li><li><a href="hhStat.BackendService.html">BackendService</a></li><li><a href="hhStat.ChartExtension.html">ChartExtension</a></li><li><a href="hhStat.ChartService.html">ChartService</a></li><li><a href="hhStat.CommonService.html">CommonService</a></li><li><a href="hhStat.ConfigConst.html">ConfigConst</a></li><li><a href="hhStat.CurrencyService.html">CurrencyService</a></li><li><a href="hhStat.FilterCtrl.html">FilterCtrl</a></li><li><a href="hhStat.HeadHunterService.html">HeadHunterService</a></li><li><a href="hhStat.hierarchyFilter.html">hierarchyFilter</a></li><li><a href="hhStat.MenuCtrl.html">MenuCtrl</a></li><li><a href="hhStat.SearchCtrl.html">SearchCtrl</a></li><li><a href="hhStat.SearchResult.html">SearchResult</a></li><li><a href="hhStat.SearchService.html">SearchService</a></li><li><a href="hhStat.simpleFilter.html">simpleFilter</a></li><li><a href="hhStat.TagCloudCtrl.html">TagCloudCtrl</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Mar 10 2016 23:05:48 GMT+0300 (MSK)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

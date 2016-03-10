@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * @class HeadHunter
+ * @class HeadHunterService
  * @memberOf hhStat    
  * @description Data service to interact with Head Hunter API
  */

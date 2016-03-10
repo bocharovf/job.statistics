@@ -29,170 +29,173 @@
             <pre class="prettyprint source linenums"><code>'use strict';
 
 /**
-  * @class hierarchyFilter
-  * @memberOf hhStat    
-  * @description Directive that represents search filter for hierarchy of regions
-  */
- 
+ * @class hierarchyFilter
+ * @memberOf hhStat    
+ * @description Directive that represents search filter for hierarchy of regions
+ */
+
 angular.module('hhStat')
-	.directive('hierarchyFilter', function(){
-	return {
-		 scope: {
-		 	max: "@",
-		 	header: "@",
-		 	eventName: "@",
-		 	hierarchy: "=",
-		 	alwaysOnTop: "="
-		 },
-		controller: ['$scope', hierarchyFilterController],
-		restrict: 'E',
-		templateUrl: 'scripts/directives/HierarchyFilter.html'
-	};
+  .directive('hierarchyFilter', function() {
+    return {
+      scope: {
+        max: '@',
+        header: '@',
+        eventName: '@',
+        hierarchy: '=',
+        alwaysOnTop: '='
+      },
+      controller: ['$scope', hierarchyFilterController],
+      restrict: 'E',
+      templateUrl: 'templates/HierarchyFilter.html'
+    };
 
-	function hierarchyFilterController($scope) {
-		var defaultMax = $scope.max;
+    function hierarchyFilterController($scope) {
+      var defaultMax = $scope.max;
 
-		$scope.isExpanded = true;
-		$scope.availableOptions = [];
-		$scope.selectedOptions = [];
+      $scope.isExpanded = true;
+      $scope.availableOptions = [];
+      $scope.selectedOptions = [];
 
-		$scope.selectOption = selectOption;
-		$scope.removeSelection = removeSelection;
-		$scope.expandOptions = expandOptions;
-		$scope.toggleExpanded = toggleExpanded;
+      $scope.selectOption = selectOption;
+      $scope.removeSelection = removeSelection;
+      $scope.expandOptions = expandOptions;
+      $scope.toggleExpanded = toggleExpanded;
 
-		$scope.$watch(function () { return $scope.hierarchy }, 
-					updateAvailableOptions, true);
+      $scope.$watch(function() {
+        return $scope.hierarchy
+      },
+      updateAvailableOptions, true);
 
-		/*************** Functions ****************/
+      /*************** Functions ****************/
 
-		/**
-		 * @function
-		 * @memberOf hhStat.hierarchyFilter
-		 * @description Updates array of values to choose in filter
-		 */
-		function updateAvailableOptions() {
-			var availableOptions = hierarchyApplyFilter($scope.hierarchy, $scope.selectedOptions)
-			if (availableOptions)
-				availableOptions = availableOptions.sort(compareRespectSpecial);
+      /**
+       * @function
+       * @memberOf hhStat.hierarchyFilter
+       * @description Updates array of values to choose in filter
+       */
+      function updateAvailableOptions() {
+        var availableOptions = hierarchyApplyFilter($scope.hierarchy, $scope.selectedOptions)
+        if (availableOptions)
+          availableOptions = availableOptions.sort(compareRespectSpecial);
 
-			$scope.availableOptions = availableOptions;
-			$scope.max = defaultMax;
+        $scope.availableOptions = availableOptions;
+        $scope.max = defaultMax;
 
-			var filter = $scope.selectedOptions.length > 0
-								? $scope.selectedOptions[$scope.selectedOptions.length - 1]
-								: null;
+        var filter = $scope.selectedOptions.length > 0 ? $scope.selectedOptions[$scope.selectedOptions.length - 1] : null;
 
-			notify($scope.eventName, filter);			
-		}
+        notify($scope.eventName, filter);
+      }
 
-		/**
-		 * @function
-		 * @private
-		 * @memberOf hhStat.hierarchyFilter
-		 * @description Return specific subset of hierarchy
-		 * @param  {Object} tree    Hierarchy object
-		 * @param  {Object[]} filters Path in hierarchy
-		 * @return {Object[]}         Subset of hierarchy
-		 */
-		function hierarchyApplyFilter (tree, filters) {
-			if (tree) {
-				var currentLayer = tree;
-				filters.forEach(function (filter) {
-					currentLayer = currentLayer
-									.filter(function (area) {
-										return area.id === filter.id
-									})[0].areas;
-				});
+      /**
+       * @function
+       * @private
+       * @memberOf hhStat.hierarchyFilter
+       * @description Return specific subset of hierarchy
+       * @param  {Object} tree    Hierarchy object
+       * @param  {Object[]} filters Path in hierarchy
+       * @return {Object[]}         Subset of hierarchy
+       */
+      function hierarchyApplyFilter(tree, filters) {
+        if (tree) {
+          var currentLayer = tree;
+          filters.forEach(function(filter) {
+            currentLayer = currentLayer
+              .filter(function(area) {
+                return area.id === filter.id
+              })[0].areas;
+          });
 
-				return currentLayer
-							.map(function (area) {
-								return { id: area.id, name: area.name}
-							});	
-			}
-			
-		}
+          return currentLayer
+            .map(function(area) {
+              return {
+                id: area.id,
+                name: area.name
+              }
+            });
+        }
 
-		/**
-		 * @function
-		 * @memberOf hhStat.hierarchyFilter
-		 * @private
-		 * @description Comprarator to sort options 
-		 * first by special index then aplphabeticaly
-		 * @param  {Object} a First value
-		 * @param  {Object} b Second value
-		 * @return {Number}   0 = eq 1 = gt -1 = lt
-		 */
-		function compareRespectSpecial (a, b) {
-			var specialA = $scope.alwaysOnTop.indexOf(a.name);
-			var specialB = $scope.alwaysOnTop.indexOf(b.name);
+      }
 
-			if (specialA >= 0 &amp;&amp; specialB >= 0) 
-				return specialA - specialB;
+      /**
+       * @function
+       * @memberOf hhStat.hierarchyFilter
+       * @private
+       * @description Comprarator to sort options 
+       * first by special index then aplphabeticaly
+       * @param  {Object} a First value
+       * @param  {Object} b Second value
+       * @return {Number}   0 = eq 1 = gt -1 = lt
+       */
+      function compareRespectSpecial(a, b) {
+        var specialA = $scope.alwaysOnTop.indexOf(a.name);
+        var specialB = $scope.alwaysOnTop.indexOf(b.name);
 
-			if (specialA >= 0 &amp;&amp; specialB &lt; 0) return -1;
-			if (specialA &lt; 0 &amp;&amp; specialB >= 0) return 1;
+        if (specialA >= 0 &amp;&amp; specialB >= 0)
+          return specialA - specialB;
 
-			if(a.name &lt; b.name) return -1;
-			if(a.name > b.name) return 1;
+        if (specialA >= 0 &amp;&amp; specialB &lt; 0) return -1;
+        if (specialA &lt; 0 &amp;&amp; specialB >= 0) return 1;
 
-			return 0;
-		}
+        if (a.name &lt; b.name) return -1;
+        if (a.name > b.name) return 1;
 
-		/**
-		 * @function
-		 * @memberOf hhStat.hierarchyFilter
-		 * @description Add specified option to filters
-		 * @param  {Object} option Option to select
-		 */
-		function selectOption (option) {
-			$scope.selectedOptions.push(option);
-			updateAvailableOptions();
-		}
+        return 0;
+      }
 
-		/**
-		 * @function
-		 * @memberOf hhStat.hierarchyFilter
-		 * @description Remove filters started from specified level
-		 * @param  {Number} layer Sequental number of filter to remove
-		 */
-		function removeSelection (layer) {
-			$scope.selectedOptions = $scope.selectedOptions.slice(0, layer);
-			updateAvailableOptions();
-		}
+      /**
+       * @function
+       * @memberOf hhStat.hierarchyFilter
+       * @description Add specified option to filters
+       * @param  {Object} option Option to select
+       */
+      function selectOption(option) {
+        $scope.selectedOptions.push(option);
+        updateAvailableOptions();
+      }
 
-		/**
-		 * @function
-		 * @memberOf hhStat.hierarchyFilter
-		 * @description Expand current filter layer
-		 */
-		function expandOptions () {
-			$scope.max = $scope.availableOptions.length;
-		}
+      /**
+       * @function
+       * @memberOf hhStat.hierarchyFilter
+       * @description Remove filters started from specified level
+       * @param  {Number} layer Sequental number of filter to remove
+       */
+      function removeSelection(layer) {
+        $scope.selectedOptions = $scope.selectedOptions.slice(0, layer);
+        updateAvailableOptions();
+      }
 
-		/**
-		 * @function
-		 * @memberOf hhStat.hierarchyFilter
-		 * @description Toggle state of whole filter
-		 */
-		function toggleExpanded () {
-			$scope.isExpanded = !$scope.isExpanded;
-		}
+      /**
+       * @function
+       * @memberOf hhStat.hierarchyFilter
+       * @description Expand current filter layer
+       */
+      function expandOptions() {
+        $scope.max = $scope.availableOptions.length;
+      }
 
-		/**
-		 * @function
-		 * @memberOf hhStat.hierarchyFilter
-		 * @private
-		 * @description Notify parent context
-		 * @param  {String} name Event name
-		 * @param  {Object} args Arguments
-		 */
-	    function notify(name, args) {
-	        $scope.$emit(name, args);
-	    }    		
-	}
+      /**
+       * @function
+       * @memberOf hhStat.hierarchyFilter
+       * @description Toggle state of whole filter
+       */
+      function toggleExpanded() {
+        $scope.isExpanded = !$scope.isExpanded;
+      }
 
-});</code></pre>
+      /**
+       * @function
+       * @memberOf hhStat.hierarchyFilter
+       * @private
+       * @description Notify parent context
+       * @param  {String} name Event name
+       * @param  {Object} args Arguments
+       */
+      function notify(name, args) {
+        $scope.$emit(name, args);
+      }
+    }
+
+  });</code></pre>
         </article>
     </section>
 
@@ -202,13 +205,13 @@ angular.module('hhStat')
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="extensions.html">extensions</a></li><li><a href="hhStat.html">hhStat</a></li><li><a href="hhStat.BackendService.html">BackendService</a></li><li><a href="hhStat.ChartService.html">ChartService</a></li><li><a href="hhStat.ConfigConst.html">ConfigConst</a></li><li><a href="hhStat.CurrencyService.html">CurrencyService</a></li><li><a href="hhStat.FilterCtrl.html">FilterCtrl</a></li><li><a href="hhStat.HeadHunter.html">HeadHunter</a></li><li><a href="hhStat.hierarchyFilter.html">hierarchyFilter</a></li><li><a href="hhStat.MenuCtrl.html">MenuCtrl</a></li><li><a href="hhStat.SearchCtrl.html">SearchCtrl</a></li><li><a href="hhStat.SearchResult.html">SearchResult</a></li><li><a href="hhStat.SearchService.html">SearchService</a></li><li><a href="hhStat.simpleFilter.html">simpleFilter</a></li><li><a href="hhStat.TagCloudCtrl.html">TagCloudCtrl</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="hhStat.html">hhStat</a></li><li><a href="hhStat.BackendService.html">BackendService</a></li><li><a href="hhStat.ChartExtension.html">ChartExtension</a></li><li><a href="hhStat.ChartService.html">ChartService</a></li><li><a href="hhStat.CommonService.html">CommonService</a></li><li><a href="hhStat.ConfigConst.html">ConfigConst</a></li><li><a href="hhStat.CurrencyService.html">CurrencyService</a></li><li><a href="hhStat.FilterCtrl.html">FilterCtrl</a></li><li><a href="hhStat.HeadHunterService.html">HeadHunterService</a></li><li><a href="hhStat.hierarchyFilter.html">hierarchyFilter</a></li><li><a href="hhStat.MenuCtrl.html">MenuCtrl</a></li><li><a href="hhStat.SearchCtrl.html">SearchCtrl</a></li><li><a href="hhStat.SearchResult.html">SearchResult</a></li><li><a href="hhStat.SearchService.html">SearchService</a></li><li><a href="hhStat.simpleFilter.html">simpleFilter</a></li><li><a href="hhStat.TagCloudCtrl.html">TagCloudCtrl</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Jan 21 2016 21:53:49 GMT+0300 (RTZ 2 (зима))
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Mar 10 2016 23:05:48 GMT+0300 (MSK)
 </footer>
 
 <script> prettyPrint(); </script>

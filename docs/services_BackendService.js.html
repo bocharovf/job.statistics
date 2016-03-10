@@ -29,59 +29,100 @@
             <pre class="prettyprint source linenums"><code>'use strict';
 
 /**
-  * @class BackendService
-  * @memberOf hhStat 
-  * @description Data service to interact with backend API   
-  */
- 
+ * @class BackendService
+ * @memberOf hhStat 
+ * @description Data service to interact with backend API   
+ */
+
 angular.module('hhStat')
-	.service('BackendService', ['ConfigConst', '$http', function(config, $http) {
+  .service('BackendService', ['ConfigConst', 'CommonService', '$http',
+    function(config, common, $http) {
 
-	var result = {
-		getSuggestions: getSuggestions,
-		getCloudTags: getCloudTags
-	};
+      var result = {
+        getSuggestions: getSuggestions,
+        getCloudTags: getCloudTags,
+        logRemote: logRemote,
+        logQuery: logQuery
+      };
 
-	return result;
+      var defaultConfig = {
+        timeout: config.headHunterTimeout,
+        cache: true
+      };
 
-	/**
-	 * @function
-	 * @memberOf hhStat.BackendService
-	 * @description Query backend for array of suggestions
-	 * @return {Promise}
-	 */
-	function getSuggestions () {
-		return $http.get(config.backendBaseUrl + 'suggestions', {})
-					.then(function (result) {
-						return result.data;
-					});
-	}
+      return result;
 
-	/**
-	 * @function
-	 * @memberOf hhStat.BackendService
-	 * @description Query backend for array of tags and weights
-	 * @return {Promise}
-	 */
-	function getCloudTags () {
-		return $http.get(config.backendBaseUrl + 'cloudTags', {})
-					.then(function (result) {
-						return result.data.map(function (tag) {
-							return {
-								text: tag.Tag,
-								weight: tag.Weight,
-							}
-						});
-					});
-	}
+      /**
+       * @function
+       * @memberOf hhStat.BackendService
+       * @description Query backend for array of suggestions
+       * @return {Promise}
+       */
+      function getSuggestions() {
+        return $http.get(config.backendBaseUrl + 'dictionary/suggestions', defaultConfig)
+          .then(function(result) {
+            return result.data;
+          });
+      }
 
-}]);
+      /**
+       * @function
+       * @memberOf hhStat.BackendService
+       * @description Query backend for array of tags and weights
+       * @return {Promise}
+       */
+      function getCloudTags() {
+        return $http.get(config.backendBaseUrl + 'dictionary/cloudTags', defaultConfig)
+          .then(function(result) {
+            return result.data.map(function(tag) {
+              return {
+                text: tag.Tag,
+                weight: tag.Weight
+              }
+            });
+          });
+      }
 
+      /**
+       * @function
+       * @memberOf hhStat.BackendService
+       * @description Log information to database
+       * @param  {Object} info Information or error data to log
+       * @param  {Bool} isError Is it error ot not
+       */
+      function logRemote(info, isError) {
+        var payload = {
+          isError: isError || false,
+          browser: navigator.userAgent,
+          error: info
+        };
 
+        $http.post(config.backendBaseUrl + 'common/log',
+          payload,
+          defaultConfig);
+      }
 
+      /**
+       * @function
+       * @memberOf hhStat.BackendService
+       * @description Log query to database
+       * @param  {string} query Query to log
+       * @param {Object} filter Current filter
+       */
+      function logQuery(query, filter) {
+        var payload = {
+          query: query,
+          session: common.session,
+          filter: filter
+        };
 
+        $http.post(config.backendBaseUrl + 'common/queries',
+          payload,
+          defaultConfig);
+      }
 
-</code></pre>
+    }
+  ]);</code></pre>
         </article>
     </section>
 
@@ -91,13 +132,13 @@ angular.module('hhStat')
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="extensions.html">extensions</a></li><li><a href="hhStat.html">hhStat</a></li><li><a href="hhStat.BackendService.html">BackendService</a></li><li><a href="hhStat.ChartService.html">ChartService</a></li><li><a href="hhStat.ConfigConst.html">ConfigConst</a></li><li><a href="hhStat.CurrencyService.html">CurrencyService</a></li><li><a href="hhStat.FilterCtrl.html">FilterCtrl</a></li><li><a href="hhStat.HeadHunter.html">HeadHunter</a></li><li><a href="hhStat.hierarchyFilter.html">hierarchyFilter</a></li><li><a href="hhStat.MenuCtrl.html">MenuCtrl</a></li><li><a href="hhStat.SearchCtrl.html">SearchCtrl</a></li><li><a href="hhStat.SearchResult.html">SearchResult</a></li><li><a href="hhStat.SearchService.html">SearchService</a></li><li><a href="hhStat.simpleFilter.html">simpleFilter</a></li><li><a href="hhStat.TagCloudCtrl.html">TagCloudCtrl</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="hhStat.html">hhStat</a></li><li><a href="hhStat.BackendService.html">BackendService</a></li><li><a href="hhStat.ChartExtension.html">ChartExtension</a></li><li><a href="hhStat.ChartService.html">ChartService</a></li><li><a href="hhStat.CommonService.html">CommonService</a></li><li><a href="hhStat.ConfigConst.html">ConfigConst</a></li><li><a href="hhStat.CurrencyService.html">CurrencyService</a></li><li><a href="hhStat.FilterCtrl.html">FilterCtrl</a></li><li><a href="hhStat.HeadHunterService.html">HeadHunterService</a></li><li><a href="hhStat.hierarchyFilter.html">hierarchyFilter</a></li><li><a href="hhStat.MenuCtrl.html">MenuCtrl</a></li><li><a href="hhStat.SearchCtrl.html">SearchCtrl</a></li><li><a href="hhStat.SearchResult.html">SearchResult</a></li><li><a href="hhStat.SearchService.html">SearchService</a></li><li><a href="hhStat.simpleFilter.html">simpleFilter</a></li><li><a href="hhStat.TagCloudCtrl.html">TagCloudCtrl</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Jan 21 2016 21:53:49 GMT+0300 (RTZ 2 (зима))
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Mar 10 2016 23:05:48 GMT+0300 (MSK)
 </footer>
 
 <script> prettyPrint(); </script>

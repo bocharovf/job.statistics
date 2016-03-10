@@ -29,108 +29,130 @@
             <pre class="prettyprint source linenums"><code>'use strict';
 
 /**
-  * @class HeadHunter
-  * @memberOf hhStat    
-  * @description Data service to interact with Head Hunter API
-  */
- 
+ * @class HeadHunterService
+ * @memberOf hhStat    
+ * @description Data service to interact with Head Hunter API
+ */
+
 angular.module('hhStat')
-	.service('HeadHunter', ['ConfigConst', '$http', '$q', function(config, $http, $q) {
+  .service('HeadHunter', ['ConfigConst', '$http', function(config, $http) {
 
-	var cache = {};
+    var result = {
+      getCurrencies: getCurrencies,
+      getExperiences: getExperiences,
+      getVacancies: getVacancies,
+      getAreas: getAreas
+    };
 
-	var result = {
-		getCurrencies: getCurrencies,
-		getVacancies: getVacancies,
-		getAreas: getAreas
-	};
+    return result;
 
-	return result;
+    /**
+     * @function
+     * @memberOf hhStat.HeadHunter
+     * @description Query HH for array of currencies
+     * @return {Promise}
+     */
+    function getCurrencies() {
+      return getCacheableResource('dictionaries')
+        .then(function(result) {
+          return result.currency;
+        });
+    }
 
-	/**
-	 * @function
-	 * @memberOf hhStat.HeadHunter
-	 * @description Query HH for array of currencies
-	 * @return {Promise}
-	 */
-	function getCurrencies () {
-		return getCacheableResource('dictionaries')
-					.then(function (result) {
-						return result.currency;
-					});
-	}
+    /**
+     * @function
+     * @memberOf hhStat.HeadHunter
+     * @description Query HH for array of experiences
+     * @return {Promise}
+     */
+    function getExperiences() {
+      return getCacheableResource('dictionaries')
+        .then(function(result) {
+          return result.experience;
+        });
+    }
 
-	/**
-	 * @function
-	 * @memberOf hhStat.HeadHunter
-	 * @description Query HH for tree of areas
-	 * @return {Promise}
-	 */
-	function getAreas () {
-		return getCacheableResource('areas');
-	}	
+    /**
+     * @function
+     * @memberOf hhStat.HeadHunter
+     * @description Query HH for tree of areas
+     * @return {Promise}
+     */
+    function getAreas() {
+      return getCacheableResource('areas');
+    }
 
-	/**
-	 * @function
-	 * @memberOf hhStat.HeadHunter
-	 * @description Query HH for vacancies
-	 * @param  {string} text     'text' query parameter
-	 * @param  {Object} settings Additional query parameters
-	 * @return {Promise}
-	 */
-	function getVacancies (text, settings) {
-		var params = [
-			{param: 'only_with_salary', value: 'true'},
-			{param: 'order_by', value: 'relevance'},
-			//"id": "1", "name": "Информационные технологии, интернет, телеком"
-			//{param: 'specialization', value: '1'}, 
-			{param: 'per_page', value: settings.perPage || 500 },
-			{param: 'page', value: settings.page || 0 },
-			{param: 'text', value: encodeURIComponent(text) }
-		];
-		
-		if (settings.area) 
-			params.push({param: 'area', value: settings.area});
+    /**
+     * @function
+     * @memberOf hhStat.HeadHunter
+     * @description Query HH for vacancies
+     * @param  {string} text     'text' query parameter
+     * @param  {Object} settings Additional query parameters
+     * @return {Promise}
+     */
+    function getVacancies(text, settings) {
+      
+      //"id": "1", "name": "Информационные технологии, интернет, телеком"
+      //{param: 'specialization', value: '1'}, 
+      var params = [{
+        param: 'only_with_salary',
+        value: 'true'
+      }, {
+        param: 'order_by',
+        value: 'relevance'
+      }, {
+        param: 'per_page',
+        value: settings.perPage || 500
+      }, {
+        param: 'page',
+        value: settings.page || 0
+      }, {
+        param: 'text',
+        value: encodeURIComponent(text)
+      }];
 
-		var queryString = '?' + params.map(function (arg) {
-								return arg.param + '=' + arg.value;
-							})
-							.join('&amp;');
+      if (settings.area)
+        params.push({
+          param: 'area',
+          value: settings.area
+        });
+      if (settings.experience)
+        params.push({
+          param: 'experience',
+          value: settings.experience
+        });
 
-		return $http.get(config.headHunterUrl + 'vacancies' + queryString, {})
-			
-	}
+      var queryString = '?' + params.map(function(arg) {
+        return arg.param + '=' + arg.value;
+      })
+      .join('&amp;');
 
-	/**
-	 * @function
-	 * @memberOf hhStat.HeadHunter
-	 * @private
-	 * @description Query for resource for first time and cache response
-	 * @return {Promise} Returns requested resource
-	 */
-	function getCacheableResource (resourceName) {
+      return $http.get(config.headHunterUrl + 'vacancies' + queryString, {
+        timeout: config.headHunterTimeout
+      })
 
-		if (cache[resourceName])
-		{
-			var def = $q.defer();
-			def.resolve(cache[resourceName]);
-			return def.promise;
-		}
+    }
 
-		return $http.get(config.headHunterUrl + resourceName, {})
-					.then(function (result) {
-						cache[resourceName] = result.data;
-						return result.data;
-					});
-	}
+    /**
+     * @function
+     * @memberOf hhStat.HeadHunter
+     * @private
+     * @description Query for resource for first time and cache response
+     * @return {Promise} Returns requested resource
+     */
+    function getCacheableResource(resourceName) {
+      var requestConfig = {
+        timeout: config.headHunterTimeout,
+        cache: true
+      };
 
-}]);
+      return $http.get(config.headHunterUrl + resourceName, requestConfig)
+        .then(function(result) {
+          return result.data;
+        });
+    }
 
-
-
-
-
-</code></pre>
+  }]);</code></pre>
         </article>
     </section>
 
@@ -140,13 +162,13 @@ angular.module('hhStat')
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="extensions.html">extensions</a></li><li><a href="hhStat.html">hhStat</a></li><li><a href="hhStat.BackendService.html">BackendService</a></li><li><a href="hhStat.ChartService.html">ChartService</a></li><li><a href="hhStat.ConfigConst.html">ConfigConst</a></li><li><a href="hhStat.CurrencyService.html">CurrencyService</a></li><li><a href="hhStat.FilterCtrl.html">FilterCtrl</a></li><li><a href="hhStat.HeadHunter.html">HeadHunter</a></li><li><a href="hhStat.hierarchyFilter.html">hierarchyFilter</a></li><li><a href="hhStat.MenuCtrl.html">MenuCtrl</a></li><li><a href="hhStat.SearchCtrl.html">SearchCtrl</a></li><li><a href="hhStat.SearchResult.html">SearchResult</a></li><li><a href="hhStat.SearchService.html">SearchService</a></li><li><a href="hhStat.simpleFilter.html">simpleFilter</a></li><li><a href="hhStat.TagCloudCtrl.html">TagCloudCtrl</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="hhStat.html">hhStat</a></li><li><a href="hhStat.BackendService.html">BackendService</a></li><li><a href="hhStat.ChartExtension.html">ChartExtension</a></li><li><a href="hhStat.ChartService.html">ChartService</a></li><li><a href="hhStat.CommonService.html">CommonService</a></li><li><a href="hhStat.ConfigConst.html">ConfigConst</a></li><li><a href="hhStat.CurrencyService.html">CurrencyService</a></li><li><a href="hhStat.FilterCtrl.html">FilterCtrl</a></li><li><a href="hhStat.HeadHunterService.html">HeadHunterService</a></li><li><a href="hhStat.hierarchyFilter.html">hierarchyFilter</a></li><li><a href="hhStat.MenuCtrl.html">MenuCtrl</a></li><li><a href="hhStat.SearchCtrl.html">SearchCtrl</a></li><li><a href="hhStat.SearchResult.html">SearchResult</a></li><li><a href="hhStat.SearchService.html">SearchService</a></li><li><a href="hhStat.simpleFilter.html">simpleFilter</a></li><li><a href="hhStat.TagCloudCtrl.html">TagCloudCtrl</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Jan 21 2016 21:53:49 GMT+0300 (RTZ 2 (зима))
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Mar 10 2016 23:05:48 GMT+0300 (MSK)
 </footer>
 
 <script> prettyPrint(); </script>
