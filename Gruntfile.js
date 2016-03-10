@@ -244,6 +244,7 @@ module.exports = function(grunt) {
     }
 
     grunt.task.run([
+      'newer:eslint',
       'express:dev',
       'clean:server',
       'wiredep',
@@ -305,8 +306,8 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('default', [
-    'newer:eslint' //,
-    //'test',
-    //'build'
+    'newer:eslint',
+    'test',
+    'build'
   ]);
 };
