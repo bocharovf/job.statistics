@@ -1,10 +1,10 @@
 'use strict';
 
 /**
-  * @class Cors
-  * @memberOf hhStat.Server   
-  * @description Middleware to enable CORS
-  */
+ * @class Cors
+ * @memberOf hhStat.Server   
+ * @description Middleware to enable CORS
+ */
 
 /**
  * @function
@@ -15,8 +15,8 @@
  * @param  {Function} next
  */
 function enableCors(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   next();
 }
 

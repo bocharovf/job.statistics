@@ -8,7 +8,7 @@
 // If you want to recursively match all subfolders, use:
 // 'test/spec/**/*.js'
 
-module.exports = function (grunt) {
+module.exports = function(grunt) {
 
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
@@ -73,7 +73,10 @@ module.exports = function (grunt) {
         '<%= config.server %>/{,*/}*.js',
         '!<%= config.app %>/scripts/vendor/*',
         'test/spec/{,*/}*.js'
-      ]
+      ],
+      options: {
+        configFile: 'eslint.json'
+      }
     },
 
     // Mocha testing framework - client side
@@ -94,7 +97,7 @@ module.exports = function (grunt) {
         },
         src: ['test/spec/server/*.js']
       }
-    },  
+    },
 
     // Compiles ES6 with Babel
     babel: require('./grunt_config/babel_config'),
@@ -182,7 +185,7 @@ module.exports = function (grunt) {
           '.tmp/index.html': '<%= config.app %>/index.html'
         }
       }
-    },    
+    },
 
     htmlmin: require('./grunt_config/htmlmin_config'),
 
@@ -231,10 +234,10 @@ module.exports = function (grunt) {
         }
       }
     }
-});
+  });
 
 
-  grunt.registerTask('serve', 'start the server and preview your app', function (target) {
+  grunt.registerTask('serve', 'start the server and preview your app', function(target) {
 
     if (target === 'dist') {
       return grunt.task.run(['build', 'browserSync:dist']);
@@ -251,27 +254,27 @@ module.exports = function (grunt) {
     ]);
   });
 
-  grunt.registerTask('server', function (target) {
+  grunt.registerTask('server', function(target) {
     grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
     grunt.task.run([target ? ('serve:' + target) : 'serve']);
   });
 
-  grunt.registerTask('test', function (target) {
-    
-  	grunt.task.run([
-  		'clean:server',
-  		'concurrent:test',
-  		//'postcss',
-  		'wiredep',
-  		'browserSync:test',
-  		'mocha',
-      'mochaTest' 
-  	]);
-  
-    if (target === 'watch') { 
-	    grunt.task.run([	  
-	      'watch'
-	    ]);
+  grunt.registerTask('test', function(target) {
+
+    grunt.task.run([
+      'clean:server',
+      'concurrent:test',
+      //'postcss',
+      'wiredep',
+      'browserSync:test',
+      'mocha',
+      'mochaTest'
+    ]);
+
+    if (target === 'watch') {
+      grunt.task.run([
+        'watch'
+      ]);
     }
 
   });
@@ -279,7 +282,7 @@ module.exports = function (grunt) {
   grunt.registerTask('build', [
     'clean:dist',
     'wiredep',
-    
+
     'targethtml:dist',
 
     'useminPrepare',
@@ -293,7 +296,7 @@ module.exports = function (grunt) {
     'modernizr',
     'filerev',
     'usemin',
-    
+
     'htmlmin'
   ]);
 
@@ -302,8 +305,8 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('default', [
-    'newer:eslint',
-    'test',
-    'build'
+    'newer:eslint' //,
+    //'test',
+    //'build'
   ]);
 };
