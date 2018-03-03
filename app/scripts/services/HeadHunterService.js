@@ -2,7 +2,7 @@
 
 /**
  * @class HeadHunterService
- * @memberOf hhStat    
+ * @memberOf hhStat
  * @description Data service to interact with Head Hunter API
  */
 
@@ -63,9 +63,9 @@ angular.module('hhStat')
      * @return {Promise}
      */
     function getVacancies(text, settings) {
-      
+
       //"id": "1", "name": "Информационные технологии, интернет, телеком"
-      //{param: 'specialization', value: '1'}, 
+      //{param: 'specialization', value: '1'},
       var params = [{
         param: 'only_with_salary',
         value: 'true'
@@ -74,7 +74,7 @@ angular.module('hhStat')
         value: 'relevance'
       }, {
         param: 'per_page',
-        value: settings.perPage || 500
+        value: settings.perPage || 100
       }, {
         param: 'page',
         value: settings.page || 0

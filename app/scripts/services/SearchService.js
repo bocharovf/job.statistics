@@ -2,13 +2,14 @@
 
 /**
  * @class SearchService
- * @memberOf hhStat    
+ * @memberOf hhStat
  * @description Service responsible for searching
  */
 
 angular.module('hhStat')
   .service('SearchService', ['$http', '$rootScope', 'HeadHunter',
     function($http, $rootScope, headHunter) {
+      var REQUESTS_AMOUNT = 20;
 
       var result = {
         search: search,
@@ -20,7 +21,7 @@ angular.module('hhStat')
       return result;
 
       /**
-       * @function   
+       * @function
        * @memberOf hhStat.SearchService
        * @description Subscribe to event
        * @param  {string}   name     Event name
@@ -34,7 +35,7 @@ angular.module('hhStat')
 
       /**
        * @function
-       * @memberOf hhStat.SearchService* 
+       * @memberOf hhStat.SearchService*
        * @description Fire an event
        * @param  {string} name Event name
        * @param  {object} args Event args
@@ -54,8 +55,9 @@ angular.module('hhStat')
         var tokenAliases = tokenArray.map(findAliases);
 
         var requests = [];
+        var requestRange = Array.apply(null, { length: REQUESTS_AMOUNT }).map(Number.call, Number);
         tokenAliases.forEach(function(token) {
-          var requestArray = [0, 1, 2, 3].map(function(x) {
+          var requestArray = requestRange.map(function(x) {
             return {
               page: x,
               token: token.token,
@@ -76,7 +78,7 @@ angular.module('hhStat')
        * @memberOf hhStat.SearchService
        * @description Split search phrase into array of tokens
        * @param  {string} phrase Search phrase
-       * @sep    {RegExp} sep    Separator regular expression 
+       * @sep    {RegExp} sep    Separator regular expression
        * @return {string[]}      Array of tokens
        */
       function tokenise(phrase, sep) {
@@ -115,13 +117,13 @@ angular.module('hhStat')
        * @function
        * @private
        * @memberOf hhStat.SearchService
-       * @description Query external api with concrete search token 
+       * @description Query external api with concrete search token
        * @param  {string} aliases Search aliases
        */
       function perfomRequest(request) {
         var textSubquery = request.aliases.join(' OR ');
         headHunter.getVacancies(textSubquery, {
-          perPage: 500,
+          perPage: 100,
           page: request.page,
           area: (result.selectedRegion ? result.selectedRegion.id : null),
           experience: (result.selectedExperience ? result.selectedExperience.id : null)
@@ -138,7 +140,7 @@ angular.module('hhStat')
        * @private
        * @memberOf hhStat.SearchService
        * @description Fire 'SEARCH_SUCCESS' event
-       * @param  {Object} request  Request 
+       * @param  {Object} request  Request
        * @param  {Object} response Response
        */
       function onSearchSuccess(request, response) {
@@ -153,7 +155,7 @@ angular.module('hhStat')
        * @private
        * @memberOf hhStat.SearchService
        * @description Fire 'SEARCH_FAILED' event
-       * @param  {Object} request  Request 
+       * @param  {Object} request  Request
        * @param  {Object} response Response
        */
       function onSearchFailed(request, response) {
